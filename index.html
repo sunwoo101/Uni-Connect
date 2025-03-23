@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uni Connect - Connect with other uni students</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-100">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-600 text-white p-4 fixed w-full top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <span class="text-xl font-bold">Uni Connect</span>
+            </div>
+            <div id="navButtons" class="flex items-center space-x-4">
+                <button class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50"
+                    onclick="showLogin()">Sign In</button>
+                <button class="border border-white px-4 py-2 rounded-full hover:bg-blue-700"
+                    onclick="showRegister()">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+</body>
+
+</html>
