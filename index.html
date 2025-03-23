@@ -26,6 +26,44 @@
             </div>
         </div>
     </nav>
+
+    <!-- Alert Box -->
+    <div id="alertBox" class="fixed top-20 right-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-4 max-w-sm">
+            <div class="flex items-center">
+                <div id="alertIcon" class="mr-3">
+                    <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <p id="alertMessage" class="text-gray-800">Test text</p>
+                </div>
+                <button onclick="hideAlert()" class="ml-4 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- Test Box (Debug) -->
+    <div id="testBox" class="bg-white mx-2 px-4 py-4 mt-20 z-50 rounded-lg shadow-lg">
+        <button class="bg-gray-400 border border-white px-4 py-2 rounded-full hover:bg-gray-300"
+            onclick="showAlert('Success!', 'success')">Test Success</button>
+        <button class="bg-gray-400 border border-white px-4 py-2 rounded-full hover:bg-gray-300"
+            onclick="showAlert('Error!', 'error')">Test Error</button>
+        <button class="bg-gray-400 border border-white px-4 py-2 rounded-full hover:bg-gray-300"
+            onclick="showAlert('Warning!', 'warning')">Test Warning</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 
 </html>
