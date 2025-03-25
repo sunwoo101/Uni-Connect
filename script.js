@@ -1,9 +1,106 @@
+// Sample database
+const database = {
+    users: [
+        {
+            id: 1,
+            firstName: 'Sun Woo',
+            lastName: 'Kim',
+            email: 'sunwoo.kim@student.uts.edu.au',
+            degree: 'Diploma of Information Technology',
+            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
+            username: '@sunwoo.kim'
+        },
+        {
+            id: 2,
+            firstName: 'Daniel',
+            lastName: 'Liu',
+            email: 'daniel.liu@student.uts.edu.au',
+            degree: 'Bachelor of Computer Science',
+            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
+            username: '@daniel.liu'
+        },
+        {
+            id: 3,
+            firstName: 'Evan',
+            lastName: 'Liang',
+            email: 'evan.liang@student.uts.edu.au',
+            degree: 'Bachelor of Business and International Studies',
+            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
+            username: '@evan.liang'
+        },
+        {
+            id: 4,
+            firstName: 'Danny',
+            lastName: 'Li',
+            email: 'danny.li@student.uts.edu.au',
+            degree: 'Bachelor of Computer Science',
+            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
+            username: '@danny.li'
+        },
+    ],
+    posts: [
+        {
+            id: 1,
+            userId: 2,
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque purus risus, pharetra ut ipsum nec, accumsan fermentum lacus. Cras volutpat sed nulla sed ullamcorper. Duis a nunc nulla.',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg',
+            timestamp: new Date('2024-03-20T10:00:00'),
+            likes: [1, 2], // Array of user IDs who liked the post
+            comments: [1], // Array of comment IDs
+            replies: [1], // Array of reply IDs
+            saves: [1, 2, 3], // Array of user IDs who saved the post
+            eventId: 1
+        }
+    ],
+    events: [ // Events that are embedded into posts
+        {
+            id: 1,
+            title: 'Sample Event',
+            date: new Date('2024-03-20T10:15:00'),
+            location: 'UTS',
+            attendees: [] // Array of user IDs who are attending
+        }
+    ],
+    comments: [ // Comments on posts
+        {
+            id: 1,
+            postId: 1,
+            userId: 3,
+            content: 'Lorem ipsum dolor sit amet',
+            timestamp: new Date('2024-03-20T10:15:00')
+        },
+        {
+            id: 2,
+            postId: 1,
+            userId: 2,
+            content: 'by9 56by03 506w7905',
+            timestamp: new Date('2024-03-20T10:15:00')
+        },
+    ],
+    replies: [ // Replies to comments
+        {
+            id: 1,
+            commentId: 1,
+            userId: 2,
+            content: 'consectetur adipiscing elit',
+            timestamp: new Date('2024-03-20T10:17:00')
+        },
+        {
+            id: 2,
+            commentId: 1,
+            userId: 2,
+            content: 'otaotyb40 5y6b0a30 0bu60a',
+            timestamp: new Date('2024-03-20T10:17:00')
+        }
+    ]
+}
 
 
 
 // Session variables
 let loggedIn = false;
 let rememberMe = false;
+let sessionUserId = 1;
 
 
 // Alert functions
@@ -56,6 +153,22 @@ function hideAlert() {
     alertBox.classList.add('hidden');
 }
 
+// Set active UI tab to feed
+function feedUiTabActive() {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-tab') === 'feed') {
+            tab.classList.add('active');
+        }
+    });
+}
+
+function displayFeed() {
+    displayPosts();
+    feedUiTabActive();
+}
+
 // Update UI function
 function updateUI() {
     const mainContent = document.getElementById('mainContent');
@@ -78,7 +191,7 @@ function updateUI() {
         }
 
         // Render posts and events
-        //displayPosts();
+        displayPosts();
         //renderEvents();
 
         navButtons.innerHTML = `
@@ -140,16 +253,17 @@ function login() {
 
     showAlert('Successfully logged in!', 'success');
     updateUI();
+    feedUiTabActive();
 }
 
 // Logout function
 function logout() {
     loggedIn = false;
-    
+
     showAlert('Successfully logged out', 'info');
-    
+
     updateUI();
-    
+
     showLoginForm();
 }
 
@@ -164,7 +278,7 @@ function showForgotPasswordForm() {
 }
 
 // Send reset password email function
-function sentResetPasswordEmail() {
+function sendResetPasswordEmail() {
     clearAllErrors();
     const email = document.getElementById('resetEmail').value;
 
@@ -274,6 +388,7 @@ function register() {
     loggedIn = true;
     showAlert('Account created successfully!', 'success');
     updateUI();
+    feedUiTabActive();
 }
 
 // Error handling functions
@@ -317,6 +432,465 @@ function formatTimestamp(date) {
     } else {
         return date.toLocaleDateString();
     }
+}
+
+// Show create post modal 
+function showCreatePostModal() {
+    const createPostModal = document.getElementById('createPostModal');
+    createPostModal.classList.remove('hidden'); // Show the create post modal
+}
+
+// Hide create post modal
+function hideCreatePostModal() {
+    const createPostModal = document.getElementById('createPostModal');
+    createPostModal.classList.add('hidden'); // Hide the create post modal
+}
+
+// Display posts function
+function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
+    const postsContainer = document.getElementById('postsContainer');
+    postsContainer.innerHTML = ''; // Clear existing posts
+
+    // Sort posts by timestamp (newest first)
+    const sortedPosts = [...database.posts].sort((a, b) => b.timestamp - a.timestamp);
+
+    // Display posts
+    sortedPosts.forEach(post => {
+        postsContainer.appendChild(createPostElement(post.id));
+    });
+}
+
+// Function to display saved postss
+function displaySaved() {
+    // Update active tab
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-tab') === 'saved') {
+            tab.classList.add('active');
+        }
+    });
+
+    const postsContainer = document.getElementById('postsContainer');
+    postsContainer.innerHTML = ''; // Clear existing posts
+
+    // Filter posts that are saved by the current user
+    const currentUserId = sessionUserId;
+    const savedPosts = database.posts.filter(post => post.saves && post.saves.includes(currentUserId));
+
+    if (savedPosts.length === 0) {
+        postsContainer.innerHTML = `
+            <div class="bg-white rounded-lg shadow p-6 text-center">
+                <i class="far fa-bookmark text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Saved Posts Yet</h3>
+                <p class="text-gray-500">Posts you save will appear here</p>
+            </div>
+        `;
+        return;
+    }
+    else {
+        // Sort saved posts by timestamp (newest first)
+        const sortedPosts = [...savedPosts].sort((a, b) => b.timestamp - a.timestamp);
+
+        // Display saved posts
+        sortedPosts.forEach(post => {
+            postsContainer.appendChild(createPostElement(post.id));
+        });
+    }
+}
+
+// Create post element function
+function createPostElement(postId) {
+    const post = database.posts.find(p => p.id === postId);
+    const _event = post.eventId ? database.events.find(e => e.id === post.eventId) : null;
+    const user = database.users.find(u => u.id === post.userId);
+    const comments = database.comments.filter(c => c.postId === postId);
+    const replies = database.replies.filter(reply =>
+        comments.some(comment => comment.id === reply.id)
+    );
+    const postElement = document.createElement('div');
+    postElement.className = 'bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
+    postElement.onclick = () => showPostModal(postId);
+    postElement.innerHTML = `
+        <div class="flex items-center space-x-4 mb-4">
+            <img src="${user.profileImage}" alt="Profile" class="rounded-full w-12 h-12">
+            <div>
+                <h3 class="font-semibold">${user.firstName} ${user.lastName}</h3>
+                <p class="text-gray-500 text-sm">${formatTimestamp(post.timestamp)}</p>
+                <p class="text-gray-600 text-sm">${user.degree}</p>
+            </div>
+        </div>
+        <p class="mb-4">${post.content}</p>
+        ${post.image ? `<img src="${post.image}" alt="Post Image" class="rounded-lg mb-4">` : ''}
+        ${_event ? `
+            <div class="bg-blue-50 rounded-lg p-4 mb-4">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="bg-blue-100 p-2 rounded-lg">
+                        <i class="fas fa-calendar text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold">${_event.title}</h4>
+                        <p class="text-sm text-gray-600">${_event.date.toLocaleDateString()} at ${_event.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                        <p class="text-sm text-gray-600">📍 ${_event.location}</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        ${_event.attendees.map(userId => {
+        const attendee = database.users.find(u => u.id === userId);
+        return `<img src="${attendee.profileImage}" alt="Attendee" class="w-6 h-6 rounded-full border-2 border-white">`;
+    }).join('')}
+                        <span class="text-sm text-gray-600">${_event.attendees.length} attending</span>
+                    </div>
+                    <button onclick="event.stopPropagation(); toggleEventAttendance(${postId})" 
+                            class="text-sm px-3 py-1 rounded-full ${_event.attendees.includes(1) ? 'bg-blue-100 text-blue-600' : 'bg-white text-blue-600 border border-blue-600'} hover:bg-blue-100 transition-colors flex items-center space-x-1">
+                        ${_event.attendees.includes(1) ? '<i class="fas fa-check"></i>' : 'Going'}
+                    </button>
+                </div>
+            </div>
+        ` : ''}
+        <div class="flex justify-between items-center text-gray-500">
+            <div class="flex space-x-4">
+                <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleLike(${postId})">
+                    <i class="far fa-heart ${post.likes.includes(sessionUserId) ? 'fas text-red-600' : ''}"></i> 
+                    <span>${post.likes.length}</span> Like
+                </button>
+                <button class="hover:text-blue-600" onclick="event.stopPropagation(); showPostModal(${postId})">
+                    <i class="far fa-comment"></i> 
+                    <span>${comments.length + replies.length}</span> Comment
+                </button>
+            </div>
+            <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleSave(${postId})">
+                <i class="far fa-bookmark ${post.saves.includes(sessionUserId) ? 'fas' : ''}"></i>
+                <span>${post.saves.length}</span> Save
+            </button>
+        </div>
+    `;
+    return postElement;
+}
+
+// Toggle like function
+function toggleLike(postId) {
+    const post = database.posts.find(p => p.id === postId);
+    if (post) {
+        post.likes.includes(sessionUserId) ? post.likes.splice(post.likes.indexOf(sessionUserId), 1) : post.likes.unshift(sessionUserId);
+        displayPosts(); // Refresh posts to update UI
+    }
+}
+
+// Toggle save function
+function toggleSave(postId) {
+    const post = database.posts.find(p => p.id === postId);
+    if (post) {
+        post.saves.includes(sessionUserId) ? post.saves.splice(post.saves.indexOf(sessionUserId), 1) : post.saves.unshift(sessionUserId);
+        displayPosts(); // Refresh posts to update UI
+    }
+}
+
+// Toggle event attendance function
+function toggleEventAttendance(postId) {
+    const post = database.posts.find(p => p.id === postId);
+    const _event = post.eventId ? database.events.find(e => e.id === post.eventId) : null;
+    if (!post || !_event) return;
+
+    const currentUserId = sessionUserId; // Current user's ID (hardcoded for demo)
+    const isAttending = _event.attendees.includes(currentUserId);
+
+    if (isAttending) {
+        _event.attendees = _event.attendees.filter(id => id !== currentUserId);
+    } else {
+        _event.attendees.push(currentUserId);
+    }
+
+    // Update the main feed
+    displayPosts();
+
+    showAlert(isAttending ? 'You are no longer attending this event' : 'You are now attending this event', 'success');
+}
+
+// Show post modal function
+function showPostModal(postId) {
+    const post = database.posts.find(p => p.id === postId);
+    const postModalContainer = document.getElementById('postModalContainer');
+    postModalContainer.innerHTML = ''; // Clear existing posts
+
+    const user = database.users.find(u => u.id === post.userId);
+    const comments = database.comments.filter(c => c.postId === postId);
+    postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+
+    // Add click event listener to the modal overlay
+    postModalContainer.addEventListener('click', (event) => {
+        if (event.target === postModalContainer) {
+            closePostModal();
+        }
+    });
+
+    postModalContainer.innerHTML = `
+        <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-4 border-b">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <img src="${user.profileImage}" alt="Profile" class="rounded-full w-12 h-12">
+                        <div>
+                            <h3 class="font-semibold">${user.firstName} ${user.lastName}</h3>
+                            <p class="text-gray-500 text-sm">${formatTimestamp(post.timestamp)}</p>
+                            <p class="text-gray-600 text-sm">${user.degree}</p>
+                        </div>
+                    </div>
+                    <button onclick="closePostModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-4">
+                <p class="mb-4">${post.content}</p>
+                ${post.image ? `<img src="${post.image}" alt="Post Image" class="rounded-lg mb-4 w-full">` : ''}
+                <div class="border-t pt-4">
+                    <div class="space-y-4">
+                        <div class="flex space-x-4">
+                            <img src="${user.profileImage}" alt="Profile" class="rounded-full w-8 h-8">
+                            <div class="flex-1">
+                                <textarea class="w-full border rounded-lg p-2 resize-none" placeholder="Write a comment..."></textarea>
+                                <button class="mt-2 text-blue-600 hover:text-blue-800">Post</button>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            ${comments.length > 0 ? comments.map(comment => {
+        const commentUser = database.users.find(u => u.id === comment.userId);
+        const replies = database.replies.filter(r => r.commentId === comment.id);
+        return `
+                                    <div class="flex space-x-3">
+                                        <img src="${commentUser.profileImage}" alt="Profile" class="rounded-full w-8 h-8">
+                                        <div class="flex-1">
+                                            <div class="bg-gray-100 rounded-lg p-3">
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="font-semibold">${commentUser.firstName} ${commentUser.lastName}</span>
+                                                    <span class="text-gray-500 text-sm">${formatTimestamp(comment.timestamp)}</span>
+                                                </div>
+                                                <p class="mt-1">${comment.content}</p>
+                                                <button onclick="showReplyInput(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
+                                                    Reply
+                                                </button>
+                                            </div>
+                                            ${replies.length > 0 ? `
+                                                <div class="ml-8 mt-2 space-y-2">
+                                                    ${replies.map(reply => {
+            const replyUser = database.users.find(u => u.id === reply.userId);
+            return `
+                                                            <div class="flex space-x-3">
+                                                                <img src="${replyUser.profileImage}" alt="Profile" class="rounded-full w-6 h-6">
+                                                                <div class="flex-1">
+                                                                    <div class="bg-gray-50 rounded-lg p-2">
+                                                                        <div class="flex items-center space-x-2">
+                                                                            <span class="font-semibold text-sm">${replyUser.firstName} ${replyUser.lastName}</span>
+                                                                            <span class="text-gray-500 text-xs">${formatTimestamp(reply.timestamp)}</span>
+                                                                        </div>
+                                                                        <p class="text-sm mt-1">${reply.content}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        `;
+        }).join('')}
+                                                </div>
+                                            ` : ''}
+                                            <div id="replyInput${comment.id}" class="hidden ml-8 mt-2">
+                                                <div class="flex space-x-2">
+                                                    <img src="${user.profileImage}" alt="Profile" class="rounded-full w-6 h-6">
+                                                    <div class="flex-1">
+                                                        <textarea class="w-full border rounded-lg p-2 text-sm resize-none" placeholder="Write a reply..."></textarea>
+                                                        <div class="flex justify-end space-x-2 mt-1">
+                                                            <button onclick="hideReplyInput(${comment.id})" class="text-sm text-gray-600 hover:text-gray-800">Cancel</button>
+                                                            <button onclick="submitReply(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800">Reply</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+    }).join('') : '<p class="text-gray-500 text-center">No comments yet</p>'}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.style.overflow = 'hidden';
+}
+
+// Close post modal function
+function closePostModal() {
+    const postModalContainer = document.getElementById('postModalContainer');
+    postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden';
+    postModalContainer.innerHTML = ''; // Hide the post modal
+
+    document.body.style.overflow = '';
+}
+
+// Post creation state
+let currentImage = null;
+let currentVideo = null;
+let currentEvent = null;
+
+// Image upload handler function
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            currentImage = e.target.result;
+            document.getElementById('previewImage').src = currentImage;
+            document.getElementById('imagePreview').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Hide image preview function
+function hideImagePreview() {
+    currentImage = null;
+    document.getElementById('imagePreview').classList.add('hidden');
+    document.getElementById('imageInput').value = '';
+}
+
+// Video upload handler function
+function handleVideoUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            currentVideo = e.target.result;
+            document.getElementById('previewVideo').src = currentVideo;
+            document.getElementById('videoPreview').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Hide video preview function
+function hideVideoPreview() {
+    currentVideo = null;
+    document.getElementById('videoPreview').classList.add('hidden');
+    document.getElementById('videoInput').value = '';
+}
+
+// Show event form function
+function showEventForm() {
+    const modal = document.getElementById('eventModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+// Hide event form function
+function hideEventForm() {
+    const modal = document.getElementById('eventModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = ''; // Restore scrolling
+}
+
+// Embed event function
+function embedPostEvent() {
+    const title = document.getElementById('eventTitleInput').value;
+    const dateTime = document.getElementById('eventDateTime').value;
+    const location = document.getElementById('eventLocationInput').value;
+
+    if (!title || !dateTime || !location) {
+        showAlert('Please fill in all event fields', 'error');
+        return;
+    }
+
+    // Create new event
+    currentEvent = {
+        title: title,
+        date: new Date(dateTime),
+        location: location,
+    };
+
+    // Update preview
+    const eventTitle = document.getElementById('eventTitle');
+    const eventDate = document.getElementById('eventDate');
+    const eventLocation = document.getElementById('eventLocation');
+    const eventPreview = document.getElementById('eventPreview');
+
+    if (eventTitle && eventDate && eventLocation && eventPreview) {
+        eventTitle.textContent = title;
+        eventDate.textContent = currentEvent.date.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
+        eventLocation.textContent = location;
+        eventPreview.classList.remove('hidden');
+    }
+
+    // Clear form
+    document.getElementById('eventTitleInput').value = '';
+    document.getElementById('eventDateTime').value = '';
+    document.getElementById('eventLocationInput').value = '';
+
+    // Hide modal
+    hideEventForm();
+    showAlert('Event added to your post!', 'success');
+}
+
+// Hide event preview function
+function hideEventPreview() {
+    currentEvent = null;
+    document.getElementById('eventPreview').classList.add('hidden');
+}
+
+// Create post function
+function createPost() {
+    const content = document.getElementById('postContent').value.trim();
+    if (!content) {
+        showAlert('Please enter some content for your post', 'error');
+        return;
+    }
+
+    const newPost = {
+        id: database.posts.length + 1,
+        userId: sessionUserId, // Current user's ID (hardcoded for demo)
+        content: content,
+        timestamp: new Date(),
+        likes: [],
+        comments: [],
+        saves: [],
+    };
+
+    // Add image if exists
+    const imagePreview = document.getElementById('imagePreview');
+    if (!imagePreview.classList.contains('hidden')) {
+        newPost.image = currentImage;
+    }
+
+    // Add video if exists
+    const videoPreview = document.getElementById('videoPreview');
+    if (!videoPreview.classList.contains('hidden')) {
+        newPost.video = currentVideo;
+    }
+
+    // Add event if exists
+    const eventPreview = document.getElementById('eventPreview');
+    if (!eventPreview.classList.contains('hidden')) {
+        newPost.eventId = database.events.length + 1;
+
+        // Add event to database
+        const newEvent = {
+            id: newPost.eventId,
+            title: currentEvent.title,
+            date: currentEvent.date,
+            location: currentEvent.location,
+            attendees: []
+        };
+        database.events.unshift(newEvent);
+    }
+
+    database.posts.unshift(newPost); // Add to beginning of array
+    displayPosts(); // Refresh posts
+    document.getElementById('postContent').value = ''; // Clear input
+    hideImagePreview();
+    hideVideoPreview();
+    hideEventPreview();
+    showAlert('Post created successfully!', 'success');
 }
 
 // Test calls
