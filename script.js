@@ -8,7 +8,7 @@ const database = {
             email: 'sunwoo.kim@student.uts.edu.au',
             degree: 'Diploma of Information Technology',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: '@sunwoo.kim'
+            username: 'sunwoo.kim'
         },
         {
             id: 2,
@@ -17,7 +17,7 @@ const database = {
             email: 'daniel.liu@student.uts.edu.au',
             degree: 'Bachelor of Computer Science',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: '@daniel.liu'
+            username: 'daniel.liu'
         },
         {
             id: 3,
@@ -26,7 +26,7 @@ const database = {
             email: 'evan.liang@student.uts.edu.au',
             degree: 'Bachelor of Business and International Studies',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: '@evan.liang'
+            username: 'evan.liang'
         },
         {
             id: 4,
@@ -35,7 +35,7 @@ const database = {
             email: 'danny.li@student.uts.edu.au',
             degree: 'Bachelor of Computer Science',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: '@danny.li'
+            username: 'danny.li'
         },
     ],
     posts: [
@@ -100,7 +100,7 @@ const database = {
 // Session variables
 let loggedIn = false;
 let rememberMe = false;
-let sessionUserId = 1;
+let sessionUserId = 2;
 
 
 // Alert functions
@@ -164,9 +164,24 @@ function feedUiTabActive() {
     });
 }
 
+// Display feed function
 function displayFeed() {
+    hideAll();
     displayPosts();
     feedUiTabActive();
+}
+
+// Update side bar profile function
+function updateSideBarProfile() {
+    const profileHeaderImage = document.getElementById('sideBarProfileImage');
+    const profileHeaderName = document.getElementById('sideBarProfileName');
+    const profileHeaderUsername = document.getElementById('sideBarProfileUsername');
+    const profileHeaderDegree = document.getElementById('sideBarProfileDegree');
+
+    profileHeaderImage.src = database.users[sessionUserId - 1].profileImage;
+    profileHeaderName.textContent = database.users[sessionUserId - 1].firstName + " " + database.users[sessionUserId - 1].lastName;
+    profileHeaderUsername.textContent = "@" + database.users[sessionUserId - 1].username;
+    profileHeaderDegree.textContent = database.users[sessionUserId - 1].degree;
 }
 
 // Update UI function
@@ -254,6 +269,7 @@ function login() {
     showAlert('Successfully logged in!', 'success');
     updateUI();
     feedUiTabActive();
+    updateSideBarProfile();
 }
 
 // Logout function
@@ -449,6 +465,7 @@ function hideCreatePostModal() {
 // Display posts function
 function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
     const postsContainer = document.getElementById('postsContainer');
+    postsContainer.classList.remove('hidden');
     postsContainer.innerHTML = ''; // Clear existing posts
 
     // Sort posts by timestamp (newest first)
@@ -462,6 +479,12 @@ function displayPosts() { // Add a parameter so this function decides which grou
 
 // Function to display saved postss
 function displaySaved() {
+    hideAll();
+
+    // Show posts container
+    const postsContainer = document.getElementById('postsContainer');
+    postsContainer.classList.remove('hidden');
+
     // Update active tab
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => {
@@ -471,7 +494,6 @@ function displaySaved() {
         }
     });
 
-    const postsContainer = document.getElementById('postsContainer');
     postsContainer.innerHTML = ''; // Clear existing posts
 
     // Filter posts that are saved by the current user
@@ -569,12 +591,26 @@ function createPostElement(postId) {
     return postElement;
 }
 
+// Refresh UI after a toggle interaction
+function refreshUI() {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        if (tab.classList.contains('active')) {
+            if (tab.getAttribute('data-tab') === 'profile') {
+                showProfile();
+            } else {
+                displayPosts(); // Refresh posts to update UI
+            }
+        }
+    });
+}
+
 // Toggle like function
 function toggleLike(postId) {
     const post = database.posts.find(p => p.id === postId);
     if (post) {
         post.likes.includes(sessionUserId) ? post.likes.splice(post.likes.indexOf(sessionUserId), 1) : post.likes.unshift(sessionUserId);
-        displayPosts(); // Refresh posts to update UI
+        refreshUI();
     }
 }
 
@@ -583,14 +619,14 @@ function toggleSave(postId) {
     const post = database.posts.find(p => p.id === postId);
     if (post) {
         post.saves.includes(sessionUserId) ? post.saves.splice(post.saves.indexOf(sessionUserId), 1) : post.saves.unshift(sessionUserId);
-        displayPosts(); // Refresh posts to update UI
+        refreshUI();
     }
 }
 
 // Toggle event attendance function
 function toggleEventAttendance(postId) {
     const post = database.posts.find(p => p.id === postId);
-    const _event = post.eventId ? database.events.find(e => e.id === post.eventId) : null;
+    const _event = database.events.find(e => e.id === post.eventId);
     if (!post || !_event) return;
 
     const currentUserId = sessionUserId; // Current user's ID (hardcoded for demo)
@@ -602,8 +638,7 @@ function toggleEventAttendance(postId) {
         _event.attendees.push(currentUserId);
     }
 
-    // Update the main feed
-    displayPosts();
+    refreshUI();
 
     showAlert(isAttending ? 'You are no longer attending this event' : 'You are now attending this event', 'success');
 }
@@ -893,5 +928,114 @@ function createPost() {
     showAlert('Post created successfully!', 'success');
 }
 
+// Show profile function
+function showProfile() {
+    hideAll();
+
+    // Show profile content
+    const profileContent = document.getElementById('profileContent');
+    profileContent.classList.remove('hidden');
+
+    // Update profile information
+    const profileHeaderImage = document.getElementById('profileHeaderImage');
+    const profileHeaderName = document.getElementById('profileHeaderName');
+    const profileHeaderUsername = document.getElementById('profileHeaderUsername');
+    const profileHeaderDegree = document.getElementById('profileHeaderDegree');
+
+    if (profileHeaderImage && profileHeaderName && profileHeaderUsername && profileHeaderDegree) {
+        profileHeaderImage.src = database.users[sessionUserId - 1].profileImage;
+        profileHeaderName.textContent = database.users[sessionUserId - 1].firstName + " " + database.users[sessionUserId - 1].lastName;
+        profileHeaderUsername.textContent = "@" + database.users[sessionUserId - 1].username;
+        profileHeaderDegree.textContent = database.users[sessionUserId - 1].degree;
+    }
+
+    // Update profile stats
+    const profilePostsCount = document.getElementById('profilePostsCount');
+    const profileFriendsCount = document.getElementById('profileFriendsCount');
+
+    if (profilePostsCount && profileFriendsCount) {
+        profilePostsCount.textContent = database.posts.length; // This should be replaced with the user's post count
+        profileFriendsCount.textContent = "0"; // This should be replaced with amount of friends
+    }
+
+    // Display user's posts
+    const profilePostsContainer = document.getElementById('profilePostsContainer');
+    if (profilePostsContainer) {
+        profilePostsContainer.innerHTML = '';
+        const userPosts = database.posts.filter(post => post.userId === sessionUserId);
+        userPosts.forEach(post => {
+            const postElement = createPostElement(post.id);
+            profilePostsContainer.appendChild(postElement);
+        });
+    }
+
+    // Update active tab
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        if (tab.getAttribute('data-tab') === 'profile') {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+}
+
+// Hide all function
+function hideAll() {
+    // Hide profile content
+    document.getElementById('profileContent').classList.add('hidden');
+    document.getElementById('postsContainer').classList.add('hidden');
+}
+
 // Test calls
 // document.addEventListener('DOMContentLoaded', showAlert('Hello World!', 'warning'));
+
+
+
+/*///////////////////////////////
+//       Error handling        //
+*////////////////////////////////
+// Catch regular JavaScript errors
+window.onerror = async function (message, source, lineno, colno, error) {
+    document.getElementById('errorModal').classList.remove('hidden');
+    document.getElementById('errorMessage').textContent = `${message} at ${source}:${lineno}:${colno}`;
+
+    // Get response from chatgpt
+    const errorSolution = document.getElementById('errorSolution');
+    errorSolution.textContent = "Generating response...";
+    const solution = await chatgpt(`${message} at ${source}:${lineno}:${colno}`);
+    errorSolution.textContent = solution;
+
+};
+
+function closeErrorModal() {
+    document.getElementById('errorModal').classList.add('hidden');
+}
+
+const chatgptApiKey = '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'; // Replace with your actual OpenAI API key
+
+async function chatgpt(input) {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${chatgptApiKey}`
+        },
+        body: JSON.stringify({
+            model: 'gpt-4o-mini', // Specify the model
+            messages: [
+                { role: 'system', content: 'You are a coding assistant, and your job is to help with debugging JavaScript errors.' }, // Optional system message
+                { role: 'user', content: input } // User's input
+            ],
+            max_tokens: 150, // Max tokens for the response
+        })
+    });
+
+    // Handle the response
+    if (response.ok) {
+        const data = await response.json();
+        return data.choices[0].message.content.trim(); // Extract the text response
+    } else {
+        return `Error: ${response.status}, ${response.statusText}`;
+    }
+}

@@ -44,6 +44,33 @@
         </div>
     </div>
 
+    <!-- Error Modal -->
+    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6 max-h-[90vh] flex flex-col relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-red-600">Error</h2>
+                <button onclick="closeErrorModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Message</label>
+                    <div id="errorMessage" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 font-mono text-sm break-words"></div>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Solution &#40;By ChatGPT&#41;</label>
+                    <div id="errorSolution" class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm break-words">Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9</div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Login Page Content -->
     <div id="loginContent" class="container mx-auto mt-20 p-4 hidden">
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
@@ -53,14 +80,18 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="loginEmail">
                         Email Address
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="loginEmail" type="email" placeholder="John.Doe@student.uts.edu.au">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="loginEmail" type="email" placeholder="John.Doe@student.uts.edu.au">
                     <p class="error-message" id="loginEmailError"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="loginPassword">
                         Password
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="loginPassword" type="password" placeholder="••••••••">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        id="loginPassword" type="password" placeholder="••••••••">
                     <p class="error-message" id="loginPasswordError"></p>
                 </div>
                 <div class="flex items-center justify-between">
@@ -70,19 +101,23 @@
                             Remember me
                         </label>
                     </div>
-                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800" href="#" onclick="showForgotPasswordForm()">
+                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800" href="#"
+                        onclick="showForgotPasswordForm()">
                         Forgot Password?
                     </a>
                 </div>
                 <div>
-                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="login()">
+                    <button
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        onclick="login()">
                         Sign In
                     </button>
                 </div>
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
-                        Don't have an account? 
-                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showRegisterForm()">Sign up</a>
+                        Don't have an account?
+                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800"
+                            onclick="showRegisterForm()">Sign up</a>
                     </p>
                 </div>
             </div>
@@ -101,18 +136,23 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="resetEmail">
                         Email Address
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="resetEmail" type="email" placeholder="john.doe@student.uts.edu.au">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="resetEmail" type="email" placeholder="john.doe@student.uts.edu.au">
                     <p class="error-message" id="resetEmailError"></p>
                 </div>
                 <div>
-                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="sendResetPasswordEmail()">
+                    <button
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        onclick="sendResetPasswordEmail()">
                         Send Reset Instructions
                     </button>
                 </div>
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
-                        Remember your password? 
-                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign in</a>
+                        Remember your password?
+                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign
+                            in</a>
                     </p>
                 </div>
             </div>
@@ -129,14 +169,18 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">
                             First Name
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstName" type="text" placeholder="John">
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="firstName" type="text" placeholder="John">
                         <p class="error-message" id="firstNameError"></p>
                     </div>
                     <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">
                             Last Name
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="lastName" type="text" placeholder="Doe">
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="lastName" type="text" placeholder="Doe">
                         <p class="error-message" id="lastNameError"></p>
                     </div>
                 </div>
@@ -144,46 +188,58 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="registerEmail">
                         Email Address
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="registerEmail" type="email" placeholder="john.doe@student.uts.edu.au">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="registerEmail" type="email" placeholder="john.doe@student.uts.edu.au">
                     <p class="error-message" id="registerEmailError"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="degree">
                         Degree
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="degree" type="text" placeholder="e.g. Bachelor of Science">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="degree" type="text" placeholder="e.g. Bachelor of Science">
                     <p class="error-message" id="degreeError"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="registerPassword">
                         Password
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="registerPassword" type="password" placeholder="••••••••">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="registerPassword" type="password" placeholder="••••••••">
                     <p class="error-message" id="registerPasswordError"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">
                         Confirm Password
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confirmPassword" type="password" placeholder="••••••••">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="confirmPassword" type="password" placeholder="••••••••">
                     <p class="error-message" id="confirmPasswordError"></p>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="tosCheckbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <input type="checkbox" id="tosCheckbox"
+                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                     <label for="tosCheckbox" class="ml-2 block text-sm text-gray-900">
-                        I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> and <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                        I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> and <a
+                            href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
                     </label>
                 </div>
                 <p id="tosError" class="error-message text-sm text-red-600 mt-1"></p>
                 <div>
-                    <button type="button" onclick="register()" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <button type="button" onclick="register()"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Create Account
                     </button>
                 </div>
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
-                        Already have an account? 
-                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign in</a>
+                        Already have an account?
+                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign
+                            in</a>
                     </p>
                 </div>
             </div>
@@ -197,31 +253,44 @@
             <div class="hidden md:block md:col-span-3">
                 <div class="bg-white rounded-lg shadow p-4">
                     <div class="flex items-center space-x-4 mb-4">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=" alt="Profile" class="rounded-full w-12 h-12">
+                        <img id="sideBarProfileImage"
+                            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
+                            alt="Profile" class="rounded-full w-12 h-12">
                         <div>
-                            <h3 class="font-semibold">Sun Woo Kim</h3>
-                            <p class="text-gray-500 text-sm">@sunwookim</p>
-                            <p class="text-gray-600 text-sm" id="profileDegree">Diploma of Information Technology</p>
+                            <h3 id="sideBarProfileName" class="font-semibold">Sun Woo Kim</h3>
+                            <p id="sideBarProfileUsername" class="text-gray-500 text-sm">@sunwookim</p>
+                            <p id="sideBarProfileDegree" class="text-gray-600 text-sm" id="profileDegree">Diploma of
+                                Information Technology</p>
                         </div>
                     </div>
                     <ul class="space-y-2">
-                        <li><a href="#" onclick="displayFeed(); showCreatePostModal()" class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600" data-tab="feed"><i class="fas fa-home"></i><span>Feed</span></a></li>
-                        <li><a href="#" onclick="displayGroups(); hideCreatePostModal()" class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600" data-tab="groups"><i class="fas fa-users"></i><span>Groups</span></a></li>
-                        <li><a href="#" onclick="displaySaved(); hideCreatePostModal()" class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600" data-tab="saved"><i class="fas fa-bookmark"></i><span>Saved Posts</span></a></li>
-                        <li><a href="#" class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600 data-tab="profile""><i class="fas fa-user"></i><span>Profile</span></a></li>
+                        <li><a href="#" onclick="displayFeed(); showCreatePostModal(); updateSideBarProfile()"
+                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                                data-tab="feed"><i class="fas fa-home"></i><span>Feed</span></a></li>
+                        <li><a href="#" onclick="displayGroups(); hideCreatePostModal(); updateSideBarProfile()"
+                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                                data-tab="groups"><i class="fas fa-users"></i><span>Groups</span></a></li>
+                        <li><a href="#" onclick="displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
+                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                                data-tab="saved"><i class="fas fa-bookmark"></i><span>Saved Posts</span></a></li>
+                        <li><a href="#" onclick="showProfile(); hideCreatePostModal(); updateSideBarProfile()"
+                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                                data-tab="profile"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Main Feed -->
+            <!-- Main Content -->
             <div class="md:col-span-6">
                 <!-- Create Post -->
                 <div id="createPostModal" class="bg-white rounded-lg shadow p-4 mb-6">
                     <div class="flex space-x-4">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=" alt="Profile" class="rounded-full w-12 h-12">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
+                            alt="Profile" class="rounded-full w-12 h-12">
                         <div class="flex-1">
-                            <textarea id="postContent" placeholder="Don't be shy, share your thoughts!" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                            
+                            <textarea id="postContent" placeholder="Don't be shy, share your thoughts!"
+                                class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+
                             <!-- Preview sections -->
                             <div id="imagePreview" class="mt-4 hidden">
                                 <img id="previewImage" class="max-h-96 rounded-lg" src="" alt="Preview">
@@ -229,14 +298,14 @@
                                     <i class="fas fa-times"></i> Remove Image
                                 </button>
                             </div>
-                            
+
                             <div id="videoPreview" class="mt-4 hidden">
                                 <video id="previewVideo" class="max-h-96 rounded-lg" controls></video>
                                 <button onclick="hideVideoPreview()" class="text-red-600 hover:text-red-800 mt-2">
                                     <i class="fas fa-times"></i> Remove Video
                                 </button>
                             </div>
-                            
+
                             <div id="eventPreview" class="mt-4 hidden">
                                 <div class="bg-blue-50 p-4 rounded-lg">
                                     <h4 class="font-semibold" id="eventTitle"></h4>
@@ -247,50 +316,61 @@
                                     <i class="fas fa-times"></i> Remove Event
                                 </button>
                             </div>
-                            
+
                             <div class="flex justify-between items-center mt-4">
                                 <div class="flex space-x-4">
                                     <label class="cursor-pointer text-gray-500 hover:text-blue-600">
                                         <i class="fas fa-image"></i>
-                                        <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                                        <input type="file" id="imageInput" accept="image/*" class="hidden"
+                                            onchange="handleImageUpload(event)">
                                     </label>
                                     <label class="cursor-pointer text-gray-500 hover:text-blue-600">
                                         <i class="fas fa-video"></i>
-                                        <input type="file" id="videoInput" accept="video/*" class="hidden" onchange="handleVideoUpload(event)">
+                                        <input type="file" id="videoInput" accept="video/*" class="hidden"
+                                            onchange="handleVideoUpload(event)">
                                     </label>
                                     <button class="text-gray-500 hover:text-blue-600" onclick="showEventForm()">
                                         <i class="fas fa-calendar"></i>
                                     </button>
                                 </div>
-                                <button onclick="createPost()" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700">Post</button>
+                                <button onclick="createPost()"
+                                    class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700">Post</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Event Creation Modal -->
-                <div id="eventModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                <div id="eventModal"
+                    class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
                     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
-                        <button onclick="hideEventForm()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                        <button onclick="hideEventForm()"
+                            class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
                             <i class="fas fa-times"></i>
                         </button>
                         <h3 class="text-xl font-bold mb-4">Create Event</h3>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Event Title</label>
-                                <input type="text" id="eventTitleInput" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" id="eventTitleInput"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Date & Time</label>
-                                <input type="datetime-local" id="eventDateTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="datetime-local" id="eventDateTime"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Location</label>
-                                <input type="text" id="eventLocationInput" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" id="eventLocationInput"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                             <div class="flex justify-end space-x-3">
-                                <button onclick="hideEventForm()" class="px-4 py-2 text-gray-700 hover:text-gray-900">Cancel</button>
-                                <button onclick="embedPostEvent()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Embed Event</button>
+                                <button onclick="hideEventForm()"
+                                    class="px-4 py-2 text-gray-700 hover:text-gray-900">Cancel</button>
+                                <button onclick="embedPostEvent()"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Embed
+                                    Event</button>
                             </div>
                         </div>
                     </div>
@@ -299,6 +379,49 @@
                 <!-- Posts Container -->
                 <div id="postsContainer" class="space-y-6">
                     <!-- Posts will be dynamically inserted here -->
+                </div>
+
+                <!-- Profile -->
+                <div id="profileContent" class="space-y-6 hidden">
+                    <!-- Profile Header -->
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <img id="profileHeaderImage"
+                                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
+                                    alt="Profile" class="rounded-full w-20 h-20">
+                                <div>
+                                    <h2 id="profileHeaderName" class="text-2xl font-bold">Sun Woo Kim</h2>
+                                    <p id="profileHeaderUsername" class="text-gray-500">@sunwookim</p>
+                                    <p id="profileHeaderDegree" class="text-gray-600">Diploma of Information Technology
+                                    </p>
+                                </div>
+                            </div>
+                            <button onclick="editProfile()"
+                                class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
+                                Edit Profile
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Profile Stats -->
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div>
+                                <h3 class="text-2xl font-bold text-blue-600" id="profilePostsCount">0</h3>
+                                <p class="text-gray-600">Posts</p>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-blue-600" id="profileFriendsCount">0</h3>
+                                <p class="text-gray-600">Friends</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Posts -->
+                    <div id="profilePostsContainer" class="space-y-6">
+                        <!-- Posts will be dynamically inserted here -->
+                    </div>
                 </div>
             </div>
 
