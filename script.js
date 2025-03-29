@@ -1333,14 +1333,12 @@ function closeErrorModal() {
     document.getElementById('errorModal').classList.add('hidden');
 }
 
-const chatgptApiKey = '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'; // Replace with your actual OpenAI API key
-
 async function chatgpt(input) {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${chatgptApiKey}`
+            'Authorization': `Bearer ${KEYS.CHAT_GPT}`
         },
         body: JSON.stringify({
             model: 'gpt-4o-mini', // Specify the model
