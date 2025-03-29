@@ -17,6 +17,7 @@
             <div class="flex items-center space-x-2">
                 <i class="fas fa-graduation-cap text-2xl"></i>
                 <span class="text-xl font-bold">Uni Connect</span>
+                <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-semibold">BETA</span>
             </div>
             <div id="navButtons" class="flex items-center space-x-4">
                 <button class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50"
@@ -26,6 +27,28 @@
             </div>
         </div>
     </nav>
+
+    <!-- Download Page for Mobile -->
+    <div id="mobilePage" class="container mx-auto mt-20 p-4 hidden">
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
+            <div class="mb-8">
+                <i class="fas fa-mobile-alt text-6xl text-blue-600"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-4">Download Uni Connect App</h2>
+            <p class="text-gray-600 mb-8">For the best experience, please use our mobile app. The web version is
+                optimized for desktop browsers.</p>
+            <div class="space-y-4">
+                <a href="https://www.apple.com/au/app-store/"
+                    class="block w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                    <i class="fab fa-apple mr-2"></i> Download for iOS
+                </a>
+                <a href="https://play.google.com/store/games?hl=en&pli=1"
+                    class="block w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+                    <i class="fab fa-google-play mr-2"></i> Download for Android
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Alert Box -->
     <div id="alertBox" class="fixed top-20 right-4 z-50 hidden">
@@ -46,7 +69,8 @@
 
     <!-- Error Modal -->
     <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6 max-h-[90vh] flex flex-col relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div
+            class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6 max-h-[90vh] flex flex-col relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-red-600">Error</h2>
                 <button onclick="closeErrorModal()" class="text-gray-500 hover:text-gray-700">
@@ -56,15 +80,22 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2">Error Message</label>
-                    <div id="errorMessage" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 font-mono text-sm break-words"></div>
+                    <div id="errorMessage"
+                        class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 font-mono text-sm break-words">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Solution &#40;By ChatGPT&#41;</label>
-                    <div id="errorSolution" class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm break-words">Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9</div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Solution &#40;By
+                        ChatGPT&#41;</label>
+                    <div id="errorSolution"
+                        class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm break-words">
+                        Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9
+                    </div>
                 </div>
             </div>
             <div class="mt-6 flex justify-end">
-                <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700">
+                <button onclick="closeErrorModal()"
+                    class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700">
                     Close
                 </button>
             </div>
@@ -72,7 +103,7 @@
     </div>
 
     <!-- Login Page Content -->
-    <div id="loginContent" class="container mx-auto mt-20 p-4 hidden">
+    <div id="loginContent" class="container mx-auto mt-20 p-4">
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
             <h2 class="text-2xl font-bold text-center mb-8">Welcome to Uni Connect</h2>
             <div class="space-y-6">
@@ -246,8 +277,24 @@
         </div>
     </div>
 
+    <!-- Mobile Download Links -->
+    <div id="downloadLinks" class="container mx-auto mt-20 p-4">
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+            <div class="space-y-4">
+                <a href="https://www.apple.com/au/app-store/"
+                    class="block w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                    <i class="fab fa-apple mr-2"></i> Download for iOS
+                </a>
+                <a href="https://play.google.com/store/games?hl=en&pli=1"
+                    class="block w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+                    <i class="fab fa-google-play mr-2"></i> Download for Android
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Social Media Content -->
-    <div id="mainContent" class="container mx-auto mt-20 p-4">
+    <div id="mainContent" class="container mx-auto mt-20 p-4 hidden">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
             <!-- Left Sidebar -->
             <div class="hidden md:block md:col-span-3">
@@ -259,7 +306,7 @@
                         <div>
                             <h3 id="sideBarProfileName" class="font-semibold">Sun Woo Kim</h3>
                             <p id="sideBarProfileUsername" class="text-gray-500 text-sm">@sunwookim</p>
-                            <p id="sideBarProfileDegree" class="text-gray-600 text-sm" id="profileDegree">Diploma of
+                            <p id="sideBarProfileDegree" class="text-gray-600 text-sm">Diploma of
                                 Information Technology</p>
                         </div>
                     </div>
@@ -267,9 +314,9 @@
                         <li><a href="#" onclick="displayFeed(); showCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="feed"><i class="fas fa-home"></i><span>Feed</span></a></li>
-                        <li><a href="#" onclick="displayGroups(); hideCreatePostModal(); updateSideBarProfile()"
+                        <!-- <li><a href="#" onclick="displayGroups(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
-                                data-tab="groups"><i class="fas fa-users"></i><span>Groups</span></a></li>
+                                data-tab="groups"><i class="fas fa-users"></i><span>Groups</span></a></li> -->
                         <li><a href="#" onclick="displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="saved"><i class="fas fa-bookmark"></i><span>Saved Posts</span></a></li>
@@ -285,7 +332,7 @@
                 <!-- Create Post -->
                 <div id="createPostModal" class="bg-white rounded-lg shadow p-4 mb-6">
                     <div class="flex space-x-4">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
+                        <img id="createPostProfileImage" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
                             alt="Profile" class="rounded-full w-12 h-12">
                         <div class="flex-1">
                             <textarea id="postContent" placeholder="Don't be shy, share your thoughts!"
@@ -387,7 +434,7 @@
                     <div class="bg-white rounded-lg shadow p-4">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-4">
-                                <img id="profileHeaderImage"
+                                <img id="profileHeaderProfileImage"
                                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
                                     alt="Profile" class="rounded-full w-20 h-20">
                                 <div>
@@ -397,10 +444,14 @@
                                     </p>
                                 </div>
                             </div>
-                            <button onclick="editProfile()"
-                                class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
-                                Edit Profile
-                            </button>
+                            <div class="flex space-x-4">
+                                <button onclick="showManageFriends()" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200">
+                                    <i class="fas fa-user-friends mr-2"></i>Manage Friends
+                                </button>
+                                <button onclick="editProfile()" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
+                                    Edit Profile
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -421,33 +472,6 @@
                     <!-- Profile Posts -->
                     <div id="profilePostsContainer" class="space-y-6">
                         <!-- Posts will be dynamically inserted here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Sidebar -->
-            <div class="hidden md:block md:col-span-3">
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="font-semibold mb-4">Upcoming Events</h3>
-                    <div id="eventsContainer" class="space-y-4">
-                        <div class="flex items-center space-x-3">
-                            <div class="bg-blue-100 p-2 rounded-lg">
-                                <i class="fas fa-calendar text-blue-600"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium">Career Fair 2024</p>
-                                <p class="text-sm text-gray-500">March 25, 2024</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <div class="bg-blue-100 p-2 rounded-lg">
-                                <i class="fas fa-calendar text-blue-600"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium">Hackathon</p>
-                                <p class="text-sm text-gray-500">April 5, 2024</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

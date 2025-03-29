@@ -8,7 +8,10 @@ const database = {
             email: 'sunwoo.kim@student.uts.edu.au',
             degree: 'Diploma of Information Technology',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'sunwoo.kim'
+            username: 'sunwoo.kim',
+            friends: [2, 3], // Array of friend's user id
+            incommingFriendRequests: [4],
+            outgoingFriendRequests: []
         },
         {
             id: 2,
@@ -17,7 +20,10 @@ const database = {
             email: 'daniel.liu@student.uts.edu.au',
             degree: 'Bachelor of Computer Science',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'daniel.liu'
+            username: 'daniel.liu',
+            friends: [],
+            incommingFriendRequests: [],
+            outgoingFriendRequests: []
         },
         {
             id: 3,
@@ -26,7 +32,10 @@ const database = {
             email: 'evan.liang@student.uts.edu.au',
             degree: 'Bachelor of Business and International Studies',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'evan.liang'
+            username: 'evan.liang',
+            friends: [],
+            incommingFriendRequests: [],
+            outgoingFriendRequests: []
         },
         {
             id: 4,
@@ -35,13 +44,16 @@ const database = {
             email: 'danny.li@student.uts.edu.au',
             degree: 'Bachelor of Computer Science',
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'danny.li'
+            username: 'danny.li',
+            friends: [],
+            incommingFriendRequests: [],
+            outgoingFriendRequests: [4]
         },
     ],
     posts: [
         {
             id: 1,
-            userId: 2,
+            userId: 1,
             content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque purus risus, pharetra ut ipsum nec, accumsan fermentum lacus. Cras volutpat sed nulla sed ullamcorper. Duis a nunc nulla.',
             image: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg',
             timestamp: new Date('2024-03-20T10:00:00'),
@@ -100,7 +112,7 @@ const database = {
 // Session variables
 let loggedIn = false;
 let rememberMe = false;
-let sessionUserId = 2;
+let sessionUserId = 1;
 
 
 // Alert functions
@@ -173,15 +185,15 @@ function displayFeed() {
 
 // Update side bar profile function
 function updateSideBarProfile() {
-    const profileHeaderImage = document.getElementById('sideBarProfileImage');
-    const profileHeaderName = document.getElementById('sideBarProfileName');
-    const profileHeaderUsername = document.getElementById('sideBarProfileUsername');
-    const profileHeaderDegree = document.getElementById('sideBarProfileDegree');
+    const sideBarProfileImage = document.getElementById('sideBarProfileImage');
+    const sideBarProfileName = document.getElementById('sideBarProfileName');
+    const sideBarProfileUsername = document.getElementById('sideBarProfileUsername');
+    const sideBarProfileDegree = document.getElementById('sideBarProfileDegree');
 
-    profileHeaderImage.src = database.users[sessionUserId - 1].profileImage;
-    profileHeaderName.textContent = database.users[sessionUserId - 1].firstName + " " + database.users[sessionUserId - 1].lastName;
-    profileHeaderUsername.textContent = "@" + database.users[sessionUserId - 1].username;
-    profileHeaderDegree.textContent = database.users[sessionUserId - 1].degree;
+    sideBarProfileImage.src = database.users[sessionUserId - 1].profileImage;
+    sideBarProfileName.textContent = database.users[sessionUserId - 1].firstName + " " + database.users[sessionUserId - 1].lastName;
+    sideBarProfileUsername.textContent = "@" + database.users[sessionUserId - 1].username;
+    sideBarProfileDegree.textContent = database.users[sessionUserId - 1].degree;
 }
 
 // Update UI function
@@ -191,26 +203,21 @@ function updateUI() {
     const registerContent = document.getElementById('registerContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
     const navButtons = document.getElementById('navButtons');
-    const profileDegree = document.getElementById('profileDegree');
+    const downloadLinks = document.getElementById('downloadLinks');
 
     if (loggedIn) {
         // Show main social media content
         loginContent.classList.add('hidden');
         registerContent.classList.add('hidden');
         forgotPasswordContent.classList.add('hidden');
+        downloadLinks.classList.add('hidden');
         mainContent.classList.remove('hidden');
 
-        // Update profile degree
-        if (profileDegree) {
-            //profileDegree.textContent = userDegree;
-        }
-
-        // Render posts and events
+        // Render posts
         displayPosts();
-        //renderEvents();
 
         navButtons.innerHTML = `
-            <button class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50">Profile</button>
+            <button onclick="showProfile(); hideCreatePostModal(); updateSideBarProfile()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50">Profile</button>
             <button class="border border-white px-4 py-2 rounded-full hover:bg-blue-700" onclick="logout()">Logout</button>
         `;
     } else {
@@ -232,10 +239,12 @@ function showLoginForm() {
     const registerContent = document.getElementById('registerContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
     const loginContent = document.getElementById('loginContent');
+    const downloadLinks = document.getElementById('downloadLinks');
 
     registerContent.classList.add('hidden');
     forgotPasswordContent.classList.add('hidden');
     loginContent.classList.remove('hidden');
+    downloadLinks.classList.remove('hidden');
 }
 
 // Login function
@@ -311,7 +320,7 @@ function sendResetPasswordEmail() {
 
     // Here you would typically make an API call to send the reset email
     showAlert('Password reset instructions have been sent to your email address.', 'success');
-    showLogin();
+    showLoginForm();
 }
 
 // Show register form function
@@ -452,14 +461,14 @@ function formatTimestamp(date) {
 
 // Show create post modal 
 function showCreatePostModal() {
-    const createPostModal = document.getElementById('createPostModal');
-    createPostModal.classList.remove('hidden'); // Show the create post modal
+    const user = database.users.find(u => u.id === sessionUserId);
+    document.getElementById('createPostProfileImage').src = user.profileImage;
+    document.getElementById('createPostModal').classList.remove('hidden'); // Show the create post modal
 }
 
 // Hide create post modal
 function hideCreatePostModal() {
-    const createPostModal = document.getElementById('createPostModal');
-    createPostModal.classList.add('hidden'); // Hide the create post modal
+    document.getElementById('createPostModal').classList.add('hidden'); // Hide the create post modal
 }
 
 // Display posts function
@@ -531,7 +540,7 @@ function createPostElement(postId) {
         comments.some(comment => comment.id === reply.id)
     );
     const postElement = document.createElement('div');
-    postElement.className = 'bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
+    postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
     postElement.onclick = () => showPostModal(postId);
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
@@ -598,6 +607,8 @@ function refreshUI() {
         if (tab.classList.contains('active')) {
             if (tab.getAttribute('data-tab') === 'profile') {
                 showProfile();
+            } else if (tab.getAttribute('data-tab') === 'saved') {
+                displaySaved();
             } else {
                 displayPosts(); // Refresh posts to update UI
             }
@@ -937,13 +948,13 @@ function showProfile() {
     profileContent.classList.remove('hidden');
 
     // Update profile information
-    const profileHeaderImage = document.getElementById('profileHeaderImage');
+    const profileHeaderProfileImage = document.getElementById('profileHeaderProfileImage');
     const profileHeaderName = document.getElementById('profileHeaderName');
     const profileHeaderUsername = document.getElementById('profileHeaderUsername');
     const profileHeaderDegree = document.getElementById('profileHeaderDegree');
 
-    if (profileHeaderImage && profileHeaderName && profileHeaderUsername && profileHeaderDegree) {
-        profileHeaderImage.src = database.users[sessionUserId - 1].profileImage;
+    if (profileHeaderProfileImage && profileHeaderName && profileHeaderUsername && profileHeaderDegree) {
+        profileHeaderProfileImage.src = database.users[sessionUserId - 1].profileImage;
         profileHeaderName.textContent = database.users[sessionUserId - 1].firstName + " " + database.users[sessionUserId - 1].lastName;
         profileHeaderUsername.textContent = "@" + database.users[sessionUserId - 1].username;
         profileHeaderDegree.textContent = database.users[sessionUserId - 1].degree;
@@ -986,6 +997,316 @@ function hideAll() {
     document.getElementById('profileContent').classList.add('hidden');
     document.getElementById('postsContainer').classList.add('hidden');
 }
+
+// Edit profile function
+function editProfile() {
+    // Create and show edit profile modal
+    const modal = document.createElement('div');
+    modal.id = 'editProfileModal';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    
+    // Add click event listener to close modal when clicking outside
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.remove();
+            document.body.style.overflow = '';
+        }
+    });
+
+    const currentUser = database.users.find(u => u.id === sessionUserId);
+    if (!currentUser) return;
+
+    modal.innerHTML = `
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Edit Profile</h2>
+                <button onclick="this.closest('#editProfileModal').remove(); document.body.style.overflow = '';" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editFirstName">
+                        First Name
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100" 
+                           id="editFirstName" type="text" value="${currentUser.firstName}" readonly>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editLastName">
+                        Last Name
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100" 
+                           id="editLastName" type="text" value="${currentUser.lastName}" readonly>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editUsername">
+                        Username
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                           id="editUsername" type="text" value="${currentUser.username.replace('@', '')}" placeholder="Enter username">
+                    <p class="text-sm text-gray-500 mt-1">Username will be displayed with @ symbol</p>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editDegree">
+                        Degree
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                           id="editDegree" type="text" value="${currentUser.degree}">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editProfileImage">
+                        Profile Image
+                    </label>
+                    <input type="file" id="editProfileImage" accept="image/*" class="w-full">
+                    <div id="profileImagePreview" class="mt-2">
+                        <img src="${currentUser.profileImage}" alt="Profile Preview" class="w-20 h-20 rounded-full">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button onclick="this.closest('#editProfileModal').remove(); document.body.style.overflow = '';" 
+                        class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                    Cancel
+                </button>
+                <button onclick="saveProfileChanges()" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    // Add image preview functionality
+    const imageInput = document.getElementById('editProfileImage');
+    const imagePreview = document.getElementById('profileImagePreview');
+    
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.innerHTML = `<img src="${e.target.result}" alt="Profile Preview" class="w-20 h-20 rounded-full">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Save profile changes
+function saveProfileChanges() {
+    const currentUser = database.users.find(u => u.id === sessionUserId);
+    if (!currentUser) return;
+
+    const username = document.getElementById('editUsername').value.trim();
+    const degree = document.getElementById('editDegree').value;
+    const imagePreview = document.getElementById('profileImagePreview').querySelector('img');
+
+    // Validate username
+    if (!username) {
+        showAlert('Username cannot be empty', 'error');
+        return;
+    }
+
+    // Update user information
+    currentUser.username = username;
+    currentUser.degree = degree;
+    currentUser.profileImage = imagePreview.src;
+
+    // Update UI
+    showProfile();
+    updateSideBarProfile();
+    
+    // Close modal
+    const modal = document.getElementById('editProfileModal');
+    modal.remove();
+    document.body.style.overflow = '';
+    
+    showAlert('Profile updated successfully!', 'success');
+}
+
+// Show manage friends modal
+function showManageFriends() {
+    // Create and show manage friends modal
+    const modal = document.getElementById('manageFriendsModal') || document.createElement('div');
+    modal.id = 'manageFriendsModal';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    
+    // Add click event listener to close modal when clicking outside
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.remove();
+            document.body.style.overflow = '';
+        }
+    });
+
+    let friendsHTML = "";
+    database.users[sessionUserId - 1].friends.forEach(userId => {
+        const user = database.users[userId - 1];
+        friendsHTML += `
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center space-x-4">
+                    <img src="${user.profileImage}" alt="Profile" class="w-12 h-12 rounded-full">
+                    <div>
+                        <h3 class="name font-semibold">${user.firstName} ${user.lastName}</h3>
+                        <p class="degree text-gray-500 text-sm">${user.degree}</p>
+                    </div>
+                </div>
+                <button class="text-red-600 hover:text-red-800" onclick="removeFriend(${user.id})">
+                    <i class="fas fa-user-minus"></i>
+                </button>
+            </div>
+        `;
+    });
+
+    let incommingFriendsHTML = "";
+    database.users[sessionUserId - 1].incommingFriendRequests.forEach(userId => {
+        const user = database.users[userId - 1];
+        incommingFriendsHTML += `
+            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                <div class="flex items-center space-x-4">
+                    <img src="${user.profileImage}" alt="Profile" class="w-12 h-12 rounded-full">
+                    <div>
+                        <h3 class="name font-semibold">${user.firstName} ${user.lastName}</h3>
+                        <p class="degree text-gray-500 text-sm">${user.degree}</p>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="text-green-600 hover:text-green-800" onclick="acceptFriendRequest(4)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="text-red-600 hover:text-red-800" onclick="rejectFriendRequest(4)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    modal.innerHTML = `
+        <div class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Manage Friends</h2>
+                <button onclick="this.closest('#manageFriendsModal').remove(); document.body.style.overflow = '';" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Search Friends -->
+            <div class="mb-6">
+                <div class="relative">
+                    <input type="text" 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                           placeholder="Search friends..."
+                           onkeyup="filterFriends(this.value)">
+                    <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <!-- Friends List -->
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto">
+                ${friendsHTML}
+            </div>
+            
+            <!-- Incomming Friend Requests -->
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold mb-4">Friend Requests</h3>
+                <div class="space-y-4">
+                <!-- This must be done dynamically -->
+                    ${incommingFriendsHTML}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+}
+
+// Function to filter friends
+function filterFriends(query) {
+    const friendsList = document.querySelector('#manageFriendsModal .space-y-4');
+    const friends = friendsList.querySelectorAll('.flex.items-center');
+    
+    friends.forEach(friend => {
+        const name = friend.querySelector('.name.font-semibold').textContent.toLowerCase();
+        const degree = friend.querySelector('.degree.text-gray-500').textContent.toLowerCase();
+        
+        if (name.includes(query.toLowerCase()) || degree.includes(query.toLowerCase())) {
+            friend.style.display = 'flex';
+        } else {
+            friend.style.display = 'none';
+        }
+    });
+}
+
+// Function to remove a friend
+function removeFriend(userId) {
+    showAlert('Friend removed successfully', 'success');
+    // Here you would typically make an API call to remove the friend
+
+    const sessionUser = database.users.find(u => u.id === sessionUserId);
+    const otherUser = database.users.find(u => u.id === userId);
+    
+    sessionUser.friends.splice(sessionUser.friends.indexOf(otherUser.id), 1);
+    otherUser.friends.splice(otherUser.friends.indexOf(sessionUser.id), 1);
+
+    showManageFriends();
+}
+
+// Function to accept a friend request
+function acceptFriendRequest(userId) {
+    showAlert('Friend request accepted', 'success');
+    // Here you would typically make an API call to accept the friend request
+
+    const sessionUser = database.users.find(u => u.id === sessionUserId);
+    const otherUser = database.users.find(u => u.id === userId);
+
+    sessionUser.incommingFriendRequests.splice(sessionUser.incommingFriendRequests.indexOf(otherUser.id), 1);
+    otherUser.outgoingFriendRequests.splice(otherUser.outgoingFriendRequests.indexOf(sessionUser.id), 1);
+    
+    sessionUser.friends.push(otherUser.id);
+    otherUser.friends.push(sessionUser.id);
+
+    showManageFriends();
+}
+
+// Function to reject a friend request
+function rejectFriendRequest(userId) {
+    showAlert('Friend request rejected', 'info');
+    // Here you would typically make an API call to reject the friend request
+
+    const sessionUser = database.users.find(u => u.id === sessionUserId);
+    const otherUser = database.users.find(u => u.id === userId);
+
+    sessionUser.incommingFriendRequests.splice(sessionUser.incommingFriendRequests.indexOf(otherUser.id), 1);
+    otherUser.outgoingFriendRequests.splice(otherUser.outgoingFriendRequests.indexOf(sessionUser.id), 1);
+
+    showManageFriends();
+}
+
+// Mobile browser detection and download page handling
+function isMobileBrowser() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function showDownloadPage() {
+    if (isMobileBrowser()) {
+        document.getElementById('mobilePage').classList.remove('hidden');
+        document.getElementById('loginContent').classList.add('hidden');
+        document.getElementById('registerContent').classList.add('hidden');
+        document.getElementById('forgotPasswordContent').classList.add('hidden');
+        document.getElementById('mainContent').classList.add('hidden');
+        document.getElementById('navButtons').classList.add('hidden');
+    }
+}
+
+// Check for mobile browser on page load
+document.addEventListener('DOMContentLoaded', function() {
+    showDownloadPage();
+});
 
 // Test calls
 // document.addEventListener('DOMContentLoaded', showAlert('Hello World!', 'warning'));
