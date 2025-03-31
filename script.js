@@ -10,7 +10,7 @@ const database = {
             profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
             username: 'sunwoo.kim',
             friends: [2, 3], // Array of friend's user id
-            incommingFriendRequests: [4],
+            incommingFriendRequests: [],
             outgoingFriendRequests: []
         },
         {
@@ -47,7 +47,7 @@ const database = {
             username: 'danny.li',
             friends: [],
             incommingFriendRequests: [],
-            outgoingFriendRequests: [4]
+            outgoingFriendRequests: []
         },
     ],
     posts: [
@@ -1184,6 +1184,41 @@ function showManageFriends() {
             </div>
         `;
     });
+
+    if (incommingFriendsHTML == "") {
+        incommingFriendsHTML += `
+            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                <p class="degree text-gray-500 text-sm">Incomming friend requests will show here.</p>
+            </div>
+        `;
+    }
+
+    let outgoingFriendsHTML = "";
+    database.users[sessionUserId - 1].outgoingFriendRequests.forEach(userId => {
+        const user = database.users[userId - 1];
+        outgoingFriendsHTML += `
+            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                <div class="flex items-center space-x-4">
+                    <img src="${user.profileImage}" alt="Profile" class="w-12 h-12 rounded-full">
+                    <div>
+                        <h3 class="name font-semibold">${user.firstName} ${user.lastName}</h3>
+                        <p class="degree text-gray-500 text-sm">${user.degree}</p>
+                    </div>
+                </div>
+                <button class="text-red-600 hover:text-red-800" onclick="rejectFriendRequest(4)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+    });
+
+    if (outgoingFriendsHTML == "") {
+        outgoingFriendsHTML += `
+            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                <p class="degree text-gray-500 text-sm">Outgoing friend requests will show here.</p>
+            </div>
+        `;
+    }
     
     modal.innerHTML = `
         <div class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6">
@@ -1204,18 +1239,49 @@ function showManageFriends() {
                     <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
                 </div>
             </div>
-            
-            <!-- Friends List -->
-            <div class="space-y-4 max-h-[60vh] overflow-y-auto">
-                ${friendsHTML}
+
+            <!-- Add friends -->
+            <div class="mt-8">
+                <div class="space-y-4">
+                <!-- This must be done dynamically -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-4">
+                            <img src="${database.users[3].profileImage}" alt="Profile" class="w-12 h-12 rounded-full">
+                            <div>
+                                <h3 class="name font-semibold">${database.users[3].firstName} ${database.users[3].lastName}</h3>
+                                <p class="degree text-gray-500 text-sm">${database.users[3].degree}</p>
+                            </div>
+                        </div>
+                        <button class="text-green-600 hover:text-green-800" onclick="requestFriend(${database.users[3].id})">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- Incomming Friend Requests -->
             <div class="mt-8">
-                <h3 class="text-lg font-semibold mb-4">Friend Requests</h3>
+                <h3 class="text-lg font-semibold mb-4">Incomming Requests</h3>
                 <div class="space-y-4">
                 <!-- This must be done dynamically -->
                     ${incommingFriendsHTML}
+                </div>
+            </div>
+
+            <!-- Outgoing Friend Requests -->
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold mb-4">Outgoing Requests</h3>
+                <div class="space-y-4">
+                <!-- This must be done dynamically -->
+                    ${outgoingFriendsHTML}
+                </div>
+            </div>
+            
+            <!-- Friends List -->
+            <div class="mt-8">
+                <div class="space-y-4 max-h-[60vh] overflow-y-auto">
+                    <h3 class="text-lg font-semibold mb-4">Friends</h3>
+                    ${friendsHTML}
                 </div>
             </div>
         </div>
@@ -1242,7 +1308,7 @@ function filterFriends(query) {
     });
 }
 
-// Function to remove a friend
+// Remove friend function
 function removeFriend(userId) {
     showAlert('Friend removed successfully', 'success');
     // Here you would typically make an API call to remove the friend
@@ -1256,7 +1322,23 @@ function removeFriend(userId) {
     showManageFriends();
 }
 
-// Function to accept a friend request
+// Request friend function
+function requestFriend(userId) {
+    showAlert('Friend request sent', 'success');
+    // Here you would typically make an API call to accept the friend request
+
+    const sessionUser = database.users.find(u => u.id === sessionUserId);
+    const otherUser = database.users.find(u => u.id === userId);
+
+    if (!sessionUser.outgoingFriendRequests.includes(otherUser.id)) {
+        otherUser.incommingFriendRequests.push(sessionUser.id);
+        sessionUser.outgoingFriendRequests.push(otherUser.id);
+    }
+
+    showManageFriends();
+}
+
+// Accept friend function
 function acceptFriendRequest(userId) {
     showAlert('Friend request accepted', 'success');
     // Here you would typically make an API call to accept the friend request
@@ -1273,7 +1355,7 @@ function acceptFriendRequest(userId) {
     showManageFriends();
 }
 
-// Function to reject a friend request
+// Reject friend function
 function rejectFriendRequest(userId) {
     showAlert('Friend request rejected', 'info');
     // Here you would typically make an API call to reject the friend request
