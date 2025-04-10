@@ -1,0 +1,1382 @@
+{
+  "Version": 1,
+  "Hash": "9tEPnBEJqyAXqAZH+fMxiB9EvPg9ALvmMGfLgipcW8Y=",
+  "Source": "UniConnect",
+  "BasePath": "_content/UniConnect",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "UniConnect/wwwroot",
+      "Source": "UniConnect",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/",
+      "BasePath": "_content/UniConnect",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "script#[.{fingerprint=4fb1sx0rso}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "jv46fslvey",
+      "Integrity": "L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js"
+    },
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/cfe1v6ewsh-9fdcpcdcdg.gz",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "index#[.{fingerprint=9fdcpcdcdg}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/index.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "qdyk0om4q8",
+      "Integrity": "8lSz/U4mxJv9IRmJIeDnNupxWDE7x1VdVMg+MbLd0W8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/index.html"
+    },
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/i2f3wgzza5-df2x0ioyc0.gz",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "styles#[.{fingerprint=df2x0ioyc0}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/styles.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "1cm4rigyfe",
+      "Integrity": "EU3Tmu30Q9ow5vVJHAW5EfxjFnkmIWYvdH9zkcbey70=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/styles.css"
+    },
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/iz2nzkk8op-h79eyvqgjn.gz",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "keys#[.{fingerprint=h79eyvqgjn}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/keys.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "wqjgsru816",
+      "Integrity": "CHAoNmqgQeGQ037mK7jxj1Ni926c4jlETiny0M5Rj6Q=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/keys.js"
+    },
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/index.html",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9fdcpcdcdg",
+      "Integrity": "9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/index.html"
+    },
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/keys.js",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "keys#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "h79eyvqgjn",
+      "Integrity": "4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/keys.js"
+    },
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "script#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "4fb1sx0rso",
+      "Integrity": "8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/script.js"
+    },
+    {
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/styles.css",
+      "SourceId": "UniConnect",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/",
+      "BasePath": "_content/UniConnect",
+      "RelativePath": "styles#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "df2x0ioyc0",
+      "Integrity": "iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/styles.css"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "index.9fdcpcdcdg.html",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/cfe1v6ewsh-9fdcpcdcdg.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000215377988"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4642"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8lSz/U4mxJv9IRmJIeDnNupxWDE7x1VdVMg+MbLd0W8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9fdcpcdcdg"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg="
+        }
+      ]
+    },
+    {
+      "Route": "index.9fdcpcdcdg.html",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "28835"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9fdcpcdcdg"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg="
+        }
+      ]
+    },
+    {
+      "Route": "index.9fdcpcdcdg.html.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/cfe1v6ewsh-9fdcpcdcdg.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4642"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8lSz/U4mxJv9IRmJIeDnNupxWDE7x1VdVMg+MbLd0W8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9fdcpcdcdg"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-8lSz/U4mxJv9IRmJIeDnNupxWDE7x1VdVMg+MbLd0W8="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/cfe1v6ewsh-9fdcpcdcdg.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000215377988"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4642"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8lSz/U4mxJv9IRmJIeDnNupxWDE7x1VdVMg+MbLd0W8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "28835"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-9QeFLYYW+g8WviDSX0kqF1I4fNFz2QeBepObFcFoiNg="
+        }
+      ]
+    },
+    {
+      "Route": "index.html.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/cfe1v6ewsh-9fdcpcdcdg.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4642"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8lSz/U4mxJv9IRmJIeDnNupxWDE7x1VdVMg+MbLd0W8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-8lSz/U4mxJv9IRmJIeDnNupxWDE7x1VdVMg+MbLd0W8="
+        }
+      ]
+    },
+    {
+      "Route": "keys.h79eyvqgjn.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/iz2nzkk8op-h79eyvqgjn.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.004901960784"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "203"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CHAoNmqgQeGQ037mK7jxj1Ni926c4jlETiny0M5Rj6Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:33:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "h79eyvqgjn"
+        },
+        {
+          "Name": "label",
+          "Value": "keys.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM="
+        }
+      ]
+    },
+    {
+      "Route": "keys.h79eyvqgjn.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/keys.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "198"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:33:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "h79eyvqgjn"
+        },
+        {
+          "Name": "label",
+          "Value": "keys.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM="
+        }
+      ]
+    },
+    {
+      "Route": "keys.h79eyvqgjn.js.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/iz2nzkk8op-h79eyvqgjn.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "203"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CHAoNmqgQeGQ037mK7jxj1Ni926c4jlETiny0M5Rj6Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:33:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "h79eyvqgjn"
+        },
+        {
+          "Name": "label",
+          "Value": "keys.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CHAoNmqgQeGQ037mK7jxj1Ni926c4jlETiny0M5Rj6Q="
+        }
+      ]
+    },
+    {
+      "Route": "keys.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/iz2nzkk8op-h79eyvqgjn.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.004901960784"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "203"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CHAoNmqgQeGQ037mK7jxj1Ni926c4jlETiny0M5Rj6Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:33:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM="
+        }
+      ]
+    },
+    {
+      "Route": "keys.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/keys.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "198"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:33:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4/vZm5oBTtLy22jvNmv3Gg3f9a6QmnFE9cvXD5neyzM="
+        }
+      ]
+    },
+    {
+      "Route": "keys.js.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/iz2nzkk8op-h79eyvqgjn.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "203"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CHAoNmqgQeGQ037mK7jxj1Ni926c4jlETiny0M5Rj6Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:33:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-CHAoNmqgQeGQ037mK7jxj1Ni926c4jlETiny0M5Rj6Q="
+        }
+      ]
+    },
+    {
+      "Route": "script.4fb1sx0rso.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000092850511"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10769"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4fb1sx0rso"
+        },
+        {
+          "Name": "label",
+          "Value": "script.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+        }
+      ]
+    },
+    {
+      "Route": "script.4fb1sx0rso.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "59405"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4fb1sx0rso"
+        },
+        {
+          "Name": "label",
+          "Value": "script.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+        }
+      ]
+    },
+    {
+      "Route": "script.4fb1sx0rso.js.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10769"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4fb1sx0rso"
+        },
+        {
+          "Name": "label",
+          "Value": "script.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s="
+        }
+      ]
+    },
+    {
+      "Route": "script.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000092850511"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10769"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+        }
+      ]
+    },
+    {
+      "Route": "script.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "59405"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+        }
+      ]
+    },
+    {
+      "Route": "script.js.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10769"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s="
+        }
+      ]
+    },
+    {
+      "Route": "styles.css",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/i2f3wgzza5-df2x0ioyc0.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001481481481"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "674"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EU3Tmu30Q9ow5vVJHAW5EfxjFnkmIWYvdH9zkcbey70=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4="
+        }
+      ]
+    },
+    {
+      "Route": "styles.css",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1563"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4="
+        }
+      ]
+    },
+    {
+      "Route": "styles.css.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/i2f3wgzza5-df2x0ioyc0.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "674"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EU3Tmu30Q9ow5vVJHAW5EfxjFnkmIWYvdH9zkcbey70=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-EU3Tmu30Q9ow5vVJHAW5EfxjFnkmIWYvdH9zkcbey70="
+        }
+      ]
+    },
+    {
+      "Route": "styles.df2x0ioyc0.css",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/i2f3wgzza5-df2x0ioyc0.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001481481481"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "674"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EU3Tmu30Q9ow5vVJHAW5EfxjFnkmIWYvdH9zkcbey70=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "df2x0ioyc0"
+        },
+        {
+          "Name": "label",
+          "Value": "styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4="
+        }
+      ]
+    },
+    {
+      "Route": "styles.df2x0ioyc0.css",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1563"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "df2x0ioyc0"
+        },
+        {
+          "Name": "label",
+          "Value": "styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-iRKxnBm+wT8OP7HhUpSRijyToLHjJYXknu1Ht5yXZV4="
+        }
+      ]
+    },
+    {
+      "Route": "styles.df2x0ioyc0.css.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/i2f3wgzza5-df2x0ioyc0.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "674"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EU3Tmu30Q9ow5vVJHAW5EfxjFnkmIWYvdH9zkcbey70=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "df2x0ioyc0"
+        },
+        {
+          "Name": "label",
+          "Value": "styles.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-EU3Tmu30Q9ow5vVJHAW5EfxjFnkmIWYvdH9zkcbey70="
+        }
+      ]
+    }
+  ]
+}

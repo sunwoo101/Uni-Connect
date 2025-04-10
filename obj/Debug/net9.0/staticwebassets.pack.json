@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/keys.js",
+      "PackagePath": "staticwebassets/keys.js"
+    },
+    {
+      "Id": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js",
+      "PackagePath": "staticwebassets/script.js"
+    },
+    {
+      "Id": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/styles.css",
+      "PackagePath": "staticwebassets/styles.css"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.UniConnect.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.UniConnect.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.UniConnect.props",
+      "PackagePath": "build\\UniConnect.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.UniConnect.props",
+      "PackagePath": "buildMultiTargeting\\UniConnect.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.UniConnect.props",
+      "PackagePath": "buildTransitive\\UniConnect.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

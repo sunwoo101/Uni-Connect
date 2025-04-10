@@ -780,7 +780,7 @@ let currentVideo = null;
 let currentEvent = null;
 
 // Image upload handler function
-function handleImageUpload(event) {
+function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -966,7 +966,7 @@ function showProfile() {
 
     if (profilePostsCount && profileFriendsCount) {
         profilePostsCount.textContent = database.posts.length; // This should be replaced with the user's post count
-        profileFriendsCount.textContent = "0"; // This should be replaced with amount of friends
+        profileFriendsCount.textContent = database.users[sessionUserId - 1].friends.length; // This should be replaced with amount of friends
     }
 
     // Display user's posts
