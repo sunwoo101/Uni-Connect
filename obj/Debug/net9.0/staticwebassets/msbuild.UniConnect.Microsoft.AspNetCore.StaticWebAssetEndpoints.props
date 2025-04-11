@@ -28,13 +28,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\script.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"742y8iq6d6"},{"Name":"integrity","Value":"sha256-N\u002B\u002BGcqrdT\u002BcYGplf5q32b09RINH59S3tZW1zbCXvjb4="},{"Name":"label","Value":"_content/UniConnect/script.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"61203"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022N\u002B\u002BGcqrdT\u002BcYGplf5q32b09RINH59S3tZW1zbCXvjb4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 11 Apr 2025 13:36:21 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"61203"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022N\u002B\u002BGcqrdT\u002BcYGplf5q32b09RINH59S3tZW1zbCXvjb4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 11 Apr 2025 14:18:10 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/UniConnect/script.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\script.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-N\u002B\u002BGcqrdT\u002BcYGplf5q32b09RINH59S3tZW1zbCXvjb4="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"61203"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022N\u002B\u002BGcqrdT\u002BcYGplf5q32b09RINH59S3tZW1zbCXvjb4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 11 Apr 2025 13:36:21 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"61203"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022N\u002B\u002BGcqrdT\u002BcYGplf5q32b09RINH59S3tZW1zbCXvjb4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 11 Apr 2025 14:18:10 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/UniConnect/styles.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\styles.css'))</AssetFile>
