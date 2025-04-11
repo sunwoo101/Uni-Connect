@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "9tEPnBEJqyAXqAZH+fMxiB9EvPg9ALvmMGfLgipcW8Y=",
+  "Hash": "1Nmpwg05OxQ9GNgkoCt99w/TnDLZlgHtsbvHFRWky54=",
   "Source": "UniConnect",
   "BasePath": "_content/UniConnect",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "Identity": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-742y8iq6d6.gz",
       "SourceId": "UniConnect",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/UniConnect",
-      "RelativePath": "script#[.{fingerprint=4fb1sx0rso}]?.js.gz",
+      "RelativePath": "script#[.{fingerprint=742y8iq6d6}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -31,8 +31,8 @@
       "RelatedAsset": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "jv46fslvey",
-      "Integrity": "L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=",
+      "Fingerprint": "kh0hnypylb",
+      "Integrity": "SJROeEaqOtOtCaj1XbruAnqoKxGYsmZ2mKGtKaK7A3o=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js"
@@ -157,8 +157,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "4fb1sx0rso",
-      "Integrity": "8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=",
+      "Fingerprint": "742y8iq6d6",
+      "Integrity": "N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/script.js"
@@ -211,7 +211,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -272,7 +272,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -317,7 +317,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -372,7 +372,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -425,7 +425,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -462,7 +462,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:40:08 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -783,13 +783,13 @@
       ]
     },
     {
-      "Route": "script.4fb1sx0rso.js",
-      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "Route": "script.742y8iq6d6.js",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-742y8iq6d6.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000092850511"
+          "Quality": "0.000089879561"
         }
       ],
       "ResponseHeaders": [
@@ -799,15 +799,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10769"
+          "Value": "11125"
         },
         {
           "Name": "ETag",
-          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+          "Value": "\"SJROeEaqOtOtCaj1XbruAnqoKxGYsmZ2mKGtKaK7A3o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+          "Value": "Fri, 11 Apr 2025 13:36:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -827,13 +827,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+          "Value": "W/\"N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4fb1sx0rso"
+          "Value": "742y8iq6d6"
         },
         {
           "Name": "label",
@@ -841,12 +841,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+          "Value": "sha256-N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4="
         }
       ]
     },
     {
-      "Route": "script.4fb1sx0rso.js",
+      "Route": "script.742y8iq6d6.js",
       "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/wwwroot/script.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -856,7 +856,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "59405"
+          "Value": "61203"
         },
         {
           "Name": "Content-Type",
@@ -864,11 +864,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+          "Value": "\"N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+          "Value": "Fri, 11 Apr 2025 13:36:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -878,7 +878,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4fb1sx0rso"
+          "Value": "742y8iq6d6"
         },
         {
           "Name": "label",
@@ -886,13 +886,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+          "Value": "sha256-N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4="
         }
       ]
     },
     {
-      "Route": "script.4fb1sx0rso.js.gz",
-      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "Route": "script.742y8iq6d6.js.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-742y8iq6d6.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -901,7 +901,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10769"
+          "Value": "11125"
         },
         {
           "Name": "Content-Type",
@@ -909,11 +909,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+          "Value": "\"SJROeEaqOtOtCaj1XbruAnqoKxGYsmZ2mKGtKaK7A3o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+          "Value": "Fri, 11 Apr 2025 13:36:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -931,7 +931,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4fb1sx0rso"
+          "Value": "742y8iq6d6"
         },
         {
           "Name": "label",
@@ -939,18 +939,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s="
+          "Value": "sha256-SJROeEaqOtOtCaj1XbruAnqoKxGYsmZ2mKGtKaK7A3o="
         }
       ]
     },
     {
       "Route": "script.js",
-      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-742y8iq6d6.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000092850511"
+          "Quality": "0.000089879561"
         }
       ],
       "ResponseHeaders": [
@@ -960,15 +960,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10769"
+          "Value": "11125"
         },
         {
           "Name": "ETag",
-          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+          "Value": "\"SJROeEaqOtOtCaj1XbruAnqoKxGYsmZ2mKGtKaK7A3o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+          "Value": "Fri, 11 Apr 2025 13:36:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -988,13 +988,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+          "Value": "W/\"N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+          "Value": "sha256-N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4="
         }
       ]
     },
@@ -1009,7 +1009,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "59405"
+          "Value": "61203"
         },
         {
           "Name": "Content-Type",
@@ -1017,11 +1017,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo=\""
+          "Value": "\"N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+          "Value": "Fri, 11 Apr 2025 13:36:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1031,13 +1031,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-8I91WGt/0c7+4+eqlLDCHBN+Olm94+v4QseEc1wICjo="
+          "Value": "sha256-N++GcqrdT+cYGplf5q32b09RINH59S3tZW1zbCXvjb4="
         }
       ]
     },
     {
       "Route": "script.js.gz",
-      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-4fb1sx0rso.gz",
+      "AssetFile": "/Users/user/Desktop/Projects/Web Projects/Uni-Connect/obj/Debug/net9.0/compressed/440exnfbco-742y8iq6d6.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1046,7 +1046,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10769"
+          "Value": "11125"
         },
         {
           "Name": "Content-Type",
@@ -1054,11 +1054,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s=\""
+          "Value": "\"SJROeEaqOtOtCaj1XbruAnqoKxGYsmZ2mKGtKaK7A3o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Apr 2025 07:48:12 GMT"
+          "Value": "Fri, 11 Apr 2025 13:36:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1076,7 +1076,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-L82KZPvDTkR9A/bHBc+UymJmu5kLCBCsY34cOq3XH6s="
+          "Value": "sha256-SJROeEaqOtOtCaj1XbruAnqoKxGYsmZ2mKGtKaK7A3o="
         }
       ]
     },
@@ -1105,7 +1105,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1158,7 +1158,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1195,7 +1195,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1242,7 +1242,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1303,7 +1303,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1348,7 +1348,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 29 Mar 2025 09:29:53 GMT"
+          "Value": "Thu, 10 Apr 2025 14:19:56 GMT"
         },
         {
           "Name": "Cache-Control",

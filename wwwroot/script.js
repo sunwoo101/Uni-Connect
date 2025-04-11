@@ -248,7 +248,7 @@ function showLoginForm() {
 }
 
 // Login function
-function login() {
+async function login() {
     clearAllErrors();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
@@ -269,16 +269,18 @@ function login() {
     if (invalidInput) return;
 
     // Use API here in the future
-    loggedIn = true;
+    if (await loginApi(email, password)) {
+        // Get a response to update user info
+        
+        loggedIn = true;
+        updateUI();
+        feedUiTabActive();
+        updateSideBarProfile();
+    }
 
     if (rememberMeChecked) {
         rememberMe = true;
     }
-
-    showAlert('Successfully logged in!', 'success');
-    updateUI();
-    feedUiTabActive();
-    updateSideBarProfile();
 }
 
 // Logout function
@@ -342,7 +344,7 @@ function isValidEmail(email) {
 }
 
 // Register function
-function register() {
+async function register() {
     clearAllErrors();
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
@@ -406,14 +408,69 @@ function register() {
 
     if (invalidInput) return;
 
-    // Store the degree
-    userDegree = degree;
-
     // Here you would typically make an API call to create the account
-    loggedIn = true;
-    showAlert('Account created successfully!', 'success');
-    updateUI();
-    feedUiTabActive();
+
+    if (await registerApi(email, password, firstName, lastName, degree)) {
+        database.users[0].firstName = firstName;
+        database.users[0].lastName = lastName;
+        database.users[0].email = email;
+        database.users[0].degree = degree;
+        database.users[0].username = 'sunwoo.kim';
+        loggedIn = true;
+        updateUI();
+        feedUiTabActive();
+        updateSideBarProfile();
+    }
+}
+
+async function registerApi(email, password, firstName, lastName, degree) {
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({email, password, firstName, lastName, degree})
+        });
+    
+        if (response.ok) {
+            const result = await response.json();
+            showAlert(result.message, 'success');
+            return true;
+        } else {
+            const error = await response.json();
+            showAlert(error.message, 'error');
+            return false;
+        }
+    } catch (error) {
+        showAlert('Something went wrong', 'error');
+        return false;
+    }
+}
+
+async function loginApi(email, password) {
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({email, password})
+        });
+    
+        if (response.ok) {
+            const result = await response.json();
+            showAlert(result.message, 'success');
+            return true;
+        } else {
+            const error = await response.json();
+            showAlert(error.message, 'error');
+            return false;
+        }
+    } catch (error) {
+        showAlert('Something went wrong', 'error');
+        return false;
+    }
 }
 
 // Error handling functions
