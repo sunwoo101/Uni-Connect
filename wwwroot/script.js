@@ -1461,6 +1461,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //       Error handling        //
 *////////////////////////////////
 // Catch regular JavaScript errors
+/*
 window.onerror = async function (message, source, lineno, colno, error) {
     document.getElementById('errorModal').classList.remove('hidden');
     document.getElementById('errorMessage').textContent = `${message} at ${source}:${lineno}:${colno}`;
@@ -1502,3 +1503,4 @@ async function chatgpt(input) {
         return `Error: ${response.status}, ${response.statusText}`;
     }
 }
+ */
