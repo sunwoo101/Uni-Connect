@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using UniConnect.Models.Requests;
+using UniConnect.Models.Responses;
 using UniConnect.Services;
 
 namespace UniConnect.Controllers;
@@ -20,10 +21,7 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.RegisterUserAsync(request);
 
-        if (!result.Success)
-            return BadRequest(new { message = result.ErrorMessage });
-
-        return Ok(new { message = "Successfully registered." });
+        return Ok(new ApiResponse<LoginResponse>(result.Success, result.Message, result.LoginResponse));
     }
 
     [HttpPost("login")]
@@ -31,9 +29,6 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.LoginUserAsync(request);
 
-        if (!result.Success)
-            return BadRequest(new { message = result.ErrorMessage });
-
-        return Ok(new { message = "Successfully logged in." });
+        return Ok(new ApiResponse<LoginResponse>(result.Success, result.Message, result.LoginResponse));
     }
 }

@@ -108,11 +108,14 @@ const database = {
 }
 
 
-
 // Session variables
+// Old
 let loggedIn = false;
 let rememberMe = false;
 let sessionUserId = 1;
+
+// New
+let userData = null;
 
 
 // Alert functions
@@ -191,9 +194,9 @@ function updateSideBarProfile() {
     const sideBarProfileDegree = document.getElementById('sideBarProfileDegree');
 
     sideBarProfileImage.src = database.users[sessionUserId - 1].profileImage;
-    sideBarProfileName.textContent = database.users[sessionUserId - 1].firstName + " " + database.users[sessionUserId - 1].lastName;
-    sideBarProfileUsername.textContent = "@" + database.users[sessionUserId - 1].username;
-    sideBarProfileDegree.textContent = database.users[sessionUserId - 1].degree;
+    sideBarProfileName.textContent = userData.firstName + " " + userData.lastName;
+    sideBarProfileUsername.textContent = "@" + userData.username;
+    sideBarProfileDegree.textContent = userData.degree;
 }
 
 // Update UI function
@@ -271,7 +274,7 @@ async function login() {
     // Use API here in the future
     if (await loginApi(email, password)) {
         // Get a response to update user info
-        
+
         loggedIn = true;
         updateUI();
         feedUiTabActive();
@@ -411,11 +414,6 @@ async function register() {
     // Here you would typically make an API call to create the account
 
     if (await registerApi(email, password, firstName, lastName, degree)) {
-        database.users[0].firstName = firstName;
-        database.users[0].lastName = lastName;
-        database.users[0].email = email;
-        database.users[0].degree = degree;
-        database.users[0].username = 'sunwoo.kim';
         loggedIn = true;
         updateUI();
         feedUiTabActive();
@@ -430,20 +428,23 @@ async function registerApi(email, password, firstName, lastName, degree) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email, password, firstName, lastName, degree})
+            body: JSON.stringify({ email, password, firstName, lastName, degree })
         });
-    
-        if (response.ok) {
-            const result = await response.json();
-            showAlert(result.message, 'success');
-            return true;
-        } else {
-            const error = await response.json();
-            showAlert(error.message, 'error');
-            return false;
-        }
+
+        if (!response.ok) throw new Error('Network error');
+
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.message);
+
+        showAlert(result.message, 'success');
+        localStorage.setItem('user', JSON.stringify(result.data))
+        userData = JSON.parse(localStorage.getItem('user'));
+
+        return true;
     } catch (error) {
-        showAlert('Something went wrong', 'error');
+        showAlert(error?.message || 'Something went wrong', 'error');
+
         return false;
     }
 }
@@ -455,20 +456,23 @@ async function loginApi(email, password) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email, password})
+            body: JSON.stringify({ email, password })
         });
-    
-        if (response.ok) {
-            const result = await response.json();
-            showAlert(result.message, 'success');
-            return true;
-        } else {
-            const error = await response.json();
-            showAlert(error.message, 'error');
-            return false;
-        }
+
+        if (!response.ok) throw new Error('Network error');
+
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.message);
+
+        showAlert(result.message, 'success');
+        localStorage.setItem('user', JSON.stringify(result.data))
+        userData = JSON.parse(localStorage.getItem('user'));
+
+        return true;
     } catch (error) {
-        showAlert('Something went wrong', 'error');
+        showAlert(error?.message || 'Something went wrong', 'error');
+
         return false;
     }
 }
@@ -1012,9 +1016,9 @@ function showProfile() {
 
     if (profileHeaderProfileImage && profileHeaderName && profileHeaderUsername && profileHeaderDegree) {
         profileHeaderProfileImage.src = database.users[sessionUserId - 1].profileImage;
-        profileHeaderName.textContent = database.users[sessionUserId - 1].firstName + " " + database.users[sessionUserId - 1].lastName;
-        profileHeaderUsername.textContent = "@" + database.users[sessionUserId - 1].username;
-        profileHeaderDegree.textContent = database.users[sessionUserId - 1].degree;
+        profileHeaderName.textContent = userData.firstName + " " + userData.lastName;
+        profileHeaderUsername.textContent = "@" + userData.username;
+        profileHeaderDegree.textContent = userData.degree;
     }
 
     // Update profile stats
@@ -1061,7 +1065,7 @@ function editProfile() {
     const modal = document.createElement('div');
     modal.id = 'editProfileModal';
     modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-    
+
     // Add click event listener to close modal when clicking outside
     modal.addEventListener('click', (event) => {
         if (event.target === modal) {
@@ -1087,21 +1091,21 @@ function editProfile() {
                         First Name
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100" 
-                           id="editFirstName" type="text" value="${currentUser.firstName}" readonly>
+                           id="editFirstName" type="text" value="${userData.firstName}" readonly>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="editLastName">
                         Last Name
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100" 
-                           id="editLastName" type="text" value="${currentUser.lastName}" readonly>
+                           id="editLastName" type="text" value="${userData.lastName}" readonly>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="editUsername">
                         Username
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                           id="editUsername" type="text" value="${currentUser.username.replace('@', '')}" placeholder="Enter username">
+                           id="editUsername" type="text" value="${userData.username}" placeholder="Enter username">
                     <p class="text-sm text-gray-500 mt-1">Username will be displayed with @ symbol</p>
                 </div>
                 <div>
@@ -1109,7 +1113,7 @@ function editProfile() {
                         Degree
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                           id="editDegree" type="text" value="${currentUser.degree}">
+                           id="editDegree" type="text" value="${userData.degree}">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="editProfileImage">
@@ -1139,12 +1143,12 @@ function editProfile() {
     // Add image preview functionality
     const imageInput = document.getElementById('editProfileImage');
     const imagePreview = document.getElementById('profileImagePreview');
-    
-    imageInput.addEventListener('change', function(e) {
+
+    imageInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 imagePreview.innerHTML = `<img src="${e.target.result}" alt="Profile Preview" class="w-20 h-20 rounded-full">`;
             };
             reader.readAsDataURL(file);
@@ -1175,12 +1179,12 @@ function saveProfileChanges() {
     // Update UI
     showProfile();
     updateSideBarProfile();
-    
+
     // Close modal
     const modal = document.getElementById('editProfileModal');
     modal.remove();
     document.body.style.overflow = '';
-    
+
     showAlert('Profile updated successfully!', 'success');
 }
 
@@ -1190,7 +1194,7 @@ function showManageFriends() {
     const modal = document.getElementById('manageFriendsModal') || document.createElement('div');
     modal.id = 'manageFriendsModal';
     modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-    
+
     // Add click event listener to close modal when clicking outside
     modal.addEventListener('click', (event) => {
         if (event.target === modal) {
@@ -1276,7 +1280,7 @@ function showManageFriends() {
             </div>
         `;
     }
-    
+
     modal.innerHTML = `
         <div class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6">
             <div class="flex justify-between items-center mb-6">
@@ -1343,7 +1347,7 @@ function showManageFriends() {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
 }
@@ -1352,11 +1356,11 @@ function showManageFriends() {
 function filterFriends(query) {
     const friendsList = document.querySelector('#manageFriendsModal .space-y-4');
     const friends = friendsList.querySelectorAll('.flex.items-center');
-    
+
     friends.forEach(friend => {
         const name = friend.querySelector('.name.font-semibold').textContent.toLowerCase();
         const degree = friend.querySelector('.degree.text-gray-500').textContent.toLowerCase();
-        
+
         if (name.includes(query.toLowerCase()) || degree.includes(query.toLowerCase())) {
             friend.style.display = 'flex';
         } else {
@@ -1372,7 +1376,7 @@ function removeFriend(userId) {
 
     const sessionUser = database.users.find(u => u.id === sessionUserId);
     const otherUser = database.users.find(u => u.id === userId);
-    
+
     sessionUser.friends.splice(sessionUser.friends.indexOf(otherUser.id), 1);
     otherUser.friends.splice(otherUser.friends.indexOf(sessionUser.id), 1);
 
@@ -1405,7 +1409,7 @@ function acceptFriendRequest(userId) {
 
     sessionUser.incommingFriendRequests.splice(sessionUser.incommingFriendRequests.indexOf(otherUser.id), 1);
     otherUser.outgoingFriendRequests.splice(otherUser.outgoingFriendRequests.indexOf(sessionUser.id), 1);
-    
+
     sessionUser.friends.push(otherUser.id);
     otherUser.friends.push(sessionUser.id);
 
@@ -1439,11 +1443,12 @@ function showDownloadPage() {
         document.getElementById('forgotPasswordContent').classList.add('hidden');
         document.getElementById('mainContent').classList.add('hidden');
         document.getElementById('navButtons').classList.add('hidden');
+        document.getElementById('downloadLinks').classList.add('hidden');
     }
 }
 
 // Check for mobile browser on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     showDownloadPage();
 });
 
