@@ -1,3 +1,5 @@
+import Api from './Api.js'
+
 // Sample database
 const database = {
     users: [
@@ -115,6 +117,7 @@ let rememberMe = false;
 let sessionUserId = 1;
 
 // New
+const api = new Api();
 let userData = null;
 
 
@@ -122,7 +125,7 @@ let userData = null;
 const alertTimeoutDuration = 3000;
 let alertTimeout;
 
-function showAlert(message, type = 'info') {
+window.showAlert = function showAlert(message, type = 'info') {
     const alertBox = document.getElementById('alertBox');
     const alertMessage = document.getElementById('alertMessage');
     const alertIcon = document.getElementById('alertIcon');
@@ -163,13 +166,13 @@ function showAlert(message, type = 'info') {
     alertTimeout = setTimeout(hideAlert, alertTimeoutDuration);
 }
 
-function hideAlert() {
+window.hideAlert = function hideAlert() {
     const alertBox = document.getElementById('alertBox');
     alertBox.classList.add('hidden');
 }
 
 // Set active UI tab to feed
-function feedUiTabActive() {
+window.feedUiTabActive = function feedUiTabActive() {
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => {
         tab.classList.remove('active');
@@ -180,14 +183,14 @@ function feedUiTabActive() {
 }
 
 // Display feed function
-function displayFeed() {
+window.displayFeed = function displayFeed() {
     hideAll();
     displayPosts();
     feedUiTabActive();
 }
 
 // Update side bar profile function
-function updateSideBarProfile() {
+window.updateSideBarProfile = function updateSideBarProfile() {
     const sideBarProfileImage = document.getElementById('sideBarProfileImage');
     const sideBarProfileName = document.getElementById('sideBarProfileName');
     const sideBarProfileUsername = document.getElementById('sideBarProfileUsername');
@@ -237,7 +240,7 @@ function updateUI() {
 }
 
 // Show login form function
-function showLoginForm() {
+window.showLoginForm = function showLoginForm() {
     clearAllErrors();
     const registerContent = document.getElementById('registerContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
@@ -251,7 +254,7 @@ function showLoginForm() {
 }
 
 // Login function
-async function login() {
+window.login = async function login() {
     clearAllErrors();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
@@ -272,10 +275,9 @@ async function login() {
     if (invalidInput) return;
 
     // Use API here in the future
-    if (await loginApi(email, password)) {
-        // Get a response to update user info
-
+    if (await api.login(email, password)) {
         loggedIn = true;
+        userData = JSON.parse(localStorage.getItem('user'));
         updateUI();
         feedUiTabActive();
         updateSideBarProfile();
@@ -287,7 +289,7 @@ async function login() {
 }
 
 // Logout function
-function logout() {
+window.logout = function logout() {
     loggedIn = false;
 
     showAlert('Successfully logged out', 'info');
@@ -298,7 +300,7 @@ function logout() {
 }
 
 // Show forgot password form function
-function showForgotPasswordForm() {
+window.showForgotPasswordForm = function showForgotPasswordForm() {
     clearAllErrors();
     const loginContent = document.getElementById('loginContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
@@ -308,7 +310,7 @@ function showForgotPasswordForm() {
 }
 
 // Send reset password email function
-function sendResetPasswordEmail() {
+window.sendResetPasswordEmail = function sendResetPasswordEmail() {
     clearAllErrors();
     const email = document.getElementById('resetEmail').value;
 
@@ -329,7 +331,7 @@ function sendResetPasswordEmail() {
 }
 
 // Show register form function
-function showRegisterForm() {
+window.showRegisterForm = function showRegisterForm() {
     clearAllErrors();
     const loginContent = document.getElementById('loginContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
@@ -347,7 +349,7 @@ function isValidEmail(email) {
 }
 
 // Register function
-async function register() {
+window.register = async function register() {
     clearAllErrors();
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
@@ -413,67 +415,12 @@ async function register() {
 
     // Here you would typically make an API call to create the account
 
-    if (await registerApi(email, password, firstName, lastName, degree)) {
+    if (await api.register(email, password, firstName, lastName, degree)) {
         loggedIn = true;
+        userData = JSON.parse(localStorage.getItem('user'));
         updateUI();
         feedUiTabActive();
         updateSideBarProfile();
-    }
-}
-
-async function registerApi(email, password, firstName, lastName, degree) {
-    try {
-        const response = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password, firstName, lastName, degree })
-        });
-
-        if (!response.ok) throw new Error('Network error');
-
-        const result = await response.json();
-
-        if (!result.success) throw new Error(result.message);
-
-        showAlert(result.message, 'success');
-        localStorage.setItem('user', JSON.stringify(result.data))
-        userData = JSON.parse(localStorage.getItem('user'));
-
-        return true;
-    } catch (error) {
-        showAlert(error?.message || 'Something went wrong', 'error');
-
-        return false;
-    }
-}
-
-async function loginApi(email, password) {
-    try {
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        if (!response.ok) throw new Error('Network error');
-
-        const result = await response.json();
-
-        if (!result.success) throw new Error(result.message);
-
-        showAlert(result.message, 'success');
-        localStorage.setItem('user', JSON.stringify(result.data))
-        userData = JSON.parse(localStorage.getItem('user'));
-
-        return true;
-    } catch (error) {
-        showAlert(error?.message || 'Something went wrong', 'error');
-
-        return false;
     }
 }
 
@@ -521,14 +468,14 @@ function formatTimestamp(date) {
 }
 
 // Show create post modal 
-function showCreatePostModal() {
+window.showCreatePostModal = function showCreatePostModal() {
     const user = database.users.find(u => u.id === sessionUserId);
     document.getElementById('createPostProfileImage').src = user.profileImage;
     document.getElementById('createPostModal').classList.remove('hidden'); // Show the create post modal
 }
 
 // Hide create post modal
-function hideCreatePostModal() {
+window.hideCreatePostModal = function hideCreatePostModal() {
     document.getElementById('createPostModal').classList.add('hidden'); // Hide the create post modal
 }
 
@@ -542,13 +489,14 @@ function displayPosts() { // Add a parameter so this function decides which grou
     const sortedPosts = [...database.posts].sort((a, b) => b.timestamp - a.timestamp);
 
     // Display posts
+    // Ads Advertisements logic (bookmark)
     sortedPosts.forEach(post => {
         postsContainer.appendChild(createPostElement(post.id));
     });
 }
 
 // Function to display saved postss
-function displaySaved() {
+window.displaySaved = function displaySaved() {
     hideAll();
 
     // Show posts container
@@ -678,7 +626,7 @@ function refreshUI() {
 }
 
 // Toggle like function
-function toggleLike(postId) {
+window.toggleLike = function toggleLike(postId) {
     const post = database.posts.find(p => p.id === postId);
     if (post) {
         post.likes.includes(sessionUserId) ? post.likes.splice(post.likes.indexOf(sessionUserId), 1) : post.likes.unshift(sessionUserId);
@@ -687,7 +635,7 @@ function toggleLike(postId) {
 }
 
 // Toggle save function
-function toggleSave(postId) {
+window.toggleSave = function toggleSave(postId) {
     const post = database.posts.find(p => p.id === postId);
     if (post) {
         post.saves.includes(sessionUserId) ? post.saves.splice(post.saves.indexOf(sessionUserId), 1) : post.saves.unshift(sessionUserId);
@@ -696,7 +644,7 @@ function toggleSave(postId) {
 }
 
 // Toggle event attendance function
-function toggleEventAttendance(postId) {
+window.toggleEventAttendance = function toggleEventAttendance(postId) {
     const post = database.posts.find(p => p.id === postId);
     const _event = database.events.find(e => e.id === post.eventId);
     if (!post || !_event) return;
@@ -716,7 +664,7 @@ function toggleEventAttendance(postId) {
 }
 
 // Show post modal function
-function showPostModal(postId) {
+window.showPostModal = function showPostModal(postId) {
     const post = database.posts.find(p => p.id === postId);
     const postModalContainer = document.getElementById('postModalContainer');
     postModalContainer.innerHTML = ''; // Clear existing posts
@@ -754,11 +702,13 @@ function showPostModal(postId) {
                 ${post.image ? `<img src="${post.image}" alt="Post Image" class="rounded-lg mb-4 w-full">` : ''}
                 <div class="border-t pt-4">
                     <div class="space-y-4">
-                        <div class="flex space-x-4">
+                        <div id="commentInput${post.id}" class="flex space-x-4">
                             <img src="${user.profileImage}" alt="Profile" class="rounded-full w-8 h-8">
                             <div class="flex-1">
                                 <textarea class="w-full border rounded-lg p-2 resize-none" placeholder="Write a comment..."></textarea>
-                                <button class="mt-2 text-blue-600 hover:text-blue-800">Post</button>
+                                <button onclick="submitComment(${post.id})" class="mt-2 text-blue-600 hover:text-blue-800">
+                                    Post
+                                </button>
                             </div>
                         </div>
                         <div class="space-y-4">
@@ -826,8 +776,76 @@ function showPostModal(postId) {
     document.body.style.overflow = 'hidden';
 }
 
+// Show reply input
+window.showReplyInput = function showReplyInput(commentId) {
+    const replyInput = document.getElementById(`replyInput${commentId}`);
+    if (replyInput) {
+        replyInput.classList.remove('hidden');
+    }
+}
+
+// Submit reply
+window.submitReply = function submitReply(commentId) {
+    const replyInput = document.getElementById(`replyInput${commentId}`);
+    if (!replyInput) return;
+
+    const textarea = replyInput.querySelector('textarea');
+    const content = textarea.value.trim();
+
+    if (!content) {
+        showAlert('Please enter a reply', 'error');
+        return;
+    }
+
+    // Create new reply
+    const newReply = {
+        id: database.replies.length + 1,
+        commentId: commentId,
+        userId: 1, // Current user's ID (hardcoded for demo)
+        content: content,
+        timestamp: new Date()
+    };
+
+    database.replies.push(newReply);
+    
+    // Find the post associated with this comment
+    const comment = database.comments.find(c => c.id === commentId);
+    
+    // Update the existing modal
+    showPostModal(comment.postId);
+    showAlert('Reply posted successfully!', 'success');
+}
+
+window.submitComment = function submitComment(postId) {
+    const commentInput = document.getElementById(`commentInput${postId}`);
+    if (!commentInput) return;
+
+    const textarea = commentInput.querySelector('textarea');
+    const content = textarea.value.trim();
+
+    if (!content) {
+        showAlert('Please enter a reply', 'error');
+        return;
+    }
+
+    // Create new reply
+    const newComment = {
+        id: database.comments.length + 1,
+        postId: postId,
+        userId: 1, // Current user's ID (hardcoded for demo)
+        content: content,
+        timestamp: new Date()
+    };
+
+    database.comments.push(newComment);
+    
+    // Update the existing modal
+    showPostModal(postId);
+    showAlert('Reply posted successfully!', 'success');
+}
+
 // Close post modal function
-function closePostModal() {
+window.closePostModal = function closePostModal() {
     const postModalContainer = document.getElementById('postModalContainer');
     postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden';
     postModalContainer.innerHTML = ''; // Hide the post modal
@@ -841,7 +859,7 @@ let currentVideo = null;
 let currentEvent = null;
 
 // Image upload handler function
-function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
+window.handleImageUpload = function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -862,7 +880,7 @@ function hideImagePreview() {
 }
 
 // Video upload handler function
-function handleVideoUpload(event) {
+window.handleVideoUpload = function handleVideoUpload(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -883,7 +901,7 @@ function hideVideoPreview() {
 }
 
 // Show event form function
-function showEventForm() {
+window.showEventForm = function showEventForm() {
     const modal = document.getElementById('eventModal');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
@@ -891,7 +909,7 @@ function showEventForm() {
 }
 
 // Hide event form function
-function hideEventForm() {
+window.hideEventForm = function hideEventForm() {
     const modal = document.getElementById('eventModal');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
@@ -899,7 +917,7 @@ function hideEventForm() {
 }
 
 // Embed event function
-function embedPostEvent() {
+window.embedPostEvent = function embedPostEvent() {
     const title = document.getElementById('eventTitleInput').value;
     const dateTime = document.getElementById('eventDateTime').value;
     const location = document.getElementById('eventLocationInput').value;
@@ -946,7 +964,7 @@ function hideEventPreview() {
 }
 
 // Create post function
-function createPost() {
+window.createPost = function createPost() {
     const content = document.getElementById('postContent').value.trim();
     if (!content) {
         showAlert('Please enter some content for your post', 'error');
@@ -1001,7 +1019,7 @@ function createPost() {
 }
 
 // Show profile function
-function showProfile() {
+window.showProfile = function showProfile() {
     hideAll();
 
     // Show profile content
@@ -1060,7 +1078,7 @@ function hideAll() {
 }
 
 // Edit profile function
-function editProfile() {
+window.editProfile = function editProfile() {
     // Create and show edit profile modal
     const modal = document.createElement('div');
     modal.id = 'editProfileModal';
@@ -1157,7 +1175,7 @@ function editProfile() {
 }
 
 // Save profile changes
-function saveProfileChanges() {
+window.saveProfileChanges = function saveProfileChanges() {
     const currentUser = database.users.find(u => u.id === sessionUserId);
     if (!currentUser) return;
 
@@ -1189,7 +1207,7 @@ function saveProfileChanges() {
 }
 
 // Show manage friends modal
-function showManageFriends() {
+window.showManageFriends = function showManageFriends() {
     // Create and show manage friends modal
     const modal = document.getElementById('manageFriendsModal') || document.createElement('div');
     modal.id = 'manageFriendsModal';
@@ -1246,7 +1264,7 @@ function showManageFriends() {
         `;
     });
 
-    if (incommingFriendsHTML == "") {
+    if (incommingFriendsHTML === "") {
         incommingFriendsHTML += `
             <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
                 <p class="degree text-gray-500 text-sm">Incomming friend requests will show here.</p>
@@ -1273,7 +1291,7 @@ function showManageFriends() {
         `;
     });
 
-    if (outgoingFriendsHTML == "") {
+    if (outgoingFriendsHTML === "") {
         outgoingFriendsHTML += `
             <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
                 <p class="degree text-gray-500 text-sm">Outgoing friend requests will show here.</p>
@@ -1353,7 +1371,7 @@ function showManageFriends() {
 }
 
 // Function to filter friends
-function filterFriends(query) {
+window.filterFriends = function filterFriends(query) {
     const friendsList = document.querySelector('#manageFriendsModal .space-y-4');
     const friends = friendsList.querySelectorAll('.flex.items-center');
 
@@ -1370,7 +1388,7 @@ function filterFriends(query) {
 }
 
 // Remove friend function
-function removeFriend(userId) {
+window.removeFriend = function removeFriend(userId) {
     showAlert('Friend removed successfully', 'success');
     // Here you would typically make an API call to remove the friend
 
@@ -1384,7 +1402,7 @@ function removeFriend(userId) {
 }
 
 // Request friend function
-function requestFriend(userId) {
+window.requestFriend = function requestFriend(userId) {
     showAlert('Friend request sent', 'success');
     // Here you would typically make an API call to accept the friend request
 
@@ -1400,7 +1418,7 @@ function requestFriend(userId) {
 }
 
 // Accept friend function
-function acceptFriendRequest(userId) {
+window.acceptFriendRequest = function acceptFriendRequest(userId) {
     showAlert('Friend request accepted', 'success');
     // Here you would typically make an API call to accept the friend request
 
@@ -1417,7 +1435,7 @@ function acceptFriendRequest(userId) {
 }
 
 // Reject friend function
-function rejectFriendRequest(userId) {
+window.rejectFriendRequest = function rejectFriendRequest(userId) {
     showAlert('Friend request rejected', 'info');
     // Here you would typically make an API call to reject the friend request
 
@@ -1473,7 +1491,7 @@ window.onerror = async function (message, source, lineno, colno, error) {
 
 };
 
-function closeErrorModal() {
+window.closeErrorModal = function closeErrorModal() {
     document.getElementById('errorModal').classList.add('hidden');
 }
 
