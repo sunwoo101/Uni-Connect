@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using UniConnect.Models.Entities;
 using UniConnect.Models.Requests;
 using UniConnect.Models.Responses;
-using UniConnect.Utilities;
 
 namespace UniConnect.Services;
 
@@ -21,14 +20,14 @@ public class PostService
 
     public async Task<(bool Success, string Message)> CreatePostAsync(CreatePostRequest request)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
 
         if (user == null)
             return (false, "Something went wrong."); // Bookmark
 
         // Bookmark: check the request was sent by the user
 
-        var newPost = new Post
+        Post newPost = new Post
         {
             UserId = request.UserId,
             User = user,
@@ -44,5 +43,47 @@ public class PostService
         await _context.SaveChangesAsync(); // Update the DB
 
         return (true, "Successfully created post.");
+    }
+
+    public async Task<(bool Success, string Message, List<PostResponse> responseData)> FetchPostsAsync(FetchPostsRequest request, int limit = 10)
+    {
+        // Bookmark: The first fetch posts request wont include PostIdAnchor. Instead get the latest posts
+        List<Post> posts = await _context.Posts
+            .Where(request.FirstFetch ? p => p.Id > 0 : p => p.Id < request.PostIdAnchor)
+            .OrderByDescending(p => p.CreationDate)
+            .Include(p => p.User)
+            .Include(p => p.Likes)
+            .Include(p => p.Comments)
+            .Include(p => p.Event)
+            .Take(limit)
+            .ToListAsync();
+
+        List<PostResponse> responseData = posts.Select(p => new PostResponse
+        {
+            Id = p.Id,
+            User = new UserResponse
+            {
+                Id = p.User.Id,
+                Role = p.User.Role.ToString(),
+                Username = p.User.Username,
+                FirstName = p.User.FirstName,
+                LastName = p.User.LastName,
+                Degree = p.User.Degree,
+                ProfileImageURL = p.User.ProfileImageURL
+            },
+            Content = p.Content,
+            Image = p.Image,
+            Video = p.Video,
+            Voice = p.Voice,
+            CreationDate = p.CreationDate,
+            Likes = p.Likes,
+            Comments = p.Comments,
+            Event = p.Event
+        }).ToList();
+
+        if (!responseData.Any())
+            return (true, "No more posts to load.", responseData);
+
+        return (true, "Successfully fetched posts.", responseData);
     }
 }

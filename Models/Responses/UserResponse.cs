@@ -1,10 +1,10 @@
 /*
-    This class is the structure for a login response for the frontend
+    This class is the structure for a login response from the frontend
 */
 
 namespace UniConnect.Models.Responses;
 
-public class LoginResponse
+public class UserResponse
 {
     public required int Id { get; set; }
     public required string Role { get; set; }
@@ -12,4 +12,5 @@ public class LoginResponse
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required string Degree { get; set; }
+    public string? ProfileImageURL { get; set; }
 }
