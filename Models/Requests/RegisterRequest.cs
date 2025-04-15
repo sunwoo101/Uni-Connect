@@ -1,3 +1,7 @@
+/*
+    This class is the structure for a register request from the frontend
+*/
+
 using System.ComponentModel.DataAnnotations;
 
 namespace UniConnect.Models.Requests;

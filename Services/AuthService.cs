@@ -1,3 +1,7 @@
+/*
+    This class contains auth functions such as login, register and password reset
+*/
+
 using Microsoft.EntityFrameworkCore;
 using UniConnect.Models.Entities;
 using UniConnect.Models.Requests;
@@ -17,13 +21,13 @@ public class AuthService
 
     public async Task<(bool Success, string Message, LoginResponse? LoginResponse)> RegisterUserAsync(RegisterRequest request)
     {
-        if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+        if (await _context.Users.AnyAsync(u => u.Email == request.Email)) // Check if the email is already registered
             return (false, "Email is already registered.", null);
 
-        string username = request.Email.Split("@")[0];
+        string username = request.Email.Split("@")[0]; // Extract username from the user's email
 
-        if (await _context.Users.AnyAsync(u => u.Username == username))
-            username = await GenerateUniqueUsername(username, _context);
+        if (await _context.Users.AnyAsync(u => u.Username == username)) // Check if someone else already has the username
+            username = await GenerateUniqueUsername(username, _context); // Add a number to the username
 
         var newUser = new User
         {
@@ -37,11 +41,12 @@ public class AuthService
             CreationDate = DateTime.UtcNow
         };
 
-        _context.Users.Add(newUser);
-        await _context.SaveChangesAsync();
+        _context.Users.Add(newUser); // Add the new user to the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
 
-        var loginResponse = new LoginResponse
+        var loginResponse = new LoginResponse // Create a response for the frontend
         {
+            Id = newUser.Id,
             Role = newUser.Role.ToString(),
             Username = newUser.Username,
             FirstName = newUser.FirstName,
@@ -54,13 +59,14 @@ public class AuthService
 
     public async Task<(bool Success, string Message, LoginResponse? LoginResponse)> LoginUserAsync(LoginRequest request)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email); // Look for the email that matches with the login email
         
-        if (user == null || !PasswordHelper.VerifyPassword(request.Password, user.PasswordHash))
+        if (user == null || !PasswordHelper.VerifyPassword(request.Password, user.PasswordHash)) // Check if the email exists and password is correct
             return (false, "Invalid Email or Password.", null);
 
-        var loginResponse = new LoginResponse
+        var loginResponse = new LoginResponse // Create a respones for the frontend
         {
+            Id = user.Id,
             Role = user.Role.ToString(),
             Username = user.Username,
             FirstName = user.FirstName,
@@ -74,10 +80,12 @@ public class AuthService
     private async static Task<string> GenerateUniqueUsername(string username, AppDbContext context)
     {
         int i = 1;
-        while (await context.Users.AnyAsync(u => u.Username == $"{username}{i}"))
+
+        while (await context.Users.AnyAsync(u => u.Username == $"{username}{i}")) // Run while username + i exists
         {
             i++;
         }
+
         return username + i;
     }
 }
