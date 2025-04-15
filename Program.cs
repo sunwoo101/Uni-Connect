@@ -18,7 +18,9 @@ public class Program
         builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddControllers();
+        
         builder.Services.AddScoped<AuthService>();
+        builder.Services.AddScoped<PostService>();
 
         var app = builder.Build();
 

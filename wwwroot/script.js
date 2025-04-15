@@ -479,6 +479,14 @@ window.hideCreatePostModal = function hideCreatePostModal() {
     document.getElementById('createPostModal').classList.add('hidden'); // Hide the create post modal
 }
 
+let adIndex = 0;
+let adFrequency = Math.floor(Math.random() * 4) + 2; // How often to show ads
+
+function newAdFrequencyValue() {
+    adFrequency = Math.floor(Math.random() * 4) + 2;
+    adIndex = 0;
+}
+
 // Display posts function
 function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
     const postsContainer = document.getElementById('postsContainer');
@@ -491,7 +499,12 @@ function displayPosts() { // Add a parameter so this function decides which grou
     // Display posts
     // Ads Advertisements logic (bookmark)
     sortedPosts.forEach(post => {
+        if (adIndex === adFrequency) {
+            postsContainer.appendChild(createAdElement());
+            newAdFrequencyValue()
+        }
         postsContainer.appendChild(createPostElement(post.id));
+        adIndex++;
     });
 }
 
@@ -534,7 +547,12 @@ window.displaySaved = function displaySaved() {
 
         // Display saved posts
         sortedPosts.forEach(post => {
+            if (adIndex === adFrequency) {
+                postsContainer.appendChild(createAdElement());
+                newAdFrequencyValue()
+            }
             postsContainer.appendChild(createPostElement(post.id));
+            adIndex++;
         });
     }
 }
@@ -561,7 +579,7 @@ function createPostElement(postId) {
             </div>
         </div>
         <p class="mb-4">${post.content}</p>
-        ${post.image ? `<img src="${post.image}" alt="Post Image" class="rounded-lg mb-4">` : ''}
+        ${post.image ? `<img src="${post.image}" alt="Post Image" class="rounded-lg mb-4 w-full">` : ''}
         ${_event ? `
             <div class="bg-blue-50 rounded-lg p-4 mb-4">
                 <div class="flex items-center space-x-3 mb-2">
@@ -605,6 +623,22 @@ function createPostElement(postId) {
                 <span>${post.saves.length}</span> Save
             </button>
         </div>
+    `;
+    return postElement;
+}
+
+// Create ad element function
+function createAdElement() {
+    const postElement = document.createElement('div');
+    postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
+    postElement.onclick = () => showPostModal(postId);
+    postElement.innerHTML = `
+        <div class="flex items-center space-x-4 mb-4">
+            <div>
+                <h3 class="font-semibold">Ad</h3>
+            </div>
+        </div>
+        <img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">
     `;
     return postElement;
 }
@@ -1015,7 +1049,8 @@ window.createPost = function createPost() {
     hideImagePreview();
     hideVideoPreview();
     hideEventPreview();
-    showAlert('Post created successfully!', 'success');
+
+    api.createPost(userData.id, content)
 }
 
 // Show profile function

@@ -11,8 +11,8 @@ using UniConnect.Models.Entities;
 namespace UniConnect.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250411160100_RemoveUnnecessaryColumns")]
-    partial class RemoveUnnecessaryColumns
+    [Migration("20250414163007_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace UniConnect.Migrations
                     b.Property<int?>("CommentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CommentText")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -132,24 +132,30 @@ namespace UniConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Video")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Voice")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("UniConnect.Models.Entities.User", b =>
