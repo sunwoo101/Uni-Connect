@@ -173,11 +173,11 @@ window.hideAlert = function hideAlert() {
 }
 
 // Set active UI tab to feed
-window.feedUiTabActive = function feedUiTabActive() {
+function updateActiveTab(tabName) {
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => {
         tab.classList.remove('active');
-        if (tab.getAttribute('data-tab') === 'feed') {
+        if (tab.getAttribute('data-tab') === tabName) {
             tab.classList.add('active');
         }
     });
@@ -189,7 +189,7 @@ window.displayFeed = function displayFeed() {
 
     hideAll();
     displayPosts();
-    feedUiTabActive();
+    updateActiveTab('feed');
 }
 
 // Update side bar profile function
@@ -582,14 +582,7 @@ window.displaySaved = async function displaySaved() {
     currentPage = 'Saved';
     hideAll();
 
-    // Update active tab
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.getAttribute('data-tab') === 'saved') {
-            tab.classList.add('active');
-        }
-    });
+    updateActiveTab('saved');
 
     // Display saved posts
     displayPosts('Saved');
@@ -697,7 +690,7 @@ function refreshUI() {
                 showProfile();
             } else if (tab.getAttribute('data-tab') === 'saved') {
                 displaySaved();
-            } else {
+            } else if (tab.getAttribute('data-tab') === 'feed') {
                 displayPosts(); // Refresh posts to update UI
             }
         }
@@ -1157,14 +1150,7 @@ window.showProfile = async function showProfile() {
     currentPage = 'Profile';
 
     // Update active tab
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        if (tab.getAttribute('data-tab') === 'profile') {
-            tab.classList.add('active');
-        } else {
-            tab.classList.remove('active');
-        }
-    });
+    updateActiveTab('profile');
 
     // Show profile content
     const profileContent = document.getElementById('profileContent');
