@@ -48,16 +48,21 @@ public class PostService
     public async Task<(bool Success, string Message, List<PostResponse> responseData)> FetchPostsAsync(FetchPostsRequest request)
     {
         int limit = 10;
-        Console.WriteLine($"FirstFetch: {request.FirstFetch}, UserId: {request.UserId}, PostIdAnchor: {request.PostIdAnchor}");
         // Bookmark: The first fetch posts request wont include PostIdAnchor. Instead get the latest posts
 
         // Start building the query
         IQueryable<Post> query = _context.Posts;
 
-        // Apply filtering only if not first fetch
+        // Apply filter from PostIdAnchor if this isn't the first fetch of the feed
         if (!request.FirstFetch)
         {
             query = query.Where(p => p.Id < request.PostIdAnchor);
+        }
+
+        // Apply filter for only Saved posts
+        if (request.PostFilter == PostFilter.Saved.ToString())
+        {
+            query = query.Where(p => p.Saves.Any(s => s.UserId == request.UserId));
         }
 
         List<Post> posts = await query
@@ -100,5 +105,79 @@ public class PostService
             return (true, "No more posts to load.", responseData);
 
         return (true, "Successfully fetched posts.", responseData);
+    }
+
+    public async Task<(bool Success, string Message)> AddLikeAsync(LikePostRequest request)
+    {
+        if (await _context.Likes.AnyAsync(l => l.UserId == request.UserId && l.PostId == request.PostId)) // Check if the like already exists
+            return (true, "Liked post.");
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == request.PostId);
+
+        if (user == null || post == null)
+            return (false, "Invalid post or user.");
+
+        Like newLike = new Like
+        {
+            UserId = request.UserId,
+            PostId = request.PostId,
+            User = user,
+            Post = post
+        };
+
+        _context.Likes.Add(newLike); // Add the new like to the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
+
+        return (true, "Liked post.");
+    }
+
+    public async Task<(bool Success, string Message)> RemoveLikeAsync(LikePostRequest request)
+    {
+        var like = await _context.Likes.FirstOrDefaultAsync(l => l.UserId == request.UserId && l.PostId == request.PostId);
+        if (like == null)
+            return (true, "Removed like from post.");
+
+        _context.Likes.Remove(like); // Remove the like from the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
+
+        return (true, "Removed like from post.");
+    }
+
+    public async Task<(bool Success, string Message)> AddSaveAsync(SavePostRequest request)
+    {
+        if (await _context.Saves.AnyAsync(s => s.UserId == request.UserId && s.PostId == request.PostId)) // Check if the save already exists
+            return (true, "Saved post.");
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == request.PostId);
+
+        if (user == null || post == null)
+            return (false, "Invalid post or user.");
+
+        Save newSave = new Save
+        {
+            UserId = request.UserId,
+            PostId = request.PostId,
+            User = user,
+            Post = post
+        };
+
+        _context.Saves.Add(newSave); // Add the new save to the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
+
+        return (true, "Saved post.");
+    }
+
+    public async Task<(bool Success, string Message)> RemoveSaveAsync(SavePostRequest request)
+    {
+        var save = await _context.Saves.FirstOrDefaultAsync(s => s.UserId == request.UserId && s.PostId == request.PostId);
+        if (save == null)
+            return (true, "Removed save from post.");
+
+        _context.Saves.Remove(save); // Remove the save from the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
+
+        return (true, "Removed save from post.");
     }
 }

@@ -95,7 +95,7 @@ export default class Api {
         }
     }
 
-    async fetchPosts(firstFetch, userId, postIdAnchor) {
+    async fetchPosts(firstFetch, userId, postIdAnchor, postFilter) {
         try {
             const response = await fetch(`/api/post/fetch`, {
                 method: 'POST',
@@ -106,6 +106,7 @@ export default class Api {
                     firstFetch: firstFetch,
                     userId: userId,
                     postIdAnchor: postIdAnchor,
+                    postFilter: postFilter,
                 })
             });
     
@@ -122,6 +123,122 @@ export default class Api {
             showAlert(error?.message || 'Something went wrong', 'error');
     
             return null;
+        }
+    }
+
+    async likePost(userId, postId) {
+        try {
+            const response = await fetch(`/api/post/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+
+            return;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+
+            return;
+        }
+    }
+
+    async removeLikePost(userId, postId) {
+        try {
+            const response = await fetch(`/api/post/removeLike`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+            
+            return;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+            
+            return;
+        }
+    }
+
+    async savePost(userId, postId) {
+        try {
+            const response = await fetch(`/api/post/save`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+
+            return;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+
+            return;
+        }
+    }
+
+    async removeSavePost(userId, postId) {
+        try {
+            const response = await fetch(`/api/post/removeSave`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+            
+            return;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+            
+            return;
         }
     }
 }
