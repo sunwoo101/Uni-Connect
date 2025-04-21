@@ -12,5 +12,6 @@ public class CommentResponse
     public required User User { get; set; }
     public required string Content { get; set; }
     public required string CreationDate { get; set; }
+    public int? ParentCommentId { get; set; }
     public List<CommentResponse> Replies { get; set; } = new();
 }

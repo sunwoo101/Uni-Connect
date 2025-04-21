@@ -10,5 +10,6 @@ public class Comment
     public required string Content { get; set; } // The text content of the comment
     public required DateTime CreationDate { get; set; } // Auto generated on creation
     public int? ParentCommentId { get; set; } // The ID the comment that this comment is replying to. Null if it's a top-level comment
+    public Comment? ParentComment { get; set; }
     public List<Comment> Replies { get; set; } = new(); // List of replies to this comment
 }

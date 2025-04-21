@@ -306,7 +306,7 @@ public class PostService
         return (true, "No longer attending.");
     }
 
-    public async Task<(bool Success, string Message)> AddCommentAsync(CommentRequest request)
+    public async Task<(bool Success, string Message)> AddCommentAsync(AddCommentRequest request)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
         var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == request.PostId);
@@ -328,6 +328,61 @@ public class PostService
         _context.Comments.Add(newComment); // Add the new comment to the EF tracking system
         await _context.SaveChangesAsync(); // Update the DB
 
+        if (newComment.ParentCommentId != null)
+        {
+            var parentComment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == newComment.ParentCommentId);
+
+            if (parentComment == null)
+                return (false, "Parent comment not found.");
+        }
+
         return (true, "Comment posted.");
+    }
+
+    public async Task<(bool Success, string Message, List<CommentResponse> responseData)> FetchCommentsAsync(FetchCommentsRequest request)
+    {
+        int limit = 3;
+
+        // Start building the query
+        IQueryable<Comment> query = _context.Comments;
+
+        // Apply filter from PostIdAnchor if this isn't the first fetch of the feed
+        if (!request.FirstFetch)
+        {
+            query = query.Where(c => c.Id < request.CommentIdAnchor);
+        }
+
+        query = query.Where(c => c.PostId == request.PostId && c.ParentCommentId == null); // Only grab parent comments
+
+        List<Comment> comments = await query
+            .OrderByDescending(c => c.Id)
+            .Include(c => c.User)
+            .Include(c => c.Replies)
+                .ThenInclude(r => r.User)
+            .Take(limit)
+            .ToListAsync();
+
+        List<CommentResponse> responseData = comments.Select(c => new CommentResponse
+        {
+            Id = c.Id,
+            User = c.User,
+            Content = c.Content,
+            CreationDate = c.CreationDate.ToString("o"),
+            Replies = c.Replies
+            .OrderBy(r => r.Id)
+            .Select(r => new CommentResponse
+            {
+                Id = r.Id,
+                User = r.User,
+                Content = r.Content,
+                CreationDate = r.CreationDate.ToString("o")
+            }).ToList()
+
+        }).ToList();
+
+        if (!responseData.Any())
+            return (true, "No more comments to load.", responseData);
+
+        return (true, "Successfully fetched comments.", responseData);
     }
 }

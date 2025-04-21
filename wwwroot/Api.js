@@ -359,4 +359,35 @@ export default class Api {
             return;
         }
     }
+
+    async fetchComments(firstFetch, userId, postId, commentIdAnchor) {
+        try {
+            const response = await fetch(`/api/post/fetchComments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstFetch: firstFetch,
+                    userId: userId,
+                    postId: postId,
+                    commentIdAnchor: commentIdAnchor,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+    
+            return result.data;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+    
+            return null;
+        }
+    }
 }
