@@ -58,10 +58,11 @@ const database = {
             userId: 1,
             content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque purus risus, pharetra ut ipsum nec, accumsan fermentum lacus. Cras volutpat sed nulla sed ullamcorper. Duis a nunc nulla.',
             image: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg',
-            timestamp: new Date('2024-03-20T10:00:00'),
+            video: null,
+            voice: null,
+            creationDate: new Date('2024-03-20T10:00:00'),
             likes: [1, 2], // Array of user IDs who liked the post
             comments: [1], // Array of comment IDs
-            replies: [1], // Array of reply IDs
             saves: [1, 2, 3], // Array of user IDs who saved the post
             eventId: 1
         }
@@ -81,14 +82,14 @@ const database = {
             postId: 1,
             userId: 3,
             content: 'Lorem ipsum dolor sit amet',
-            timestamp: new Date('2024-03-20T10:15:00')
+            creationDate: new Date('2024-03-20T10:15:00')
         },
         {
             id: 2,
             postId: 1,
             userId: 2,
             content: 'by9 56by03 506w7905',
-            timestamp: new Date('2024-03-20T10:15:00')
+            creationDate: new Date('2024-03-20T10:15:00')
         },
     ],
     replies: [ // Replies to comments
@@ -97,14 +98,14 @@ const database = {
             commentId: 1,
             userId: 2,
             content: 'consectetur adipiscing elit',
-            timestamp: new Date('2024-03-20T10:17:00')
+            creationDate: new Date('2024-03-20T10:17:00')
         },
         {
             id: 2,
             commentId: 1,
             userId: 2,
             content: 'otaotyb40 5y6b0a30 0bu60a',
-            timestamp: new Date('2024-03-20T10:17:00')
+            creationDate: new Date('2024-03-20T10:17:00')
         }
     ]
 }
@@ -184,6 +185,14 @@ window.feedUiTabActive = function feedUiTabActive() {
 
 // Display feed function
 window.displayFeed = function displayFeed() {
+    postIdAnchor = 0;
+    firstFetch = true;
+    allPostsLoaded = false;
+
+    const postsContainer = document.getElementById('postsContainer');
+    postsContainer.classList.remove('hidden');
+    postsContainer.innerHTML = ''; // Clear existing posts
+    
     hideAll();
     displayPosts();
     feedUiTabActive();
@@ -251,6 +260,13 @@ window.showLoginForm = function showLoginForm() {
     forgotPasswordContent.classList.add('hidden');
     loginContent.classList.remove('hidden');
     downloadLinks.classList.remove('hidden');
+
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+
+    if (rememberedEmail) {
+        document.getElementById('loginEmail').value = rememberedEmail;
+        document.getElementById('rememberMe').checked = true;
+    }
 }
 
 // Login function
@@ -281,10 +297,12 @@ window.login = async function login() {
         updateUI();
         feedUiTabActive();
         updateSideBarProfile();
-    }
 
-    if (rememberMeChecked) {
-        rememberMe = true;
+        if (rememberMeChecked) {
+            localStorage.setItem("rememberedEmail", email);
+        } else {
+            localStorage.removeItem("rememberedEmail");
+        }
     }
 }
 
@@ -487,34 +505,65 @@ function newAdFrequencyValue() {
     adIndex = 0;
 }
 
+let postIdAnchor = 0;
+let firstFetch = true;
+let currentPage = "";
+let isLoading = false;
+let allPostsLoaded = false;
+
+window.addEventListener('scroll', async () => {
+    if (allPostsLoaded || isLoading) return;
+
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const threshold = document.body.offsetHeight - 200;
+
+    if (scrollPosition >= threshold) {
+        isLoading = true;
+
+        await displayPosts();
+    }
+
+    isLoading = false;
+})
+
 // Display posts function
-function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
+async function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
     const postsContainer = document.getElementById('postsContainer');
     postsContainer.classList.remove('hidden');
-    postsContainer.innerHTML = ''; // Clear existing posts
+    // postsContainer.innerHTML = ''; // Clear existing posts
 
     // Sort posts by timestamp (newest first)
-    const sortedPosts = [...database.posts].sort((a, b) => b.timestamp - a.timestamp);
+    const feedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor, "Feed");
 
-    // Display posts
-    // Ads Advertisements logic (bookmark)
-    sortedPosts.forEach(post => {
+    feedPosts.forEach(post => {
+        post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
+
         if (adIndex === adFrequency) {
             postsContainer.appendChild(createAdElement());
             newAdFrequencyValue()
         }
-        postsContainer.appendChild(createPostElement(post.id));
+
+        postsContainer.appendChild(createPostElement(post));
         adIndex++;
+
+        postIdAnchor = post.id;
+        // database.posts.push(post);
+        firstFetch = false;
     });
+
+    if (!feedPosts || feedPosts.length === 0) {
+        allPostsLoaded = true;
+    }
 }
 
 // Function to display saved postss
-window.displaySaved = function displaySaved() {
+window.displaySaved = async function displaySaved() {
     hideAll();
 
     // Show posts container
     const postsContainer = document.getElementById('postsContainer');
     postsContainer.classList.remove('hidden');
+    postsContainer.innerHTML = ''; // Clear existing posts
 
     // Update active tab
     const tabs = document.querySelectorAll('.tab');
@@ -525,11 +574,8 @@ window.displaySaved = function displaySaved() {
         }
     });
 
-    postsContainer.innerHTML = ''; // Clear existing posts
-
     // Filter posts that are saved by the current user
-    const currentUserId = sessionUserId;
-    const savedPosts = database.posts.filter(post => post.saves && post.saves.includes(currentUserId));
+    const savedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor);
 
     if (savedPosts.length === 0) {
         postsContainer.innerHTML = `
@@ -542,39 +588,39 @@ window.displaySaved = function displaySaved() {
         return;
     }
     else {
-        // Sort saved posts by timestamp (newest first)
-        const sortedPosts = [...savedPosts].sort((a, b) => b.timestamp - a.timestamp);
-
         // Display saved posts
-        sortedPosts.forEach(post => {
+        savedPosts.forEach(post => {
+            post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
             if (adIndex === adFrequency) {
                 postsContainer.appendChild(createAdElement());
                 newAdFrequencyValue()
             }
+
             postsContainer.appendChild(createPostElement(post.id));
             adIndex++;
+
+            postIdAnchor = post.id;
+            database.posts.push(post);
+            firstFetch = false;
         });
     }
 }
 
+const placeHolderPfp = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=';
+
 // Create post element function
-function createPostElement(postId) {
-    const post = database.posts.find(p => p.id === postId);
-    const _event = post.eventId ? database.events.find(e => e.id === post.eventId) : null;
-    const user = database.users.find(u => u.id === post.userId);
-    const comments = database.comments.filter(c => c.postId === postId);
-    const replies = database.replies.filter(reply =>
-        comments.some(comment => comment.id === reply.id)
-    );
+function createPostElement(post) {
+    const _event = post.event;
+    const user = post.user;
     const postElement = document.createElement('div');
     postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
-    postElement.onclick = () => showPostModal(postId);
+    postElement.onclick = () => showPostModal(post.Id); // Bookmark
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
-            <img src="${user.profileImage}" alt="Profile" class="rounded-full w-12 h-12">
+            <img src="${user.profileImageURL ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
             <div>
                 <h3 class="font-semibold">${user.firstName} ${user.lastName}</h3>
-                <p class="text-gray-500 text-sm">${formatTimestamp(post.timestamp)}</p>
+                <p class="text-gray-500 text-sm">${formatTimestamp(post.creationDate)}</p>
                 <p class="text-gray-600 text-sm">${user.degree}</p>
             </div>
         </div>
@@ -588,44 +634,44 @@ function createPostElement(postId) {
                     </div>
                     <div>
                         <h4 class="font-semibold">${_event.title}</h4>
-                        <p class="text-sm text-gray-600">${_event.date.toLocaleDateString()} at ${_event.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                        <p class="text-sm text-gray-600">${_event.dateAndTime.toLocaleDateString()} at ${_event.dateAndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
                         <p class="text-sm text-gray-600">📍 ${_event.location}</p>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
-                        ${_event.attendees.map(userId => {
-        const attendee = database.users.find(u => u.id === userId);
-        return `<img src="${attendee.profileImage}" alt="Attendee" class="w-6 h-6 rounded-full border-2 border-white">`;
+                        ${_event.attendees.map(attendee => {
+        // const attendee = database.users.find(u => u.id === userId);
+        return `<img src="${attendee.user.profileImageURL}" alt="Attendee" class="w-6 h-6 rounded-full border-2 border-white">`;
     }).join('')}
                         <span class="text-sm text-gray-600">${_event.attendees.length} attending</span>
                     </div>
-                    <button onclick="event.stopPropagation(); toggleEventAttendance(${postId})" 
-                            class="text-sm px-3 py-1 rounded-full ${_event.attendees.includes(1) ? 'bg-blue-100 text-blue-600' : 'bg-white text-blue-600 border border-blue-600'} hover:bg-blue-100 transition-colors flex items-center space-x-1">
-                        ${_event.attendees.includes(1) ? '<i class="fas fa-check"></i>' : 'Going'}
+                    <button onclick="event.stopPropagation(); toggleEventAttendance(${post.Id})" 
+                            class="text-sm px-3 py-1 rounded-full ${_event.attendees.some(attendee => attendee.userId == userData.id) ? 'bg-blue-100 text-blue-600' : 'bg-white text-blue-600 border border-blue-600'} hover:bg-blue-100 transition-colors flex items-center space-x-1">
+                        ${_event.attendees.some(attendee => attendee.userId == userData.id) ? '<i class="fas fa-check"></i>' : 'Going'}
                     </button>
                 </div>
             </div>
         ` : ''}
         <div class="flex justify-between items-center text-gray-500">
             <div class="flex space-x-4">
-                <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleLike(${postId})">
-                    <i class="far fa-heart ${post.likes.includes(sessionUserId) ? 'fas text-red-600' : ''}"></i> 
-                    <span>${post.likes.length}</span> Like
+                <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleLike(${post.Id})">
+                    <i class="far fa-heart ${post.likedByYou ? 'fas text-red-600' : ''}"></i> 
+                    <span>${post.likeCount}</span> Like
                 </button>
-                <button class="hover:text-blue-600" onclick="event.stopPropagation(); showPostModal(${postId})">
+                <button class="hover:text-blue-600" onclick="event.stopPropagation(); showPostModal(${post.Id})">
                     <i class="far fa-comment"></i> 
-                    <span>${comments.length + replies.length}</span> Comment
+                    <span>${post.commentCount}</span> Comment
                 </button>
             </div>
-            <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleSave(${postId})">
-                <i class="far fa-bookmark ${post.saves.includes(sessionUserId) ? 'fas' : ''}"></i>
-                <span>${post.saves.length}</span> Save
+            <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleSave(${post.Id})">
+                <i class="far fa-bookmark ${post.savedByYou ? 'fas' : ''}"></i>
+                <span>${post.saveCount}</span> Save
             </button>
         </div>
     `;
     return postElement;
-}
+} // Bookmark: add ID to like and save to change colour on toggle
 
 // Create ad element function
 function createAdElement() {
@@ -722,7 +768,7 @@ window.showPostModal = function showPostModal(postId) {
                         <img src="${user.profileImage}" alt="Profile" class="rounded-full w-12 h-12">
                         <div>
                             <h3 class="font-semibold">${user.firstName} ${user.lastName}</h3>
-                            <p class="text-gray-500 text-sm">${formatTimestamp(post.timestamp)}</p>
+                            <p class="text-gray-500 text-sm">${formatTimestamp(post.creationDate)}</p>
                             <p class="text-gray-600 text-sm">${user.degree}</p>
                         </div>
                     </div>
@@ -756,7 +802,7 @@ window.showPostModal = function showPostModal(postId) {
                                             <div class="bg-gray-100 rounded-lg p-3">
                                                 <div class="flex items-center space-x-2">
                                                     <span class="font-semibold">${commentUser.firstName} ${commentUser.lastName}</span>
-                                                    <span class="text-gray-500 text-sm">${formatTimestamp(comment.timestamp)}</span>
+                                                    <span class="text-gray-500 text-sm">${formatTimestamp(comment.creationDate)}</span>
                                                 </div>
                                                 <p class="mt-1">${comment.content}</p>
                                                 <button onclick="showReplyInput(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
@@ -774,7 +820,7 @@ window.showPostModal = function showPostModal(postId) {
                                                                     <div class="bg-gray-50 rounded-lg p-2">
                                                                         <div class="flex items-center space-x-2">
                                                                             <span class="font-semibold text-sm">${replyUser.firstName} ${replyUser.lastName}</span>
-                                                                            <span class="text-gray-500 text-xs">${formatTimestamp(reply.timestamp)}</span>
+                                                                            <span class="text-gray-500 text-xs">${formatTimestamp(reply.creationDate)}</span>
                                                                         </div>
                                                                         <p class="text-sm mt-1">${reply.content}</p>
                                                                     </div>
@@ -837,7 +883,7 @@ window.submitReply = function submitReply(commentId) {
         commentId: commentId,
         userId: 1, // Current user's ID (hardcoded for demo)
         content: content,
-        timestamp: new Date()
+        creationDate: new Date()
     };
 
     database.replies.push(newReply);
@@ -868,7 +914,7 @@ window.submitComment = function submitComment(postId) {
         postId: postId,
         userId: 1, // Current user's ID (hardcoded for demo)
         content: content,
-        timestamp: new Date()
+        creationDate: new Date()
     };
 
     database.comments.push(newComment);
@@ -998,7 +1044,7 @@ function hideEventPreview() {
 }
 
 // Create post function
-window.createPost = function createPost() {
+window.createPost = async function createPost() {
     const content = document.getElementById('postContent').value.trim();
     if (!content) {
         showAlert('Please enter some content for your post', 'error');
@@ -1009,7 +1055,7 @@ window.createPost = function createPost() {
         id: database.posts.length + 1,
         userId: sessionUserId, // Current user's ID (hardcoded for demo)
         content: content,
-        timestamp: new Date(),
+        creationDate: new Date(),
         likes: [],
         comments: [],
         saves: [],
@@ -1040,17 +1086,17 @@ window.createPost = function createPost() {
             location: currentEvent.location,
             attendees: []
         };
-        database.events.unshift(newEvent);
+        database.events.push(newEvent);
     }
 
-    database.posts.unshift(newPost); // Add to beginning of array
+    database.posts.push(newPost); // Add to beginning of array
     displayPosts(); // Refresh posts
     document.getElementById('postContent').value = ''; // Clear input
     hideImagePreview();
     hideVideoPreview();
     hideEventPreview();
 
-    api.createPost(userData.id, content)
+    await api.createPost(userData.id, content)
 }
 
 // Show profile function
@@ -1502,6 +1548,7 @@ function showDownloadPage() {
 
 // Check for mobile browser on page load
 document.addEventListener('DOMContentLoaded', function () {
+    showLoginForm();
     showDownloadPage();
 });
 

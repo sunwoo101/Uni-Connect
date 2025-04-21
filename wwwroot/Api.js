@@ -94,4 +94,34 @@ export default class Api {
             return false;
         }
     }
+
+    async fetchPosts(firstFetch, userId, postIdAnchor) {
+        try {
+            const response = await fetch(`/api/post/fetch`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstFetch: firstFetch,
+                    userId: userId,
+                    postIdAnchor: postIdAnchor,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+    
+            return result.data;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+    
+            return null;
+        }
+    }
 }
