@@ -185,6 +185,7 @@ window.feedUiTabActive = function feedUiTabActive() {
 
 // Display feed function
 window.displayFeed = function displayFeed() {
+    currentPage = "Feed";
     postIdAnchor = 0;
     firstFetch = true;
     allPostsLoaded = false;
@@ -520,7 +521,10 @@ window.addEventListener('scroll', async () => {
     if (scrollPosition >= threshold) {
         isLoading = true;
 
-        await displayPosts();
+        if (currentPage === "Feed")
+            await displayPosts();
+        else if (currentPage === "Saved")
+            await displaySaved();
     }
 
     isLoading = false;
@@ -535,35 +539,47 @@ async function displayPosts() { // Add a parameter so this function decides whic
     // Sort posts by timestamp (newest first)
     const feedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor, "Feed");
 
-    feedPosts.forEach(post => {
-        post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
-
-        if (adIndex === adFrequency) {
-            postsContainer.appendChild(createAdElement());
-            newAdFrequencyValue()
-        }
-
-        postsContainer.appendChild(createPostElement(post));
-        adIndex++;
-
-        postIdAnchor = post.id;
-        // database.posts.push(post);
-        firstFetch = false;
-    });
-
     if (!feedPosts || feedPosts.length === 0) {
         allPostsLoaded = true;
+    }
+
+    if ((!feedPosts || feedPosts.length === 0) && firstFetch) {
+        postsContainer.innerHTML = `
+            <div class="bg-white rounded-lg shadow p-6 text-center">
+                <i class="fas fa-home text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Posts Yet</h3>
+                <p class="text-gray-500">Be the first person to post</p>
+            </div>
+        `;
+        return;
+    } else {
+        feedPosts.forEach(post => {
+            post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
+    
+            if (adIndex === adFrequency) {
+                postsContainer.appendChild(createAdElement());
+                newAdFrequencyValue()
+            }
+    
+            postsContainer.appendChild(createPostElement(post));
+            adIndex++;
+    
+            postIdAnchor = post.id;
+            // database.posts.push(post);
+            firstFetch = false;
+        });
     }
 }
 
 // Function to display saved postss
 window.displaySaved = async function displaySaved() {
+    currentPage = "Saved";
     hideAll();
 
     // Show posts container
     const postsContainer = document.getElementById('postsContainer');
     postsContainer.classList.remove('hidden');
-    postsContainer.innerHTML = ''; // Clear existing posts
+    // postsContainer.innerHTML = ''; // Clear existing posts
 
     // Update active tab
     const tabs = document.querySelectorAll('.tab');
@@ -575,12 +591,16 @@ window.displaySaved = async function displaySaved() {
     });
 
     // Filter posts that are saved by the current user
-    const savedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor);
+    const savedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor, "Saved");
 
-    if (savedPosts.length === 0) {
+    if (!savedPosts || savedPosts.length === 0) {
+        allPostsLoaded = true;
+    }
+
+    if ((!savedPosts || savedPosts.length === 0) && firstFetch) {
         postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
-                <i class="far fa-bookmark text-4xl text-gray-400 mb-4"></i>
+                <i class="fas fa-bookmark text-4xl text-gray-400 mb-4"></i>
                 <h3 class="text-xl font-semibold text-gray-700 mb-2">No Saved Posts Yet</h3>
                 <p class="text-gray-500">Posts you save will appear here</p>
             </div>
@@ -596,11 +616,11 @@ window.displaySaved = async function displaySaved() {
                 newAdFrequencyValue()
             }
 
-            postsContainer.appendChild(createPostElement(post.id));
+            postsContainer.appendChild(createPostElement(post));
             adIndex++;
 
             postIdAnchor = post.id;
-            database.posts.push(post);
+            // database.posts.push(post);
             firstFetch = false;
         });
     }
@@ -614,7 +634,7 @@ function createPostElement(post) {
     const user = post.user;
     const postElement = document.createElement('div');
     postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
-    postElement.onclick = () => showPostModal(post.Id); // Bookmark
+    postElement.onclick = () => showPostModal(post.id); // Bookmark
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
             <img src="${user.profileImageURL ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
@@ -646,7 +666,7 @@ function createPostElement(post) {
     }).join('')}
                         <span class="text-sm text-gray-600">${_event.attendees.length} attending</span>
                     </div>
-                    <button onclick="event.stopPropagation(); toggleEventAttendance(${post.Id})" 
+                    <button onclick="event.stopPropagation(); toggleEventAttendance(${post.id})" 
                             class="text-sm px-3 py-1 rounded-full ${_event.attendees.some(attendee => attendee.userId == userData.id) ? 'bg-blue-100 text-blue-600' : 'bg-white text-blue-600 border border-blue-600'} hover:bg-blue-100 transition-colors flex items-center space-x-1">
                         ${_event.attendees.some(attendee => attendee.userId == userData.id) ? '<i class="fas fa-check"></i>' : 'Going'}
                     </button>
@@ -655,18 +675,18 @@ function createPostElement(post) {
         ` : ''}
         <div class="flex justify-between items-center text-gray-500">
             <div class="flex space-x-4">
-                <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleLike(${post.Id})">
-                    <i class="far fa-heart ${post.likedByYou ? 'fas text-red-600' : ''}"></i> 
-                    <span>${post.likeCount}</span> Like
+                <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleLike(${post.id})">
+                    <i id="like-id${post.id}" class="far fa-heart ${post.likedByYou ? 'fas text-red-600' : ''}"></i> 
+                    <span id="like-count-id${post.id}">${post.likeCount}</span> Like
                 </button>
-                <button class="hover:text-blue-600" onclick="event.stopPropagation(); showPostModal(${post.Id})">
+                <button class="hover:text-blue-600" onclick="event.stopPropagation(); showPostModal(${post.id})">
                     <i class="far fa-comment"></i> 
-                    <span>${post.commentCount}</span> Comment
+                    <span id="comment-count-id${post.id}">${post.commentCount}</span> Comment
                 </button>
             </div>
-            <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleSave(${post.Id})">
-                <i class="far fa-bookmark ${post.savedByYou ? 'fas' : ''}"></i>
-                <span>${post.saveCount}</span> Save
+            <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleSave(${post.id})">
+                <i id="save-id${post.id}" class="far fa-bookmark ${post.savedByYou ? 'fas' : ''}"></i>
+                <span id="save-count-id${post.id}">${post.saveCount}</span> Save
             </button>
         </div>
     `;
@@ -689,6 +709,15 @@ function createAdElement() {
     return postElement;
 }
 
+window.refreshFirstFetch = async function refreshFirstFetch() {
+    postIdAnchor = 0;
+    firstFetch = true;
+
+    const postsContainer = document.getElementById('postsContainer');
+    postsContainer.classList.remove('hidden');
+    postsContainer.innerHTML = ''; // Clear existing posts
+}
+
 // Refresh UI after a toggle interaction
 function refreshUI() {
     const tabs = document.querySelectorAll('.tab');
@@ -705,21 +734,58 @@ function refreshUI() {
     });
 }
 
+let freezeLikeButton = false;
+
 // Toggle like function
-window.toggleLike = function toggleLike(postId) {
-    const post = database.posts.find(p => p.id === postId);
-    if (post) {
-        post.likes.includes(sessionUserId) ? post.likes.splice(post.likes.indexOf(sessionUserId), 1) : post.likes.unshift(sessionUserId);
-        refreshUI();
+window.toggleLike = async function toggleLike(postId) {
+    if (freezeLikeButton) return;
+
+    freezeLikeButton = true;
+    const likeIcon = document.getElementById(`like-id${postId}`);
+    likeIcon.classList.toggle('fas');
+    const liked = likeIcon.classList.toggle('text-red-600');
+
+    if (liked) {
+        await api.likePost(userData.id, postId);
+
+        const likeCount = document.getElementById(`like-count-id${postId}`);
+        likeCount.textContent = (parseInt(likeCount.textContent) + 1).toString();
+
+        freezeLikeButton = false;
+    } else {
+        await api.removeLikePost(userData.id, postId);
+
+        const likeCount = document.getElementById(`like-count-id${postId}`);
+        likeCount.textContent = (parseInt(likeCount.textContent) - 1).toString();
+        
+        freezeLikeButton = false;
     }
 }
 
+let freezeSaveButton = false;
+
 // Toggle save function
-window.toggleSave = function toggleSave(postId) {
-    const post = database.posts.find(p => p.id === postId);
-    if (post) {
-        post.saves.includes(sessionUserId) ? post.saves.splice(post.saves.indexOf(sessionUserId), 1) : post.saves.unshift(sessionUserId);
-        refreshUI();
+window.toggleSave = async function toggleSave(postId) {
+    if (freezeSaveButton) return;
+
+    freezeSaveButton = true;
+    const saveIcon = document.getElementById(`save-id${postId}`);
+    const saved = saveIcon.classList.toggle('fas');
+
+    if (saved) {
+        await api.savePost(userData.id, postId);
+
+        const saveCount = document.getElementById(`save-count-id${postId}`);
+        saveCount.textContent = (parseInt(saveCount.textContent) + 1).toString();
+
+        freezeSaveButton = false;
+    } else {
+        await api.removeSavePost(userData.id, postId);
+
+        const saveCount = document.getElementById(`save-count-id${postId}`);
+        saveCount.textContent = (parseInt(saveCount.textContent) - 1).toString();
+        
+        freezeSaveButton = false;
     }
 }
 
@@ -1101,6 +1167,7 @@ window.createPost = async function createPost() {
 
 // Show profile function
 window.showProfile = function showProfile() {
+    currentPage = "Profile";
     hideAll();
 
     // Show profile content
@@ -1132,7 +1199,7 @@ window.showProfile = function showProfile() {
     // Display user's posts
     const profilePostsContainer = document.getElementById('profilePostsContainer');
     if (profilePostsContainer) {
-        profilePostsContainer.innerHTML = '';
+        // profilePostsContainer.innerHTML = '';
         const userPosts = database.posts.filter(post => post.userId === sessionUserId);
         userPosts.forEach(post => {
             const postElement = createPostElement(post.id);

@@ -17,7 +17,7 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> Create(CreatePostRequest request)
+    public async Task<IActionResult> Create([FromBody] CreatePostRequest request)
     {
         var result = await _postService.CreatePostAsync(request);
 
@@ -25,10 +25,42 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("fetch")]
-    public async Task<IActionResult> Fetch(FetchPostsRequest request)
+    public async Task<IActionResult> Fetch([FromBody] FetchPostsRequest request)
     {
         var result = await _postService.FetchPostsAsync(request);
 
         return Ok(new ApiResponse<List<PostResponse>>(result.Success, result.Message, result.responseData));
+    }
+
+    [HttpPost("like")]
+    public async Task<IActionResult> Like([FromBody] LikePostRequest request)
+    {
+        var result = await _postService.AddLikeAsync(request);
+
+        return Ok(new ApiResponse<object>(result.Success, result.Message));
+    }
+
+    [HttpPost("removeLike")]
+    public async Task<IActionResult> RemoveLike([FromBody] LikePostRequest request)
+    {
+        var result = await _postService.RemoveLikeAsync(request);
+
+        return Ok(new ApiResponse<object>(result.Success, result.Message));
+    }
+
+    [HttpPost("save")]
+    public async Task<IActionResult> Save([FromBody] SavePostRequest request)
+    {
+        var result = await _postService.AddSaveAsync(request);
+
+        return Ok(new ApiResponse<object>(result.Success, result.Message));
+    }
+
+    [HttpPost("removeSave")]
+    public async Task<IActionResult> RemoveSave([FromBody] SavePostRequest request)
+    {
+        var result = await _postService.RemoveSaveAsync(request);
+
+        return Ok(new ApiResponse<object>(result.Success, result.Message));
     }
 }
