@@ -72,7 +72,7 @@ public class PostController : ControllerBase
         return Ok(new ApiResponse<object>(result.Success, result.Message));
     }
 
-    [HttpPost("attend")]
+    [HttpPost("attendEvent")]
     public async Task<IActionResult> AddEventAttendee([FromBody] AttendEventRequest request)
     {
         var result = await _postService.AddEventAttendeeAsync(request);
@@ -80,7 +80,7 @@ public class PostController : ControllerBase
         return Ok(new ApiResponse<object>(result.Success, result.Message));
     }
 
-    [HttpPost("removeAttend")]
+    [HttpPost("removeAttendEvent")]
     public async Task<IActionResult> RemoveEventAttendee([FromBody] AttendEventRequest request)
     {
         var result = await _postService.RemoveEventAttendeeAsync(request);
