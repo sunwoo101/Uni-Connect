@@ -89,10 +89,18 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("addComment")]
-    public async Task<IActionResult> AddComment([FromBody] CommentRequest request)
+    public async Task<IActionResult> AddComment([FromBody] AddCommentRequest request)
     {
         var result = await _postService.AddCommentAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
+    }
+
+    [HttpPost("fetchComments")]
+    public async Task<IActionResult> FetchComments([FromBody] FetchCommentsRequest request)
+    {
+        var result = await _postService.FetchCommentsAsync(request);
+
+        return Ok(new ApiResponse<List<CommentResponse>>(result.Success, result.Message, result.responseData));
     }
 }

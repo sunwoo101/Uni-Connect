@@ -36,5 +36,11 @@ public class AppDbContext : DbContext
         .WithMany() // No navigation property from the Friend back to Friendships (unidirectional)
         .HasForeignKey(f => f.FriendId) // Friendship has a FriendId pointing to the Friend
         .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Comment>()
+        .HasOne(c => c.ParentComment) // A child comment has one parent comment
+        .WithMany(c => c.Replies) // A parent comment has many child comments
+        .HasForeignKey(c => c.ParentCommentId) // Comment has a ParentCommentId pointing to the parent comment
+        .OnDelete(DeleteBehavior.Cascade);
     }
 }
