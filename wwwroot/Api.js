@@ -328,4 +328,35 @@ export default class Api {
             return;
         }
     }
+
+    async addComment(userId, postId, content, parentCommentId) {
+        try {
+            const response = await fetch(`/api/post/addComment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                    content: content,
+                    parentCommentId, parentCommentId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+
+            return;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+
+            return;
+        }
+    }
 }
