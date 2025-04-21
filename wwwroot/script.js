@@ -464,8 +464,9 @@ function clearAllErrors() {
 
 // Format timestamp function
 function formatTimestamp(date) {
+    const utcDate = new Date(date + "Z");
     const now = new Date();
-    const diff = now - date;
+    const diff = now - utcDate;
 
     // Convert to hours
     const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -476,7 +477,7 @@ function formatTimestamp(date) {
     } else if (hours < 24) {
         return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
     } else {
-        return date.toLocaleDateString();
+        return utcDate.toLocaleDateString(); // Show local date for posts older than 24h
     }
 }
 
@@ -561,8 +562,6 @@ async function displayPosts(filter) { // Add a parameter so this function decide
         return;
     } else {
         feedPosts.forEach(post => {
-            post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
-
             if (adIndex === adFrequency) {
                 postsContainer.appendChild(createAdElement());
                 newAdFrequencyValue()
@@ -593,11 +592,11 @@ const placeHolderPfp = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy
 // Create post element function
 function createPostElement(post) {
     const _event = post.event;
-    if (_event) _event.dateAndTime = new Date(_event.dateAndTime);
+    if (_event) _event.dateAndTime = new Date(_event.dateAndTime + 'Z');
     const user = post.user;
     const postElement = document.createElement('div');
     postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
-    postElement.onclick = () => showPostModal(post.id); // Bookmark
+    postElement.onclick = () => showPostModal(post.id);
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
             <img src="${user.profileImageURL ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
@@ -617,7 +616,15 @@ function createPostElement(post) {
                     </div>
                     <div>
                         <h4 class="font-semibold">${_event.title}</h4>
-                        <p class="text-sm text-gray-600">${_event.dateAndTime.toLocaleDateString()} at ${_event.dateAndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                        <p class="text-sm text-gray-600">${_event.dateAndTime.toLocaleDateString(undefined, {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        })} at ${_event.dateAndTime.toLocaleTimeString(undefined, {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true
+                        })}</p>
                         <p class="text-sm text-gray-600">📍 ${_event.location}</p>
                     </div>
                 </div>
@@ -789,10 +796,9 @@ window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
 
 async function showPostModalAsync(postId) {
     const post = await api.fetchPost(userData.id, postId);
-    post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
     const user = post.user;
     const comments = {}; // Bookmark
-
+    
     const postModalContainer = document.getElementById('postModalContainer');
     postModalContainer.innerHTML = ''; // Clear existing posts
     postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
@@ -1132,7 +1138,7 @@ window.createPost = async function createPost() {
             location: currentEvent.location,
         };
     }
-
+    
     document.getElementById('postContent').value = ''; // Clear input
     // hideImagePreview();
     // hideVideoPreview();

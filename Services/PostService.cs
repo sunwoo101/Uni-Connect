@@ -77,8 +77,6 @@ public class PostService
         if (post == null)
             return (false, "Post no longer exists.", null);
 
-        Console.WriteLine(post.User.Id);
-
         PostResponse responseData = new PostResponse
         {
             Id = post.Id,
@@ -98,7 +96,7 @@ public class PostService
             Image = post.Image,
             Video = post.Video,
             Voice = post.Voice,
-            CreationDate = post.CreationDate,
+            CreationDate = post.CreationDate.ToString("o"),
             LikeCount = post.Likes.Count(),
             CommentCount = post.Comments.Count(),
             SaveCount = post.Saves.Count(),
@@ -108,13 +106,13 @@ public class PostService
             {
                 Id = post.Event.Id,
                 Title = post.Event.Title,
-                DateAndTime = post.Event.DateAndTime.ToString("o"),
+                DateAndTime = post.Event.DateAndTime.ToUniversalTime().ToString("o"),
                 Location = post.Event.Location,
                 AttendeeCount = post.Event.Attendees.Count(),
                 IsAttendee = post.Event.Attendees.Any(a => a.UserId == request.UserId)
             }
         };
-
+        
         return (true, "Successfully fetched post.", responseData);
     }
 
@@ -174,7 +172,7 @@ public class PostService
             Image = p.Image,
             Video = p.Video,
             Voice = p.Voice,
-            CreationDate = p.CreationDate,
+            CreationDate = p.CreationDate.ToString("o"),
             LikeCount = p.Likes.Count(),
             CommentCount = p.Comments.Count(),
             SaveCount = p.Saves.Count(),

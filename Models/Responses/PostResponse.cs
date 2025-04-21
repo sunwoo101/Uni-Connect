@@ -14,7 +14,7 @@ public class PostResponse
     public string? Image { get; set; } // The image in the post (optional). Stored as URL.
     public string? Video { get; set; } // The Video in the post (optional). Stored as URL.
     public string? Voice { get; set; } // The Voice recording in the post (optional). Stored as URL.
-    public required DateTime CreationDate { get; set; } // Auto generated on creation
+    public required string CreationDate { get; set; } // Auto generated on creation
     public required int LikeCount { get; set; } // Number of likes the post has
     public required int CommentCount { get; set; } // Number of comments the post has
     public required int SaveCount { get; set; } // Number of saves the post has
