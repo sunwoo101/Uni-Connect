@@ -6,7 +6,7 @@ public class Event // Events are embedded into posts. Description of the event i
     public required int PostId { get; set; } // EF can look for the event that has the post ID
     public required Post Post { get; set; } // The post this event is embedded to
     public required string Title { get; set; } // Title of the event
-    public required DateTime DateAndTime { get; set; } // Auto generated
+    public required DateTime DateAndTime { get; set; } // Date and time of event
     public required string Location { get; set; } // Location of the event
     public List<Attendee> Attendees { get; set; } = new(); // The people who clicked attend on the event
 }

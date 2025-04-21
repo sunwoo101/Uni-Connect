@@ -45,15 +45,27 @@ public class PostService
         return (true, "Successfully created post.");
     }
 
-    public async Task<(bool Success, string Message, List<PostResponse> responseData)> FetchPostsAsync(FetchPostsRequest request, int limit = 10)
+    public async Task<(bool Success, string Message, List<PostResponse> responseData)> FetchPostsAsync(FetchPostsRequest request)
     {
+        int limit = 10;
+        Console.WriteLine($"FirstFetch: {request.FirstFetch}, UserId: {request.UserId}, PostIdAnchor: {request.PostIdAnchor}");
         // Bookmark: The first fetch posts request wont include PostIdAnchor. Instead get the latest posts
-        List<Post> posts = await _context.Posts
-            .Where(request.FirstFetch ? p => p.Id > 0 : p => p.Id < request.PostIdAnchor)
+
+        // Start building the query
+        IQueryable<Post> query = _context.Posts;
+
+        // Apply filtering only if not first fetch
+        if (!request.FirstFetch)
+        {
+            query = query.Where(p => p.Id < request.PostIdAnchor);
+        }
+
+        List<Post> posts = await query
             .OrderByDescending(p => p.CreationDate)
             .Include(p => p.User)
             .Include(p => p.Likes)
             .Include(p => p.Comments)
+            .Include(p => p.Saves)
             .Include(p => p.Event)
             .Take(limit)
             .ToListAsync();
@@ -76,8 +88,11 @@ public class PostService
             Video = p.Video,
             Voice = p.Voice,
             CreationDate = p.CreationDate,
-            Likes = p.Likes,
-            Comments = p.Comments,
+            LikeCount = p.Likes.Count(),
+            CommentCount = p.Comments.Count(),
+            SaveCount = p.Saves.Count(),
+            LikedByYou = p.Likes.Any(like => like.UserId == request.UserId),
+            SavedByYou = p.Saves.Any(like => like.UserId == request.UserId),
             Event = p.Event
         }).ToList();
 

@@ -11,7 +11,10 @@ public class PostResponse
     public string? Video { get; set; } // The Video in the post (optional). Stored as URL.
     public string? Voice { get; set; } // The Voice recording in the post (optional). Stored as URL.
     public required DateTime CreationDate { get; set; } // Auto generated on creation
-    public List<Like> Likes { get; set; } = new(); // Stores likes from the DB that has the post ID
-    public List<Comment> Comments { get; set; } = new(); // Stores comments from the DB that has the post ID
+    public required int LikeCount { get; set; } // Number of likes the post has
+    public required int CommentCount { get; set; } // Number of comments the post has
+    public required int SaveCount { get; set; } // Number of saves the post has
+    public required bool LikedByYou { get; set; } // True if liked by the user
+    public required bool SavedByYou { get; set; } // True if saved by the user
     public Event? Event { get; set; } // Stores the embedded event if the post includes one
 }

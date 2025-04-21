@@ -24,7 +24,7 @@ public class PostController : ControllerBase
         return Ok(new ApiResponse<object>(result.Success, result.Message));
     }
 
-    [HttpGet("fetch")]
+    [HttpPost("fetch")]
     public async Task<IActionResult> Fetch(FetchPostsRequest request)
     {
         var result = await _postService.FetchPostsAsync(request);

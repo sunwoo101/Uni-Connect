@@ -1,0 +1,44 @@
+User Structure
+{
+    "Id": 1,
+    bla blah blah
+}
+
+Post Structure
+{
+    "id": 1,
+    "userId": 1,
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque purus risus, pharetra ut ipsum nec, accumsan fermentum lacus. Cras volutpat sed nulla sed ullamcorper. Duis a nunc nulla.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
+    "video": null,
+    "voice": null,
+    "creationDate": "new Date('2024-03-20T10:00:00')",
+    "likes": {
+                "numberOfLikes": 5,
+                "likedByYou": false
+             },
+    "comments": {
+                    "id": 1,
+                    "userId": 1,
+                    "content": "Hello",
+                    "creationDate": "date",
+                    "replies":  {
+                                    "id": 2,
+                                    "userId": 2,
+                                    "content": "Hello",
+                                    "creationDate": "date",
+                                }
+                },
+    "saves": {
+                "numberOfSaves": 5,
+                "savedByYou": false
+             },
+    "event": {
+                "id": 1,
+                "postId": 1,
+                "title": "Title",
+                "dateAndTime": "14 Aug 2025",
+                "location": "Location",
+                "attendees": 3
+             }
+}

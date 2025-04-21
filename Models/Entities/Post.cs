@@ -12,5 +12,6 @@ public class Post
     public required DateTime CreationDate { get; set; } // Auto generated on creation
     public List<Like> Likes { get; set; } = new(); // Stores likes from the DB that has the post ID
     public List<Comment> Comments { get; set; } = new(); // Stores comments from the DB that has the post ID
+    public List<Save> Saves { get; set; } = new(); // Stores saves from the DB that has the post ID
     public Event? Event { get; set; } // Stores the embedded event if the post includes one
 }
