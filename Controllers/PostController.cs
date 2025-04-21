@@ -87,4 +87,12 @@ public class PostController : ControllerBase
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
     }
+
+    [HttpPost("addComment")]
+    public async Task<IActionResult> AddComment([FromBody] CommentRequest request)
+    {
+        var result = await _postService.AddCommentAsync(request);
+
+        return Ok(new ApiResponse<object>(result.Success, result.Message));
+    }
 }

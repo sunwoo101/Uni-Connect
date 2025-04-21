@@ -951,7 +951,7 @@ window.submitReply = function submitReply(commentId) {
     showAlert('Reply posted successfully!', 'success');
 }
 
-window.submitComment = function submitComment(postId) {
+window.submitComment = async function submitComment(postId) {
     const commentInput = document.getElementById(`commentInput${postId}`);
     if (!commentInput) return;
 
@@ -963,20 +963,12 @@ window.submitComment = function submitComment(postId) {
         return;
     }
 
-    // Create new reply
-    const newComment = {
-        id: database.comments.length + 1,
-        postId: postId,
-        userId: 1, // Current user's ID (hardcoded for demo)
-        content: content,
-        creationDate: new Date()
-    };
+    await api.addComment(userData.id, postId, content, null);
 
-    database.comments.push(newComment);
+    textarea.value = '';
 
     // Update the existing modal
-    showPostModal(postId);
-    showAlert('Reply posted successfully!', 'success');
+    showPostModal(postId); // Bookmark: add comment to DOM instead of refreshing the post modal
 }
 
 // Close post modal function

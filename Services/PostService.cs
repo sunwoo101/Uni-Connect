@@ -119,7 +119,7 @@ public class PostService
     // Used for fetching posts for feed, saved, and profile
     public async Task<(bool Success, string Message, List<PostResponse> responseData)> FetchPostsAsync(FetchPostsRequest request)
     {
-        int limit = 10;
+        int limit = 3;
 
         // Start building the query
         IQueryable<Post> query = _context.Posts;
@@ -304,5 +304,30 @@ public class PostService
         await _context.SaveChangesAsync(); // Update the DB
 
         return (true, "No longer attending.");
+    }
+
+    public async Task<(bool Success, string Message)> AddCommentAsync(CommentRequest request)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == request.PostId);
+
+        if (user == null || post == null)
+            return (false, "Invalid post or user.");
+
+        Comment newComment = new Comment
+        {
+            UserId = request.UserId,
+            PostId = request.PostId,
+            User = user,
+            Post = post,
+            Content = request.Content,
+            CreationDate = DateTime.UtcNow,
+            ParentCommentId = request.ParentCommentId,
+        };
+
+        _context.Comments.Add(newComment); // Add the new comment to the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
+
+        return (true, "Comment posted.");
     }
 }

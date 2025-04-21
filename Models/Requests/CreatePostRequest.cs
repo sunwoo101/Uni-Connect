@@ -2,8 +2,6 @@
     This class is the structure for a login request from the frontend
 */
 
-using UniConnect.Models.Entities;
-
 namespace UniConnect.Models.Requests;
 
 public class CreatePostRequest
