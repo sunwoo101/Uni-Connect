@@ -11,6 +11,8 @@ public class AppDbContext : DbContext
     public DbSet<Like> Likes { get; set; }
     public DbSet<Save> Saves { get; set; }
     public DbSet<Friendship> Friendships { get; set; }
+    public DbSet<Event> Events { get; set; }
+    public DbSet<Attendee> Attendees { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,5 +1,5 @@
 /*
-    This class is the structure for a singular fetch post request from the frontend
+    This class is the structure for a singular fetch post request to the frontend
 */
 
 namespace UniConnect.Models.Requests;
