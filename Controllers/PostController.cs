@@ -32,6 +32,14 @@ public class PostController : ControllerBase
         return Ok(new ApiResponse<List<PostResponse>>(result.Success, result.Message, result.responseData));
     }
 
+    [HttpPost("fetchSingular")]
+    public async Task<IActionResult> FetchSingular([FromBody] FetchPostRequest request)
+    {
+        var result = await _postService.FetchPostAsync(request);
+
+        return Ok(new ApiResponse<PostResponse>(result.Success, result.Message, result.responseData));
+    }
+
     [HttpPost("like")]
     public async Task<IActionResult> Like([FromBody] LikePostRequest request)
     {

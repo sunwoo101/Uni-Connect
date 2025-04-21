@@ -45,10 +45,57 @@ public class PostService
         return (true, "Successfully created post.");
     }
 
+    // Used for fetching a singular post (for post modal)
+    public async Task<(bool Success, string Message, PostResponse? responseData)> FetchPostAsync(FetchPostRequest request)
+    {
+        Post? post = await _context.Posts
+            .Include(p => p.User)
+            .Include(p => p.Likes)
+            .Include(p => p.Comments)
+            .Include(p => p.Saves)
+            .Include(p => p.Event)
+            .FirstOrDefaultAsync(p => p.Id == request.PostId);
+
+        if (post == null)
+            return (false, "Post no longer exists.", null);
+
+        Console.WriteLine(post.User.Id);
+
+        PostResponse responseData = new PostResponse
+        {
+            Id = post.Id,
+            User = new UserResponse
+            {
+                Id = post.User.Id,
+                Role = post.User.Role.ToString(),
+                Username = post.User.Username,
+                FirstName = post.User.FirstName,
+                LastName = post.User.LastName,
+                Degree = post.User.Degree,
+                ProfileImageURL = post.User.ProfileImageURL,
+                PostCount = _context.Posts.Count(p => p.UserId == post.User.Id),
+                FriendCount = _context.Friendships.Count(f => f.UserId == post.User.Id),
+            },
+            Content = post.Content,
+            Image = post.Image,
+            Video = post.Video,
+            Voice = post.Voice,
+            CreationDate = post.CreationDate,
+            LikeCount = post.Likes.Count(),
+            CommentCount = post.Comments.Count(),
+            SaveCount = post.Saves.Count(),
+            LikedByYou = post.Likes.Any(l => l.UserId == request.UserId),
+            SavedByYou = post.Saves.Any(s => s.UserId == request.UserId),
+            Event = post.Event
+        };
+
+        return (true, "Successfully fetched post.", responseData);
+    }
+
+    // Used for fetching posts for feed, saved, and profile
     public async Task<(bool Success, string Message, List<PostResponse> responseData)> FetchPostsAsync(FetchPostsRequest request)
     {
         int limit = 10;
-        // Bookmark: The first fetch posts request wont include PostIdAnchor. Instead get the latest posts
 
         // Start building the query
         IQueryable<Post> query = _context.Posts;
@@ -65,8 +112,14 @@ public class PostService
             query = query.Where(p => p.Saves.Any(s => s.UserId == request.UserId));
         }
 
+        // Apply filter for only the user's posts
+        if (request.PostFilter == PostFilter.User.ToString())
+        {
+            query = query.Where(p => p.UserId == request.UserId);
+        }
+
         List<Post> posts = await query
-            .OrderByDescending(p => p.CreationDate)
+            .OrderByDescending(p => p.Id)
             .Include(p => p.User)
             .Include(p => p.Likes)
             .Include(p => p.Comments)
@@ -86,7 +139,9 @@ public class PostService
                 FirstName = p.User.FirstName,
                 LastName = p.User.LastName,
                 Degree = p.User.Degree,
-                ProfileImageURL = p.User.ProfileImageURL
+                ProfileImageURL = p.User.ProfileImageURL,
+                PostCount = _context.Posts.Count(p2 => p2.UserId == p.User.Id),
+                FriendCount = _context.Friendships.Count(f => f.UserId == p.User.Id)
             },
             Content = p.Content,
             Image = p.Image,
@@ -96,8 +151,8 @@ public class PostService
             LikeCount = p.Likes.Count(),
             CommentCount = p.Comments.Count(),
             SaveCount = p.Saves.Count(),
-            LikedByYou = p.Likes.Any(like => like.UserId == request.UserId),
-            SavedByYou = p.Saves.Any(like => like.UserId == request.UserId),
+            LikedByYou = p.Likes.Any(l => l.UserId == request.UserId),
+            SavedByYou = p.Saves.Any(s => s.UserId == request.UserId),
             Event = p.Event
         }).ToList();
 

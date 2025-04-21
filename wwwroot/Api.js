@@ -126,6 +126,35 @@ export default class Api {
         }
     }
 
+    async fetchPost(userId, postId) {
+        try {
+            const response = await fetch(`/api/post/fetchSingular`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            showAlert(result.message, 'success');
+    
+            return result.data;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+    
+            return null;
+        }
+    }
+
     async likePost(userId, postId) {
         try {
             const response = await fetch(`/api/post/like`, {
@@ -145,7 +174,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
 
             return;
         } catch (error) {
@@ -174,7 +203,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
             
             return;
         } catch (error) {
@@ -203,7 +232,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
 
             return;
         } catch (error) {
@@ -232,7 +261,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
             
             return;
         } catch (error) {

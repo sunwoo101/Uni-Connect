@@ -17,7 +17,7 @@ public class User
     public required DateTime CreationDate { get; set; } // Auto generated on registration
     public List<Post> Posts { get; set; } = new(); // Stores posts created by the user
     public List<Comment> Comments { get; set; } = new(); // Stores comments sent by the user
-    public List<User> Friends { get; set; } = new(); // Stores friends
+    public List<Friendship> Friendships { get; set; } = new(); // Stores friends
     public bool IsDeactivated { get; set; } = false; // Deactivate by default. Delete after inactivity.
     public DateTime? DeactivatedDate { get; set; } // Keep track of when the account was deactivated to delete after a period of inactivity. Null if the account is active.
 }
