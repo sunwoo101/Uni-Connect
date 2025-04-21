@@ -185,15 +185,8 @@ window.feedUiTabActive = function feedUiTabActive() {
 
 // Display feed function
 window.displayFeed = function displayFeed() {
-    currentPage = "Feed";
-    postIdAnchor = 0;
-    firstFetch = true;
-    allPostsLoaded = false;
+    currentPage = 'Feed';
 
-    const postsContainer = document.getElementById('postsContainer');
-    postsContainer.classList.remove('hidden');
-    postsContainer.innerHTML = ''; // Clear existing posts
-    
     hideAll();
     displayPosts();
     feedUiTabActive();
@@ -206,7 +199,7 @@ window.updateSideBarProfile = function updateSideBarProfile() {
     const sideBarProfileUsername = document.getElementById('sideBarProfileUsername');
     const sideBarProfileDegree = document.getElementById('sideBarProfileDegree');
 
-    sideBarProfileImage.src = database.users[sessionUserId - 1].profileImage;
+    sideBarProfileImage.src = userData.profileImage ? userData.profileImage : placeHolderPfp;
     sideBarProfileName.textContent = userData.firstName + " " + userData.lastName;
     sideBarProfileUsername.textContent = "@" + userData.username;
     sideBarProfileDegree.textContent = userData.degree;
@@ -230,7 +223,8 @@ function updateUI() {
         mainContent.classList.remove('hidden');
 
         // Render posts
-        displayPosts();
+        refreshFirstFetch();
+        displayFeed();
 
         navButtons.innerHTML = `
             <button onclick="showProfile(); hideCreatePostModal(); updateSideBarProfile()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50">Profile</button>
@@ -488,8 +482,7 @@ function formatTimestamp(date) {
 
 // Show create post modal 
 window.showCreatePostModal = function showCreatePostModal() {
-    const user = database.users.find(u => u.id === sessionUserId);
-    document.getElementById('createPostProfileImage').src = user.profileImage;
+    document.getElementById('createPostProfileImage').src = userData.profileImage ? userData.profileImage : placeHolderPfp;
     document.getElementById('createPostModal').classList.remove('hidden'); // Show the create post modal
 }
 
@@ -521,51 +514,64 @@ window.addEventListener('scroll', async () => {
     if (scrollPosition >= threshold) {
         isLoading = true;
 
-        if (currentPage === "Feed")
-            await displayPosts();
-        else if (currentPage === "Saved")
-            await displaySaved();
+        await displayPosts(currentPage);
     }
 
     isLoading = false;
 })
 
 // Display posts function
-async function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
+async function displayPosts(filter) { // Add a parameter so this function decides which group posts should be displayed
     const postsContainer = document.getElementById('postsContainer');
-    postsContainer.classList.remove('hidden');
-    // postsContainer.innerHTML = ''; // Clear existing posts
 
     // Sort posts by timestamp (newest first)
-    const feedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor, "Feed");
+    const feedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor, filter);
 
     if (!feedPosts || feedPosts.length === 0) {
         allPostsLoaded = true;
     }
 
     if ((!feedPosts || feedPosts.length === 0) && firstFetch) {
-        postsContainer.innerHTML = `
+        if (currentPage === 'Feed') {
+            postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
                 <i class="fas fa-home text-4xl text-gray-400 mb-4"></i>
                 <h3 class="text-xl font-semibold text-gray-700 mb-2">No Posts Yet</h3>
                 <p class="text-gray-500">Be the first person to post</p>
             </div>
-        `;
+            `;
+        } else if (currentPage === 'Saved') {
+            postsContainer.innerHTML = `
+            <div class="bg-white rounded-lg shadow p-6 text-center">
+                <i class="fas fa-bookmark text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Saved Posts Yet</h3>
+                <p class="text-gray-500">Posts you save will appear here</p>
+            </div>
+            `;
+        } else if (currentPage === 'Profile') {
+            postsContainer.innerHTML = `
+            <div class="bg-white rounded-lg shadow p-6 text-center">
+                <i class="fas fa-user text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Posts Yet</h3>
+                <p class="text-gray-500">Create your first post</p>
+            </div>
+            `;
+        }
+
         return;
     } else {
         feedPosts.forEach(post => {
             post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
-    
+
             if (adIndex === adFrequency) {
                 postsContainer.appendChild(createAdElement());
                 newAdFrequencyValue()
             }
-    
+
             postsContainer.appendChild(createPostElement(post));
             adIndex++;
-    
+
             postIdAnchor = post.id;
-            // database.posts.push(post);
             firstFetch = false;
         });
     }
@@ -573,13 +579,8 @@ async function displayPosts() { // Add a parameter so this function decides whic
 
 // Function to display saved postss
 window.displaySaved = async function displaySaved() {
-    currentPage = "Saved";
+    currentPage = 'Saved';
     hideAll();
-
-    // Show posts container
-    const postsContainer = document.getElementById('postsContainer');
-    postsContainer.classList.remove('hidden');
-    // postsContainer.innerHTML = ''; // Clear existing posts
 
     // Update active tab
     const tabs = document.querySelectorAll('.tab');
@@ -590,40 +591,8 @@ window.displaySaved = async function displaySaved() {
         }
     });
 
-    // Filter posts that are saved by the current user
-    const savedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor, "Saved");
-
-    if (!savedPosts || savedPosts.length === 0) {
-        allPostsLoaded = true;
-    }
-
-    if ((!savedPosts || savedPosts.length === 0) && firstFetch) {
-        postsContainer.innerHTML = `
-            <div class="bg-white rounded-lg shadow p-6 text-center">
-                <i class="fas fa-bookmark text-4xl text-gray-400 mb-4"></i>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Saved Posts Yet</h3>
-                <p class="text-gray-500">Posts you save will appear here</p>
-            </div>
-        `;
-        return;
-    }
-    else {
-        // Display saved posts
-        savedPosts.forEach(post => {
-            post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
-            if (adIndex === adFrequency) {
-                postsContainer.appendChild(createAdElement());
-                newAdFrequencyValue()
-            }
-
-            postsContainer.appendChild(createPostElement(post));
-            adIndex++;
-
-            postIdAnchor = post.id;
-            // database.posts.push(post);
-            firstFetch = false;
-        });
-    }
+    // Display saved posts
+    displayPosts('Saved');
 }
 
 const placeHolderPfp = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=';
@@ -661,7 +630,6 @@ function createPostElement(post) {
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         ${_event.attendees.map(attendee => {
-        // const attendee = database.users.find(u => u.id === userId);
         return `<img src="${attendee.user.profileImageURL}" alt="Attendee" class="w-6 h-6 rounded-full border-2 border-white">`;
     }).join('')}
                         <span class="text-sm text-gray-600">${_event.attendees.length} attending</span>
@@ -676,17 +644,17 @@ function createPostElement(post) {
         <div class="flex justify-between items-center text-gray-500">
             <div class="flex space-x-4">
                 <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleLike(${post.id})">
-                    <i id="like-id${post.id}" class="far fa-heart ${post.likedByYou ? 'fas text-red-600' : ''}"></i> 
-                    <span id="like-count-id${post.id}">${post.likeCount}</span> Like
+                    <i id="like-id-${post.id}" class="far fa-heart ${post.likedByYou ? 'fas text-red-600' : ''}"></i> 
+                    <span id="like-count-id-${post.id}">${post.likeCount}</span> Like
                 </button>
                 <button class="hover:text-blue-600" onclick="event.stopPropagation(); showPostModal(${post.id})">
                     <i class="far fa-comment"></i> 
-                    <span id="comment-count-id${post.id}">${post.commentCount}</span> Comment
+                    <span id="comment-count-id-${post.id}">${post.commentCount}</span> Comment
                 </button>
             </div>
             <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleSave(${post.id})">
-                <i id="save-id${post.id}" class="far fa-bookmark ${post.savedByYou ? 'fas' : ''}"></i>
-                <span id="save-count-id${post.id}">${post.saveCount}</span> Save
+                <i id="save-id-${post.id}" class="far fa-bookmark ${post.savedByYou ? 'fas' : ''}"></i>
+                <span id="save-count-id-${post.id}">${post.saveCount}</span> Save
             </button>
         </div>
     `;
@@ -696,15 +664,17 @@ function createPostElement(post) {
 // Create ad element function
 function createAdElement() {
     const postElement = document.createElement('div');
-    postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
+    postElement.className = 'bg-white rounded-lg shadow p-4';
     postElement.onclick = () => showPostModal(postId);
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
             <div>
-                <h3 class="font-semibold">Ad</h3>
+                <h3 class="font-semibold">Sponsor</h3>
             </div>
         </div>
-        <img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">
+        <div class="rounded-lg hover-effect hover:shadow-md transition-shadow cursor-pointer">
+            <img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">
+        </div>
     `;
     return postElement;
 }
@@ -712,9 +682,9 @@ function createAdElement() {
 window.refreshFirstFetch = async function refreshFirstFetch() {
     postIdAnchor = 0;
     firstFetch = true;
+    allPostsLoaded = false;
 
     const postsContainer = document.getElementById('postsContainer');
-    postsContainer.classList.remove('hidden');
     postsContainer.innerHTML = ''; // Clear existing posts
 }
 
@@ -741,23 +711,23 @@ window.toggleLike = async function toggleLike(postId) {
     if (freezeLikeButton) return;
 
     freezeLikeButton = true;
-    const likeIcon = document.getElementById(`like-id${postId}`);
+    const likeIcon = document.getElementById(`like-id-${postId}`);
     likeIcon.classList.toggle('fas');
     const liked = likeIcon.classList.toggle('text-red-600');
 
     if (liked) {
         await api.likePost(userData.id, postId);
 
-        const likeCount = document.getElementById(`like-count-id${postId}`);
+        const likeCount = document.getElementById(`like-count-id-${postId}`);
         likeCount.textContent = (parseInt(likeCount.textContent) + 1).toString();
 
         freezeLikeButton = false;
     } else {
         await api.removeLikePost(userData.id, postId);
 
-        const likeCount = document.getElementById(`like-count-id${postId}`);
+        const likeCount = document.getElementById(`like-count-id-${postId}`);
         likeCount.textContent = (parseInt(likeCount.textContent) - 1).toString();
-        
+
         freezeLikeButton = false;
     }
 }
@@ -769,22 +739,22 @@ window.toggleSave = async function toggleSave(postId) {
     if (freezeSaveButton) return;
 
     freezeSaveButton = true;
-    const saveIcon = document.getElementById(`save-id${postId}`);
+    const saveIcon = document.getElementById(`save-id-${postId}`);
     const saved = saveIcon.classList.toggle('fas');
 
     if (saved) {
         await api.savePost(userData.id, postId);
 
-        const saveCount = document.getElementById(`save-count-id${postId}`);
+        const saveCount = document.getElementById(`save-count-id-${postId}`);
         saveCount.textContent = (parseInt(saveCount.textContent) + 1).toString();
 
         freezeSaveButton = false;
     } else {
         await api.removeSavePost(userData.id, postId);
 
-        const saveCount = document.getElementById(`save-count-id${postId}`);
+        const saveCount = document.getElementById(`save-count-id-${postId}`);
         saveCount.textContent = (parseInt(saveCount.textContent) - 1).toString();
-        
+
         freezeSaveButton = false;
     }
 }
@@ -809,14 +779,14 @@ window.toggleEventAttendance = function toggleEventAttendance(postId) {
     showAlert(isAttending ? 'You are no longer attending this event' : 'You are now attending this event', 'success');
 }
 
-// Show post modal function
-window.showPostModal = function showPostModal(postId) {
-    const post = database.posts.find(p => p.id === postId);
+async function showPostModalAsync(postId) {
+    const post = await api.fetchPost(userData.id, postId);
+    post.creationDate = new Date(post.creationDate); // Convert date data type from string to date
+    const user = post.user;
+    const comments = {}; // Bookmark
+
     const postModalContainer = document.getElementById('postModalContainer');
     postModalContainer.innerHTML = ''; // Clear existing posts
-
-    const user = database.users.find(u => u.id === post.userId);
-    const comments = database.comments.filter(c => c.postId === postId);
     postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
 
     // Add click event listener to the modal overlay
@@ -831,7 +801,7 @@ window.showPostModal = function showPostModal(postId) {
             <div class="p-4 border-b">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-4">
-                        <img src="${user.profileImage}" alt="Profile" class="rounded-full w-12 h-12">
+                        <img src="${user.profileImage ? user.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
                         <div>
                             <h3 class="font-semibold">${user.firstName} ${user.lastName}</h3>
                             <p class="text-gray-500 text-sm">${formatTimestamp(post.creationDate)}</p>
@@ -849,7 +819,7 @@ window.showPostModal = function showPostModal(postId) {
                 <div class="border-t pt-4">
                     <div class="space-y-4">
                         <div id="commentInput${post.id}" class="flex space-x-4">
-                            <img src="${user.profileImage}" alt="Profile" class="rounded-full w-8 h-8">
+                            <img src="${user.profileImage ? user.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
                             <div class="flex-1">
                                 <textarea class="w-full border rounded-lg p-2 resize-none" placeholder="Write a comment..."></textarea>
                                 <button onclick="submitComment(${post.id})" class="mt-2 text-blue-600 hover:text-blue-800">
@@ -863,7 +833,7 @@ window.showPostModal = function showPostModal(postId) {
         const replies = database.replies.filter(r => r.commentId === comment.id);
         return `
                                     <div class="flex space-x-3">
-                                        <img src="${commentUser.profileImage}" alt="Profile" class="rounded-full w-8 h-8">
+                                        <img src="${commentUser.profileImage ? commentUser.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
                                         <div class="flex-1">
                                             <div class="bg-gray-100 rounded-lg p-3">
                                                 <div class="flex items-center space-x-2">
@@ -881,7 +851,7 @@ window.showPostModal = function showPostModal(postId) {
             const replyUser = database.users.find(u => u.id === reply.userId);
             return `
                                                             <div class="flex space-x-3">
-                                                                <img src="${replyUser.profileImage}" alt="Profile" class="rounded-full w-6 h-6">
+                                                                <img src="${replyUser.profileImage ? replyUser.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
                                                                 <div class="flex-1">
                                                                     <div class="bg-gray-50 rounded-lg p-2">
                                                                         <div class="flex items-center space-x-2">
@@ -898,7 +868,7 @@ window.showPostModal = function showPostModal(postId) {
                                             ` : ''}
                                             <div id="replyInput${comment.id}" class="hidden ml-8 mt-2">
                                                 <div class="flex space-x-2">
-                                                    <img src="${user.profileImage}" alt="Profile" class="rounded-full w-6 h-6">
+                                                    <img src="${user.profileImage ? user.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
                                                     <div class="flex-1">
                                                         <textarea class="w-full border rounded-lg p-2 text-sm resize-none" placeholder="Write a reply..."></textarea>
                                                         <div class="flex justify-end space-x-2 mt-1">
@@ -920,6 +890,11 @@ window.showPostModal = function showPostModal(postId) {
     `;
 
     document.body.style.overflow = 'hidden';
+}
+
+// Show post modal function
+window.showPostModal = async function showPostModal(postId) {
+    await showPostModalAsync(postId);
 }
 
 // Show reply input
@@ -953,10 +928,10 @@ window.submitReply = function submitReply(commentId) {
     };
 
     database.replies.push(newReply);
-    
+
     // Find the post associated with this comment
     const comment = database.comments.find(c => c.id === commentId);
-    
+
     // Update the existing modal
     showPostModal(comment.postId);
     showAlert('Reply posted successfully!', 'success');
@@ -984,7 +959,7 @@ window.submitComment = function submitComment(postId) {
     };
 
     database.comments.push(newComment);
-    
+
     // Update the existing modal
     showPostModal(postId);
     showAlert('Reply posted successfully!', 'success');
@@ -1109,11 +1084,18 @@ function hideEventPreview() {
     document.getElementById('eventPreview').classList.add('hidden');
 }
 
+let freezePostButton = false;
+
 // Create post function
 window.createPost = async function createPost() {
+    if (freezePostButton) return;
+
+    freezePostButton = true;
+
     const content = document.getElementById('postContent').value.trim();
     if (!content) {
         showAlert('Please enter some content for your post', 'error');
+        freezePostButton = false;
         return;
     }
 
@@ -1127,6 +1109,7 @@ window.createPost = async function createPost() {
         saves: [],
     };
 
+    /*
     // Add image if exists
     const imagePreview = document.getElementById('imagePreview');
     if (!imagePreview.classList.contains('hidden')) {
@@ -1138,6 +1121,7 @@ window.createPost = async function createPost() {
     if (!videoPreview.classList.contains('hidden')) {
         newPost.video = currentVideo;
     }
+    */
 
     // Add event if exists
     const eventPreview = document.getElementById('eventPreview');
@@ -1155,57 +1139,22 @@ window.createPost = async function createPost() {
         database.events.push(newEvent);
     }
 
-    database.posts.push(newPost); // Add to beginning of array
-    displayPosts(); // Refresh posts
     document.getElementById('postContent').value = ''; // Clear input
-    hideImagePreview();
-    hideVideoPreview();
+    // hideImagePreview();
+    // hideVideoPreview();
     hideEventPreview();
 
     await api.createPost(userData.id, content)
+
+    refreshFirstFetch();
+    displayFeed();
+
+    freezePostButton = false;
 }
 
 // Show profile function
-window.showProfile = function showProfile() {
-    currentPage = "Profile";
-    hideAll();
-
-    // Show profile content
-    const profileContent = document.getElementById('profileContent');
-    profileContent.classList.remove('hidden');
-
-    // Update profile information
-    const profileHeaderProfileImage = document.getElementById('profileHeaderProfileImage');
-    const profileHeaderName = document.getElementById('profileHeaderName');
-    const profileHeaderUsername = document.getElementById('profileHeaderUsername');
-    const profileHeaderDegree = document.getElementById('profileHeaderDegree');
-
-    if (profileHeaderProfileImage && profileHeaderName && profileHeaderUsername && profileHeaderDegree) {
-        profileHeaderProfileImage.src = database.users[sessionUserId - 1].profileImage;
-        profileHeaderName.textContent = userData.firstName + " " + userData.lastName;
-        profileHeaderUsername.textContent = "@" + userData.username;
-        profileHeaderDegree.textContent = userData.degree;
-    }
-
-    // Update profile stats
-    const profilePostsCount = document.getElementById('profilePostsCount');
-    const profileFriendsCount = document.getElementById('profileFriendsCount');
-
-    if (profilePostsCount && profileFriendsCount) {
-        profilePostsCount.textContent = database.posts.length; // This should be replaced with the user's post count
-        profileFriendsCount.textContent = database.users[sessionUserId - 1].friends.length; // This should be replaced with amount of friends
-    }
-
-    // Display user's posts
-    const profilePostsContainer = document.getElementById('profilePostsContainer');
-    if (profilePostsContainer) {
-        // profilePostsContainer.innerHTML = '';
-        const userPosts = database.posts.filter(post => post.userId === sessionUserId);
-        userPosts.forEach(post => {
-            const postElement = createPostElement(post.id);
-            profilePostsContainer.appendChild(postElement);
-        });
-    }
+window.showProfile = async function showProfile() {
+    currentPage = 'Profile';
 
     // Update active tab
     const tabs = document.querySelectorAll('.tab');
@@ -1216,13 +1165,34 @@ window.showProfile = function showProfile() {
             tab.classList.remove('active');
         }
     });
+
+    // Show profile content
+    const profileContent = document.getElementById('profileContent');
+    profileContent.classList.remove('hidden');
+
+    // Update profile information
+    const profileHeaderProfileImage = document.getElementById('profileHeaderProfileImage');
+    const profileHeaderName = document.getElementById('profileHeaderName');
+    const profileHeaderUsername = document.getElementById('profileHeaderUsername');
+    const profileHeaderDegree = document.getElementById('profileHeaderDegree');
+    const profilePostsCount = document.getElementById('profilePostsCount');
+    const profileFriendsCount = document.getElementById('profileFriendsCount');
+
+    profileHeaderProfileImage.src = userData.profileImage ? userData.profileImage : placeHolderPfp;
+    profileHeaderName.textContent = userData.firstName + " " + userData.lastName;
+    profileHeaderUsername.textContent = "@" + userData.username;
+    profileHeaderDegree.textContent = userData.degree;
+    profilePostsCount.textContent = userData.postCount;
+    profileFriendsCount.textContent = userData.friendCount;
+
+    // Display user's posts
+    displayPosts('User');
 }
 
 // Hide all function
 function hideAll() {
     // Hide profile content
     document.getElementById('profileContent').classList.add('hidden');
-    document.getElementById('postsContainer').classList.add('hidden');
 }
 
 // Edit profile function
@@ -1287,7 +1257,7 @@ window.editProfile = function editProfile() {
                     </label>
                     <input type="file" id="editProfileImage" accept="image/*" class="w-full">
                     <div id="profileImagePreview" class="mt-2">
-                        <img src="${currentUser.profileImage}" alt="Profile Preview" class="w-20 h-20 rounded-full">
+                        <img src="${userData.profileImage ? userData.profileImage : placeHolderPfp}" alt="Profile Preview" class="w-20 h-20 rounded-full">
                     </div>
                 </div>
             </div>

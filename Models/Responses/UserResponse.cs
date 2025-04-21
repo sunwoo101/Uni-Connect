@@ -13,4 +13,6 @@ public class UserResponse
     public required string LastName { get; set; }
     public required string Degree { get; set; }
     public string? ProfileImageURL { get; set; }
+    public required int PostCount { get; set; }
+    public required int FriendCount { get; set; }
 }

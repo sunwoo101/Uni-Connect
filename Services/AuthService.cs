@@ -51,7 +51,9 @@ public class AuthService
             Username = newUser.Username,
             FirstName = newUser.FirstName,
             LastName = newUser.LastName,
-            Degree = newUser.Degree
+            Degree = newUser.Degree,
+            PostCount = 0,
+            FriendCount = 0
         };
 
         return (true, "Successfully registered.", responseData);
@@ -60,7 +62,7 @@ public class AuthService
     public async Task<(bool Success, string Message, UserResponse? responseData)> LoginUserAsync(LoginRequest request)
     {
         User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email); // Look for the email that matches with the login email
-        
+
         if (user == null || !PasswordHelper.VerifyPassword(request.Password, user.PasswordHash)) // Check if the email exists and password is correct
             return (false, "Invalid email or password.", null);
 
@@ -71,7 +73,9 @@ public class AuthService
             Username = user.Username,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Degree = user.Degree
+            Degree = user.Degree,
+            PostCount = _context.Posts.Count(p => p.UserId == user.Id),
+            FriendCount = _context.Friendships.Count(f => f.UserId == user.Id),
         };
 
         return (true, "Successfully logged in.", responseData);
