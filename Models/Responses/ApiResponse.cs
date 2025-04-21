@@ -1,5 +1,5 @@
 /*
-    This class is the structure for an API response from the frontend
+    This class is the structure for an API response to the frontend
 */
 
 namespace UniConnect.Models.Responses;

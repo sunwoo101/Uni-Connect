@@ -290,7 +290,7 @@ window.login = async function login() {
         loggedIn = true;
         userData = JSON.parse(localStorage.getItem('user'));
         updateUI();
-        feedUiTabActive();
+        updateActiveTab('feed');
         updateSideBarProfile();
 
         if (rememberMeChecked) {
@@ -432,7 +432,7 @@ window.register = async function register() {
         loggedIn = true;
         userData = JSON.parse(localStorage.getItem('user'));
         updateUI();
-        feedUiTabActive();
+        updateActiveTab('feed');
         updateSideBarProfile();
     }
 }
@@ -593,6 +593,7 @@ const placeHolderPfp = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy
 // Create post element function
 function createPostElement(post) {
     const _event = post.event;
+    if (_event) _event.dateAndTime = new Date(_event.dateAndTime);
     const user = post.user;
     const postElement = document.createElement('div');
     postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
@@ -622,14 +623,11 @@ function createPostElement(post) {
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
-                        ${_event.attendees.map(attendee => {
-        return `<img src="${attendee.user.profileImageURL}" alt="Attendee" class="w-6 h-6 rounded-full border-2 border-white">`;
-    }).join('')}
-                        <span class="text-sm text-gray-600">${_event.attendees.length} attending</span>
+                        <span id="attendee-count-id-${_event.id}" class="text-sm text-gray-600">${_event.attendeeCount} attending</span>
                     </div>
-                    <button onclick="event.stopPropagation(); toggleEventAttendance(${post.id})" 
-                            class="text-sm px-3 py-1 rounded-full ${_event.attendees.some(attendee => attendee.userId == userData.id) ? 'bg-blue-100 text-blue-600' : 'bg-white text-blue-600 border border-blue-600'} hover:bg-blue-100 transition-colors flex items-center space-x-1">
-                        ${_event.attendees.some(attendee => attendee.userId == userData.id) ? '<i class="fas fa-check"></i>' : 'Going'}
+                    <button id="attend-id-${_event.id}" onclick="event.stopPropagation(); toggleEventAttendance(${_event.id})" 
+                            class="text-sm px-3 py-1 rounded-full ${_event.isAttendee ? 'bg-blue-100 text-blue-600' : 'bg-white text-blue-600 border border-blue-600'} hover:bg-blue-100 transition-colors flex items-center space-x-1">
+                        ${_event.isAttendee ? '<i class="fas fa-check"></i>' : 'Going'}
                     </button>
                 </div>
             </div>
@@ -752,24 +750,41 @@ window.toggleSave = async function toggleSave(postId) {
     }
 }
 
+let freezeGoingButton = false;
+
 // Toggle event attendance function
-window.toggleEventAttendance = function toggleEventAttendance(postId) {
-    const post = database.posts.find(p => p.id === postId);
-    const _event = database.events.find(e => e.id === post.eventId);
-    if (!post || !_event) return;
+window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
+    if (freezeGoingButton) return;
 
-    const currentUserId = sessionUserId; // Current user's ID (hardcoded for demo)
-    const isAttending = _event.attendees.includes(currentUserId);
+    freezeGoingButton = true;
+    const attendButton = document.getElementById(`attend-id-${eventId}`);
+    attendButton.classList.toggle('bg-white');
+    attendButton.classList.toggle('border');
+    attendButton.classList.toggle('border-blue-600');
 
-    if (isAttending) {
-        _event.attendees = _event.attendees.filter(id => id !== currentUserId);
+    if (attendButton.innerHTML.includes('Going')) {
+        attendButton.innerHTML = `<i class="fas fa-check"></i>`;
     } else {
-        _event.attendees.push(currentUserId);
+        attendButton.innerHTML = `Going`;
     }
 
-    refreshUI();
+    const attending = attendButton.classList.toggle('bg-blue-100');
 
-    showAlert(isAttending ? 'You are no longer attending this event' : 'You are now attending this event', 'success');
+    if (attending) {
+        await api.attendEvent(userData.id, eventId);
+
+        const attendeeCount = document.getElementById(`attendee-count-id-${eventId}`);
+        attendeeCount.textContent = (parseInt(attendeeCount.textContent) + 1).toString() + ' attending';
+
+        freezeGoingButton = false;
+    } else {
+        await api.removeAttendEvent(userData.id, eventId);
+
+        const attendeeCount = document.getElementById(`attendee-count-id-${eventId}`);
+        attendeeCount.textContent = (parseInt(attendeeCount.textContent) - 1).toString() + ' attending';
+
+        freezeGoingButton = false;
+    }
 }
 
 async function showPostModalAsync(postId) {
@@ -1044,7 +1059,7 @@ window.embedPostEvent = function embedPostEvent() {
     // Create new event
     currentEvent = {
         title: title,
-        date: new Date(dateTime),
+        dateAndTime: new Date(dateTime),
         location: location,
     };
 
@@ -1056,7 +1071,7 @@ window.embedPostEvent = function embedPostEvent() {
 
     if (eventTitle && eventDate && eventLocation && eventPreview) {
         eventTitle.textContent = title;
-        eventDate.textContent = currentEvent.date.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
+        eventDate.textContent = currentEvent.dateAndTime.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
         eventLocation.textContent = location;
         eventPreview.classList.remove('hidden');
     }
@@ -1092,16 +1107,6 @@ window.createPost = async function createPost() {
         return;
     }
 
-    const newPost = {
-        id: database.posts.length + 1,
-        userId: sessionUserId, // Current user's ID (hardcoded for demo)
-        content: content,
-        creationDate: new Date(),
-        likes: [],
-        comments: [],
-        saves: [],
-    };
-
     /*
     // Add image if exists
     const imagePreview = document.getElementById('imagePreview');
@@ -1118,18 +1123,14 @@ window.createPost = async function createPost() {
 
     // Add event if exists
     const eventPreview = document.getElementById('eventPreview');
+    let newEvent;
     if (!eventPreview.classList.contains('hidden')) {
-        newPost.eventId = database.events.length + 1;
-
         // Add event to database
-        const newEvent = {
-            id: newPost.eventId,
+        newEvent = {
             title: currentEvent.title,
-            date: currentEvent.date,
+            dateAndTime: currentEvent.dateAndTime.toISOString(),
             location: currentEvent.location,
-            attendees: []
         };
-        database.events.push(newEvent);
     }
 
     document.getElementById('postContent').value = ''; // Clear input
@@ -1137,7 +1138,7 @@ window.createPost = async function createPost() {
     // hideVideoPreview();
     hideEventPreview();
 
-    await api.createPost(userData.id, content)
+    await api.createPost(userData.id, content, null, null, null, newEvent)
 
     refreshFirstFetch();
     displayFeed();

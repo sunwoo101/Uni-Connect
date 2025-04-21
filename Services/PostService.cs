@@ -36,11 +36,28 @@ public class PostService
             Video = request.Video,
             Voice = request.Voice,
             CreationDate = DateTime.UtcNow,
-            Event = request.Event
         };
 
         _context.Posts.Add(newPost); // Add the new post to the EF tracking system
         await _context.SaveChangesAsync(); // Update the DB
+
+        if (request.Event != null)
+        {
+            Event newEvent = new Event
+            {
+                PostId = newPost.Id,
+                Post = newPost,
+                Title = request.Event.Title,
+                DateAndTime = DateTime.Parse(request.Event.DateAndTime, null, System.Globalization.DateTimeStyles.RoundtripKind),
+                Location = request.Event.Location
+            };
+
+            _context.Events.Add(newEvent); // Add the new event to the EF tracking system
+            await _context.SaveChangesAsync(); // Update the DB
+
+            newPost.Event = newEvent; // Add the event to post
+            await _context.SaveChangesAsync(); // Update the DB
+        }
 
         return (true, "Successfully created post.");
     }
@@ -54,6 +71,7 @@ public class PostService
             .Include(p => p.Comments)
             .Include(p => p.Saves)
             .Include(p => p.Event)
+                .ThenInclude(e => e.Attendees)
             .FirstOrDefaultAsync(p => p.Id == request.PostId);
 
         if (post == null)
@@ -86,7 +104,15 @@ public class PostService
             SaveCount = post.Saves.Count(),
             LikedByYou = post.Likes.Any(l => l.UserId == request.UserId),
             SavedByYou = post.Saves.Any(s => s.UserId == request.UserId),
-            Event = post.Event
+            Event = post.Event == null ? null : new EventResponse
+            {
+                Id = post.Event.Id,
+                Title = post.Event.Title,
+                DateAndTime = post.Event.DateAndTime.ToString("o"),
+                Location = post.Event.Location,
+                AttendeeCount = post.Event.Attendees.Count(),
+                IsAttendee = post.Event.Attendees.Any(a => a.UserId == request.UserId)
+            }
         };
 
         return (true, "Successfully fetched post.", responseData);
@@ -125,6 +151,7 @@ public class PostService
             .Include(p => p.Comments)
             .Include(p => p.Saves)
             .Include(p => p.Event)
+                .ThenInclude(e => e.Attendees)
             .Take(limit)
             .ToListAsync();
 
@@ -153,7 +180,15 @@ public class PostService
             SaveCount = p.Saves.Count(),
             LikedByYou = p.Likes.Any(l => l.UserId == request.UserId),
             SavedByYou = p.Saves.Any(s => s.UserId == request.UserId),
-            Event = p.Event
+            Event = p.Event == null ? null : new EventResponse
+            {
+                Id = p.Event.Id,
+                Title = p.Event.Title,
+                DateAndTime = p.Event.DateAndTime.ToString("o"),
+                Location = p.Event.Location,
+                AttendeeCount = p.Event.Attendees.Count(),
+                IsAttendee = p.Event.Attendees.Any(a => a.UserId == request.UserId)
+            }
         }).ToList();
 
         if (!responseData.Any())

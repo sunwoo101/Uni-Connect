@@ -1,5 +1,5 @@
 /*
-    This class is the structure for a attend event request to the frontend
+    This class is the structure for a attend event request from the frontend
 */
 
 namespace UniConnect.Models.Requests;

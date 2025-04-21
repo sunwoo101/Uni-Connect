@@ -1,5 +1,5 @@
 /*
-    This class is the structure for a login response from the frontend
+    This class is the structure for a login response to the frontend
 */
 
 namespace UniConnect.Models.Responses;

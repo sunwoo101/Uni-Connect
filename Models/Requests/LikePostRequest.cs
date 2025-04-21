@@ -1,5 +1,5 @@
 /*
-    This class is the structure for a like post request to the frontend
+    This class is the structure for a like post request from the frontend
 */
 
 namespace UniConnect.Models.Requests;

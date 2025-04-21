@@ -72,10 +72,10 @@ export default class Api {
                 body: JSON.stringify({
                     userId: userId,
                     content: content,
-                    image: null,
-                    video: null,
-                    voice: null,
-                    event: null
+                    image: image,
+                    video: video,
+                    voice: voice,
+                    event: event
                 }) // Bookmark
             });
     
@@ -267,6 +267,64 @@ export default class Api {
         } catch (error) {
             showAlert(error?.message || 'Something went wrong', 'error');
             
+            return;
+        }
+    }
+
+    async attendEvent(userId, eventId) {
+        try {
+            const response = await fetch(`/api/post/attendEvent`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    eventId: eventId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            // showAlert(result.message, 'success');
+
+            return;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+
+            return;
+        }
+    }
+
+    async removeAttendEvent(userId, eventId) {
+        try {
+            const response = await fetch(`/api/post/removeAttendEvent`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    eventId: eventId,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            // showAlert(result.message, 'success');
+
+            return;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+
             return;
         }
     }

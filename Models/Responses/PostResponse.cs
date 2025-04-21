@@ -1,3 +1,7 @@
+/*
+    This class is the structure for a post response to the frontend
+*/
+
 using UniConnect.Models.Entities;
 
 namespace UniConnect.Models.Responses;
@@ -16,5 +20,5 @@ public class PostResponse
     public required int SaveCount { get; set; } // Number of saves the post has
     public required bool LikedByYou { get; set; } // True if liked by the user
     public required bool SavedByYou { get; set; } // True if saved by the user
-    public Event? Event { get; set; } // Stores the embedded event if the post includes one
+    public EventResponse? Event { get; set; } // Stores the embedded event if the post includes one
 }
