@@ -146,7 +146,7 @@ export default class Api {
             if (!result.success) throw new Error(result.message);
     
             showAlert(result.message, 'success');
-    
+            
             return result.data;
         } catch (error) {
             showAlert(error?.message || 'Something went wrong', 'error');
