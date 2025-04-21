@@ -1,5 +1,5 @@
 /*
-    This class is the structure for a register request from the frontend
+    This class is the structure for a register request to the frontend
 */
 
 using System.ComponentModel.DataAnnotations;

@@ -71,4 +71,20 @@ public class PostController : ControllerBase
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
     }
+
+    [HttpPost("attend")]
+    public async Task<IActionResult> AddEventAttendee([FromBody] AttendEventRequest request)
+    {
+        var result = await _postService.AddEventAttendeeAsync(request);
+
+        return Ok(new ApiResponse<object>(result.Success, result.Message));
+    }
+
+    [HttpPost("removeAttend")]
+    public async Task<IActionResult> RemoveEventAttendee([FromBody] AttendEventRequest request)
+    {
+        var result = await _postService.RemoveEventAttendeeAsync(request);
+
+        return Ok(new ApiResponse<object>(result.Success, result.Message));
+    }
 }

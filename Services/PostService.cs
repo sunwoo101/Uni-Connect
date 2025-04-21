@@ -235,4 +235,41 @@ public class PostService
 
         return (true, "Removed save from post.");
     }
+
+    public async Task<(bool Success, string Message)> AddEventAttendeeAsync(AttendEventRequest request)
+    {
+        if (await _context.Attendees.AnyAsync(a => a.UserId == request.UserId && a.EventId == request.EventId)) // Check if the save already exists
+            return (true, "Marked as attending.");
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        var event_ = await _context.Events.FirstOrDefaultAsync(e => e.Id == request.EventId);
+
+        if (user == null || event_ == null)
+            return (false, "Invalid event or user.");
+
+        Attendee newAttendee = new Attendee
+        {
+            UserId = request.UserId,
+            EventId = request.EventId,
+            User = user,
+            Event = event_
+        };
+
+        _context.Attendees.Add(newAttendee); // Add the new attendee to the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
+
+        return (true, "Marked as attending.");
+    }
+
+    public async Task<(bool Success, string Message)> RemoveEventAttendeeAsync(AttendEventRequest request)
+    {
+        var attendee = await _context.Attendees.FirstOrDefaultAsync(a => a.UserId == request.UserId && a.EventId == request.EventId);
+        if (attendee == null)
+            return (true, "No longer attending.");
+
+        _context.Attendees.Remove(attendee); // Remove the attendee from the EF tracking system
+        await _context.SaveChangesAsync(); // Update the DB
+
+        return (true, "No longer attending.");
+    }
 }
