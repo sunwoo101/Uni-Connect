@@ -223,7 +223,7 @@ function updateUI() {
         mainContent.classList.remove('hidden');
 
         // Render posts
-        refreshFirstFetch();
+        refreshFirstPostsFetch();
         displayFeed();
 
         navButtons.innerHTML = `
@@ -500,25 +500,25 @@ function newAdFrequencyValue() {
     adIndex = 0;
 }
 
-let postIdAnchor = 0;
-let firstFetch = true;
 let currentPage = "";
-let isLoading = false;
+let postIdAnchor = 0;
+let firstPostsFetch = true;
+let isPostsLoading = false;
 let allPostsLoaded = false;
 
 window.addEventListener('scroll', async () => {
-    if (allPostsLoaded || isLoading) return;
+    if (allPostsLoaded || isPostsLoading) return;
 
     const scrollPosition = window.innerHeight + window.scrollY;
     const threshold = document.body.offsetHeight - 200;
 
     if (scrollPosition >= threshold) {
-        isLoading = true;
+        isPostsLoading = true;
 
         await displayPosts(currentPage);
     }
 
-    isLoading = false;
+    isPostsLoading = false;
 })
 
 // Display posts function
@@ -526,13 +526,13 @@ async function displayPosts(filter) { // Add a parameter so this function decide
     const postsContainer = document.getElementById('postsContainer');
 
     // Sort posts by timestamp (newest first)
-    const feedPosts = await api.fetchPosts(firstFetch, userData.id, postIdAnchor, filter);
+    const feedPosts = await api.fetchPosts(firstPostsFetch, userData.id, postIdAnchor, filter);
 
     if (!feedPosts || feedPosts.length === 0) {
         allPostsLoaded = true;
     }
 
-    if ((!feedPosts || feedPosts.length === 0) && firstFetch) {
+    if ((!feedPosts || feedPosts.length === 0) && firstPostsFetch) {
         if (currentPage === 'Feed') {
             postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
@@ -571,7 +571,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
             adIndex++;
 
             postIdAnchor = post.id;
-            firstFetch = false;
+            firstPostsFetch = false;
         });
     }
 }
@@ -677,29 +677,13 @@ function createAdElement() {
     return postElement;
 }
 
-window.refreshFirstFetch = async function refreshFirstFetch() {
+window.refreshFirstPostsFetch = async function refreshFirstPostsFetch() {
     postIdAnchor = 0;
-    firstFetch = true;
+    firstPostsFetch = true;
     allPostsLoaded = false;
 
     const postsContainer = document.getElementById('postsContainer');
     postsContainer.innerHTML = ''; // Clear existing posts
-}
-
-// Refresh UI after a toggle interaction
-function refreshUI() {
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        if (tab.classList.contains('active')) {
-            if (tab.getAttribute('data-tab') === 'profile') {
-                showProfile();
-            } else if (tab.getAttribute('data-tab') === 'saved') {
-                displaySaved();
-            } else if (tab.getAttribute('data-tab') === 'feed') {
-                displayPosts(); // Refresh posts to update UI
-            }
-        }
-    });
 }
 
 let freezeLikeButton = false;
@@ -794,10 +778,39 @@ window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
     }
 }
 
+let commentIdAnchor = 0;
+let firstCommentsFetch = true;
+let isCommentsLoading = false;
+let allCommentsLoaded = false;
+let currentPostModalId = 0;
+
+window.addEventListener('scroll', async () => {
+    if (allCommentsLoaded || isCommentsLoading) return;
+
+    const scrollPosition = window.innerHeight + window.scrollY; // Bookmark: This should check scroll position in the post modal instead of main page
+    const threshold = document.body.offsetHeight - 200;
+
+    if (scrollPosition >= threshold) {
+        isCommentsLoading = true;
+
+        await api.fetchComments(firstCommentsFetch, userData.id, postId, commentIdAnchor); // Bookmark
+    }
+
+    isCommentsLoading = false;
+})
+
 async function showPostModalAsync(postId) {
     const post = await api.fetchPost(userData.id, postId);
     const user = post.user;
-    const comments = {}; // Bookmark
+    const comments = await api.fetchComments(firstCommentsFetch, userData.id, postId, commentIdAnchor); // Bookmark
+
+    if (!comments || comments.length === 0) {
+        allCommentsLoaded = true;
+    }
+
+    if ((!comments || comments.length === 0) && firstCommentsFetch) {
+        // No comments html
+    }
     
     const postModalContainer = document.getElementById('postModalContainer');
     postModalContainer.innerHTML = ''; // Clear existing posts
@@ -843,11 +856,11 @@ async function showPostModalAsync(postId) {
                         </div>
                         <div class="space-y-4">
                             ${comments.length > 0 ? comments.map(comment => {
-        const commentUser = database.users.find(u => u.id === comment.userId);
-        const replies = database.replies.filter(r => r.commentId === comment.id);
+        const commentUser = comment.user;
+        const replies = comment.replies;
         return `
                                     <div class="flex space-x-3">
-                                        <img src="${commentUser.profileImage ? commentUser.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
+                                        <img src="${commentUser.profileImageURL ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
                                         <div class="flex-1">
                                             <div class="bg-gray-100 rounded-lg p-3">
                                                 <div class="flex items-center space-x-2">
@@ -862,10 +875,10 @@ async function showPostModalAsync(postId) {
                                             ${replies.length > 0 ? `
                                                 <div class="ml-8 mt-2 space-y-2">
                                                     ${replies.map(reply => {
-            const replyUser = database.users.find(u => u.id === reply.userId);
+            const replyUser = reply.user;
             return `
                                                             <div class="flex space-x-3">
-                                                                <img src="${replyUser.profileImage ? replyUser.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
+                                                                <img src="${replyUser.profileImageURL ? replyUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
                                                                 <div class="flex-1">
                                                                     <div class="bg-gray-50 rounded-lg p-2">
                                                                         <div class="flex items-center space-x-2">
@@ -882,7 +895,7 @@ async function showPostModalAsync(postId) {
                                             ` : ''}
                                             <div id="replyInput${comment.id}" class="hidden ml-8 mt-2">
                                                 <div class="flex space-x-2">
-                                                    <img src="${user.profileImage ? user.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
+                                                    <img src="${user.profileImageURL ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
                                                     <div class="flex-1">
                                                         <textarea class="w-full border rounded-lg p-2 text-sm resize-none" placeholder="Write a reply..."></textarea>
                                                         <div class="flex justify-end space-x-2 mt-1">
@@ -908,6 +921,7 @@ async function showPostModalAsync(postId) {
 
 // Show post modal function
 window.showPostModal = async function showPostModal(postId) {
+    currentPostModalId = postId;
     await showPostModalAsync(postId);
 }
 
@@ -1138,7 +1152,7 @@ window.createPost = async function createPost() {
 
     await api.createPost(userData.id, content, null, null, null, newEvent)
 
-    refreshFirstFetch();
+    refreshFirstPostsFetch();
     displayFeed();
 
     freezePostButton = false;
