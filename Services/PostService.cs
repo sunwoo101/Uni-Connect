@@ -112,7 +112,7 @@ public class PostService
                 IsAttendee = post.Event.Attendees.Any(a => a.UserId == request.UserId)
             }
         };
-        
+
         return (true, "Successfully fetched post.", responseData);
     }
 
@@ -365,7 +365,18 @@ public class PostService
         List<CommentResponse> responseData = comments.Select(c => new CommentResponse
         {
             Id = c.Id,
-            User = c.User,
+            User = new UserResponse
+            {
+                Id = c.User.Id,
+                Role = c.User.Role.ToString(),
+                Username = c.User.Username,
+                FirstName = c.User.FirstName,
+                LastName = c.User.LastName,
+                Degree = c.User.Degree,
+                ProfileImageURL = c.User.ProfileImageURL,
+                PostCount = _context.Posts.Count(p => p.UserId == c.User.Id),
+                FriendCount = _context.Friendships.Count(f => f.UserId == c.User.Id)
+            },
             Content = c.Content,
             CreationDate = c.CreationDate.ToString("o"),
             Replies = c.Replies
@@ -373,7 +384,18 @@ public class PostService
             .Select(r => new CommentResponse
             {
                 Id = r.Id,
-                User = r.User,
+                User = new UserResponse
+                {
+                    Id = r.User.Id,
+                    Role = r.User.Role.ToString(),
+                    Username = r.User.Username,
+                    FirstName = r.User.FirstName,
+                    LastName = r.User.LastName,
+                    Degree = r.User.Degree,
+                    ProfileImageURL = r.User.ProfileImageURL,
+                    PostCount = _context.Posts.Count(p => p.UserId == r.User.Id),
+                    FriendCount = _context.Friendships.Count(f => f.UserId == r.User.Id)
+                },
                 Content = r.Content,
                 CreationDate = r.CreationDate.ToString("o")
             }).ToList()

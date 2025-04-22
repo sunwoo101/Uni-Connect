@@ -9,7 +9,7 @@ namespace UniConnect.Models.Responses;
 public class CommentResponse
 {
     public required int Id { get; set; }
-    public required User User { get; set; }
+    public required UserResponse User { get; set; }
     public required string Content { get; set; }
     public required string CreationDate { get; set; }
     public int? ParentCommentId { get; set; }
