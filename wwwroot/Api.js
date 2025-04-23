@@ -352,11 +352,11 @@ export default class Api {
     
             showAlert(result.message, 'success');
 
-            return;
+            return result.data;
         } catch (error) {
             showAlert(error?.message || 'Something went wrong', 'error');
 
-            return;
+            return null;
         }
     }
 
