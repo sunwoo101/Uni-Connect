@@ -13,5 +13,5 @@ public class CommentResponse
     public required string Content { get; set; }
     public required string CreationDate { get; set; }
     public int? ParentCommentId { get; set; }
-    public List<CommentResponse> Replies { get; set; } = new();
+    public required bool ContainsReplies { get; set; }
 }

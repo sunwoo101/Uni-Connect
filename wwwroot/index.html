@@ -50,58 +50,6 @@
         </div>
     </div>
 
-    <!-- Alert Box -->
-    <div id="alertBox" class="fixed top-20 right-4 z-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg p-4 max-w-sm">
-            <div class="flex items-center">
-                <div id="alertIcon" class="mr-3">
-                    <i class="fas fa-info-circle text-blue-600 text-xl"></i>
-                </div>
-                <div class="flex-1">
-                    <p id="alertMessage" class="text-gray-800">Test text</p>
-                </div>
-                <button onclick="hideAlert()" class="ml-4 text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Error Modal -->
-    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-        <div
-            class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6 max-h-[90vh] flex flex-col relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-red-600">Error</h2>
-                <button onclick="closeErrorModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Message</label>
-                    <div id="errorMessage"
-                        class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 font-mono text-sm break-words">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Solution &#40;By
-                        ChatGPT&#41;</label>
-                    <div id="errorSolution"
-                        class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm break-words">
-                        Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9Traceortyboaeryt9a348y6t983y69a38y63p968by3a49p06873p409687349p0687h349p856n7q89p037qp9
-                    </div>
-                </div>
-            </div>
-            <div class="mt-6 flex justify-end">
-                <button onclick="closeErrorModal()"
-                    class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Login Page Content -->
     <div id="loginContent" class="container mx-auto mt-20 p-4">
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
@@ -311,16 +259,16 @@
                         </div>
                     </div>
                     <ul class="space-y-2">
-                        <li><a href="#" onclick="refreshFirstFetch(); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
+                        <li><a href="#" onclick="refreshFirstPostsFetch(); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="feed"><i class="fas fa-home"></i><span>Feed</span></a></li>
                         <!-- <li><a href="#" onclick="displayGroups(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="groups"><i class="fas fa-users"></i><span>Groups</span></a></li> -->
-                        <li><a href="#" onclick="refreshFirstFetch(); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
+                        <li><a href="#" onclick="refreshFirstPostsFetch(); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="saved"><i class="fas fa-bookmark"></i><span>Saved Posts</span></a></li>
-                        <li><a href="#" onclick="refreshFirstFetch(); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
+                        <li><a href="#" onclick="refreshFirstPostsFetch(); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="profile"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     </ul>
@@ -478,6 +426,57 @@
 
     <div id="postModalContainer">
 
+    </div>
+
+    <!-- Alert Box -->
+    <div id="alertBox" class="fixed top-20 right-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-4 max-w-sm">
+            <div class="flex items-center">
+                <div id="alertIcon" class="mr-3">
+                    <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <p id="alertMessage" class="text-gray-800">Test text</p>
+                </div>
+                <button onclick="hideAlert()" class="ml-4 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+        <div
+            class="bg-white rounded-lg max-w-2xl w-full mx-4 p-6 max-h-[90vh] flex flex-col relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-red-600">Error</h2>
+                <button onclick="closeErrorModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Message</label>
+                    <div id="errorMessage"
+                        class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 font-mono text-sm break-words">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Error Solution &#40;By
+                        ChatGPT&#41;</label>
+                    <div id="errorSolution" class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm break-words">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeErrorModal()"
+                    class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="Api.js"></script>

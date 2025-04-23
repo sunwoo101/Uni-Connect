@@ -93,7 +93,7 @@ public class PostController : ControllerBase
     {
         var result = await _postService.AddCommentAsync(request);
 
-        return Ok(new ApiResponse<object>(result.Success, result.Message));
+        return Ok(new ApiResponse<CommentResponse>(result.Success, result.Message, result.responseData));
     }
 
     [HttpPost("fetchComments")]

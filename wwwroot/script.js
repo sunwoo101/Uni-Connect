@@ -184,11 +184,11 @@ function updateActiveTab(tabName) {
 }
 
 // Display feed function
-window.displayFeed = function displayFeed() {
+window.displayFeed = async function displayFeed() {
     currentPage = 'Feed';
 
     hideAll();
-    displayPosts();
+    await displayPosts();
     updateActiveTab('feed');
 }
 
@@ -464,7 +464,10 @@ function clearAllErrors() {
 
 // Format timestamp function
 function formatTimestamp(date) {
-    const utcDate = new Date(date + "Z");
+    if (!date.endsWith("Z")) {
+        date + "Z";
+    }
+    const utcDate = new Date(date);
     const now = new Date();
     const diff = now - utcDate;
 
@@ -561,10 +564,13 @@ async function displayPosts(filter) { // Add a parameter so this function decide
 
         return;
     } else {
-        feedPosts.forEach(post => {
+        for (const post of feedPosts) {
             if (adIndex === adFrequency) {
                 postsContainer.appendChild(createAdElement());
-                newAdFrequencyValue()
+                await embedAd(adId);
+                adId++;
+                newAdFrequencyValue();
+                adIndex = 0;
             }
 
             postsContainer.appendChild(createPostElement(post));
@@ -572,7 +578,11 @@ async function displayPosts(filter) { // Add a parameter so this function decide
 
             postIdAnchor = post.id;
             firstPostsFetch = false;
-        });
+        }
+    }
+
+    while (!allPostsLoaded && document.body.scrollHeight <= window.innerHeight) {
+        await displayPosts(filter);
     }
 }
 
@@ -584,7 +594,7 @@ window.displaySaved = async function displaySaved() {
     updateActiveTab('saved');
 
     // Display saved posts
-    displayPosts('Saved');
+    await displayPosts('Saved');
 }
 
 const placeHolderPfp = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=';
@@ -617,14 +627,14 @@ function createPostElement(post) {
                     <div>
                         <h4 class="font-semibold">${_event.title}</h4>
                         <p class="text-sm text-gray-600">${_event.dateAndTime.toLocaleDateString(undefined, {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric'
-                        })} at ${_event.dateAndTime.toLocaleTimeString(undefined, {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true
-                        })}</p>
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    })} at ${_event.dateAndTime.toLocaleTimeString(undefined, {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    })}</p>
                         <p class="text-sm text-gray-600">📍 ${_event.location}</p>
                     </div>
                 </div>
@@ -659,22 +669,31 @@ function createPostElement(post) {
     return postElement;
 } // Bookmark: add ID to like and save to change colour on toggle
 
+let adId = 0;
+
 // Create ad element function
 function createAdElement() {
-    const postElement = document.createElement('div');
-    postElement.className = 'bg-white rounded-lg shadow p-4';
-    postElement.onclick = () => showPostModal(postId);
-    postElement.innerHTML = `
+    const adElement = document.createElement('div');
+    adElement.className = 'bg-white rounded-lg shadow p-4';
+    adElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
             <div>
                 <h3 class="font-semibold">Sponsor</h3>
             </div>
         </div>
-        <div class="rounded-lg hover-effect hover:shadow-md transition-shadow cursor-pointer">
-            <img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">
+        <div id="ad-container-id-${adId}" class="bg-gray-200 hover-effect hover:shadow-md transition-shadow cursor-pointer text-center flex items-center justify-center">
+            <!-- Add a function that replaces the inner HTML with the ad API -->
+            <h3 class="text-xl font-semibold text-gray-700 mb-2 py-10">Please disable ad blocker to support the development of this website</h3>
         </div>
     `;
-    return postElement;
+
+    return adElement;
+}
+
+async function embedAd(_adId) {
+    const adContainerId = document.getElementById(`ad-container-id-${_adId}`);
+
+    adContainerId.innerHTML = `<img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">`;
 }
 
 window.refreshFirstPostsFetch = async function refreshFirstPostsFetch() {
@@ -784,34 +803,10 @@ let isCommentsLoading = false;
 let allCommentsLoaded = false;
 let currentPostModalId = 0;
 
-window.addEventListener('scroll', async () => {
-    if (allCommentsLoaded || isCommentsLoading) return;
-
-    const scrollPosition = window.innerHeight + window.scrollY; // Bookmark: This should check scroll position in the post modal instead of main page
-    const threshold = document.body.offsetHeight - 200;
-
-    if (scrollPosition >= threshold) {
-        isCommentsLoading = true;
-
-        await api.fetchComments(firstCommentsFetch, userData.id, postId, commentIdAnchor); // Bookmark
-    }
-
-    isCommentsLoading = false;
-})
-
 async function showPostModalAsync(postId) {
     const post = await api.fetchPost(userData.id, postId);
     const user = post.user;
-    const comments = await api.fetchComments(firstCommentsFetch, userData.id, postId, commentIdAnchor); // Bookmark
 
-    if (!comments || comments.length === 0) {
-        allCommentsLoaded = true;
-    }
-
-    if ((!comments || comments.length === 0) && firstCommentsFetch) {
-        // No comments html
-    }
-    
     const postModalContainer = document.getElementById('postModalContainer');
     postModalContainer.innerHTML = ''; // Clear existing posts
     postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
@@ -824,7 +819,7 @@ async function showPostModalAsync(postId) {
     });
 
     postModalContainer.innerHTML = `
-        <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div id="postModalContent" class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="p-4 border-b">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-4">
@@ -854,61 +849,8 @@ async function showPostModalAsync(postId) {
                                 </button>
                             </div>
                         </div>
-                        <div class="space-y-4">
-                            ${comments.length > 0 ? comments.map(comment => {
-        const commentUser = comment.user;
-        const replies = comment.replies;
-        return `
-                                    <div class="flex space-x-3">
-                                        <img src="${commentUser.profileImageURL ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
-                                        <div class="flex-1">
-                                            <div class="bg-gray-100 rounded-lg p-3">
-                                                <div class="flex items-center space-x-2">
-                                                    <span class="font-semibold">${commentUser.firstName} ${commentUser.lastName}</span>
-                                                    <span class="text-gray-500 text-sm">${formatTimestamp(comment.creationDate)}</span>
-                                                </div>
-                                                <p class="mt-1">${comment.content}</p>
-                                                <button onclick="showReplyInput(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
-                                                    Reply
-                                                </button>
-                                            </div>
-                                            ${replies.length > 0 ? `
-                                                <div class="ml-8 mt-2 space-y-2">
-                                                    ${replies.map(reply => {
-            const replyUser = reply.user;
-            return `
-                                                            <div class="flex space-x-3">
-                                                                <img src="${replyUser.profileImageURL ? replyUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
-                                                                <div class="flex-1">
-                                                                    <div class="bg-gray-50 rounded-lg p-2">
-                                                                        <div class="flex items-center space-x-2">
-                                                                            <span class="font-semibold text-sm">${replyUser.firstName} ${replyUser.lastName}</span>
-                                                                            <span class="text-gray-500 text-xs">${formatTimestamp(reply.creationDate)}</span>
-                                                                        </div>
-                                                                        <p class="text-sm mt-1">${reply.content}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        `;
-        }).join('')}
-                                                </div>
-                                            ` : ''}
-                                            <div id="replyInput${comment.id}" class="hidden ml-8 mt-2">
-                                                <div class="flex space-x-2">
-                                                    <img src="${user.profileImageURL ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
-                                                    <div class="flex-1">
-                                                        <textarea class="w-full border rounded-lg p-2 text-sm resize-none" placeholder="Write a reply..."></textarea>
-                                                        <div class="flex justify-end space-x-2 mt-1">
-                                                            <button onclick="hideReplyInput(${comment.id})" class="text-sm text-gray-600 hover:text-gray-800">Cancel</button>
-                                                            <button onclick="submitReply(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800">Reply</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-    }).join('') : '<p class="text-gray-500 text-center">No comments yet</p>'}
+                        <div id="comments-container" class="space-y-4">
+
                         </div>
                     </div>
                 </div>
@@ -919,10 +861,103 @@ async function showPostModalAsync(postId) {
     document.body.style.overflow = 'hidden';
 }
 
+async function loadComments(postId) {
+    const commentsContainer = document.getElementById('comments-container');
+    const comments = await api.fetchComments(firstCommentsFetch, userData.id, postId, commentIdAnchor); // Bookmark
+
+    if (!comments || comments.length === 0) {
+        allCommentsLoaded = true;
+    }
+
+    if ((!comments || comments.length === 0) && firstCommentsFetch) {
+        commentsContainer.innerHTML = '<p class="text-gray-500 text-center">No comments yet</p>';
+    } else {
+        for (const comment of comments) {
+            commentsContainer.appendChild(createCommentElement(comment));
+
+            commentIdAnchor = comment.id;
+            firstCommentsFetch = false;
+        }
+    }
+
+    const postModalContent = document.getElementById('postModalContent');
+
+    while (!allCommentsLoaded && postModalContent.scrollHeight <= postModalContent.clientHeight) {
+        await loadComments(postId);
+    }
+}
+
+function createCommentElement(comment) {
+    const commentUser = comment.user;
+    const commentElement = document.createElement('div');
+    commentElement.className = 'flex space-x-3';
+    commentElement.innerHTML = `
+        <img src="${commentUser.profileImageURL ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
+        <div class="flex-1">
+            <div class="bg-gray-100 rounded-lg p-3">
+                <div class="flex items-center space-x-2">
+                    <span class="font-semibold">${commentUser.firstName} ${commentUser.lastName}</span>
+                    <span class="text-gray-500 text-sm">${formatTimestamp(comment.creationDate)}</span>
+                </div>
+                <p class="mt-1">${comment.content}</p>
+                <button onclick="showReplyInput(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
+                    Reply
+                </button>
+            </div>
+            <div id=comment-reply-container-id-${comment.id}> <!-- Bookmark -->
+                <!-- Replies go here -->
+            </div>
+            <div id="replyInput${comment.id}" class="hidden ml-8 mt-2">
+                <div class="flex space-x-2">
+                    <img src="${commentUser.profileImageURL ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
+                    <div class="flex-1">
+                        <textarea class="w-full border rounded-lg p-2 text-sm resize-none" placeholder="Write a reply..."></textarea>
+                        <div class="flex justify-end space-x-2 mt-1">
+                            <button onclick="hideReplyInput(${comment.id})" class="text-sm text-gray-600 hover:text-gray-800">Cancel</button>
+                            <button onclick="submitReply(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800">Reply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ${comment.containsReplies ? `
+                <button onclick="loadReplies(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
+                    Load Replies
+                </button>` : ''}
+        </div>
+    `;
+
+    return commentElement;
+}
+
+async function refreshFirstCommentsFetch() {
+    commentIdAnchor = 0;
+    firstCommentsFetch = true;
+    allCommentsLoaded = false;
+}
+
 // Show post modal function
 window.showPostModal = async function showPostModal(postId) {
+    refreshFirstCommentsFetch();
     currentPostModalId = postId;
     await showPostModalAsync(postId);
+    await loadComments(postId);
+
+    const postModalContent = document.getElementById('postModalContent');
+
+    postModalContent.addEventListener('scroll', async () => {
+        if (allCommentsLoaded || isCommentsLoading) return;
+
+        const scrollPosition = postModalContent.scrollTop + postModalContent.clientHeight; // Bookmark: This should check scroll position in the post modal instead of main page
+        const threshold = postModalContent.scrollHeight - 200;
+
+        if (scrollPosition >= threshold) {
+            isCommentsLoading = true;
+
+            await loadComments(currentPostModalId);
+        }
+
+        isCommentsLoading = false;
+    })
 }
 
 // Show reply input
@@ -977,12 +1012,18 @@ window.submitComment = async function submitComment(postId) {
         return;
     }
 
-    await api.addComment(userData.id, postId, content, null);
+    const newComment = await api.addComment(userData.id, postId, content, null);
 
     textarea.value = '';
 
     // Update the existing modal
-    showPostModal(postId); // Bookmark: add comment to DOM instead of refreshing the post modal
+    if (newComment) {
+        const commentsContainer = document.getElementById('comments-container');
+        commentsContainer.prepend(createCommentElement(newComment));
+
+        const commentCount = document.getElementById(`comment-count-id-${postId}`);
+        commentCount.textContent = (parseInt(commentCount.textContent) + 1).toString();
+    }
 }
 
 // Close post modal function
@@ -1144,7 +1185,7 @@ window.createPost = async function createPost() {
             location: currentEvent.location,
         };
     }
-    
+
     document.getElementById('postContent').value = ''; // Clear input
     // hideImagePreview();
     // hideVideoPreview();
@@ -1185,7 +1226,7 @@ window.showProfile = async function showProfile() {
     profileFriendsCount.textContent = userData.friendCount;
 
     // Display user's posts
-    displayPosts('User');
+    await displayPosts('User');
 }
 
 // Hide all function

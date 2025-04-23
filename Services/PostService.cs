@@ -306,13 +306,13 @@ public class PostService
         return (true, "No longer attending.");
     }
 
-    public async Task<(bool Success, string Message)> AddCommentAsync(AddCommentRequest request)
+    public async Task<(bool Success, string Message, CommentResponse? responseData)> AddCommentAsync(AddCommentRequest request)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
         var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == request.PostId);
 
         if (user == null || post == null)
-            return (false, "Invalid post or user.");
+            return (false, "Invalid post or user.", null);
 
         Comment newComment = new Comment
         {
@@ -328,15 +328,35 @@ public class PostService
         _context.Comments.Add(newComment); // Add the new comment to the EF tracking system
         await _context.SaveChangesAsync(); // Update the DB
 
+        CommentResponse responseData = new CommentResponse
+        {
+            Id = newComment.Id,
+            User = new UserResponse
+            {
+                Id = newComment.User.Id,
+                Role = newComment.User.Role.ToString(),
+                Username = newComment.User.Username,
+                FirstName = newComment.User.FirstName,
+                LastName = newComment.User.LastName,
+                Degree = newComment.User.Degree,
+                ProfileImageURL = newComment.User.ProfileImageURL,
+                PostCount = _context.Posts.Count(p => p.UserId == newComment.User.Id),
+                FriendCount = _context.Friendships.Count(f => f.UserId == newComment.User.Id)
+            },
+            Content = newComment.Content,
+            CreationDate = newComment.CreationDate.ToString("o"),
+            ContainsReplies = false,
+        };
+
         if (newComment.ParentCommentId != null)
         {
             var parentComment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == newComment.ParentCommentId);
 
             if (parentComment == null)
-                return (false, "Parent comment not found.");
+                return (false, "Parent comment not found.", responseData);
         }
 
-        return (true, "Comment posted.");
+        return (true, "Comment posted.", responseData);
     }
 
     public async Task<(bool Success, string Message, List<CommentResponse> responseData)> FetchCommentsAsync(FetchCommentsRequest request)
@@ -379,27 +399,7 @@ public class PostService
             },
             Content = c.Content,
             CreationDate = c.CreationDate.ToString("o"),
-            Replies = c.Replies
-            .OrderBy(r => r.Id)
-            .Select(r => new CommentResponse
-            {
-                Id = r.Id,
-                User = new UserResponse
-                {
-                    Id = r.User.Id,
-                    Role = r.User.Role.ToString(),
-                    Username = r.User.Username,
-                    FirstName = r.User.FirstName,
-                    LastName = r.User.LastName,
-                    Degree = r.User.Degree,
-                    ProfileImageURL = r.User.ProfileImageURL,
-                    PostCount = _context.Posts.Count(p => p.UserId == r.User.Id),
-                    FriendCount = _context.Friendships.Count(f => f.UserId == r.User.Id)
-                },
-                Content = r.Content,
-                CreationDate = r.CreationDate.ToString("o")
-            }).ToList()
-
+            ContainsReplies = c.Replies.Count() > 0
         }).ToList();
 
         if (!responseData.Any())
