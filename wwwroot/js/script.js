@@ -2,8 +2,6 @@ import Api from './Api.js'
 // Session variables
 // Old
 let loggedIn = false;
-let rememberMe = false;
-let sessionUserId = 1;
 
 // New
 const api = new Api();
@@ -592,7 +590,7 @@ function createAdElement() {
         </div>
         <div id="ad-container-id-${adId}" class="bg-gray-200 hover-effect hover:shadow-md transition-shadow cursor-pointer text-center flex items-center justify-center">
             <!-- Add a function that replaces the inner HTML with the ad API -->
-            <h3 class="text-xl font-semibold text-gray-700 mb-2 py-10">Please disable ad blocker to support the development of this website</h3>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2 py-10">This is a placeholder</h3>
         </div>
     `;
 
