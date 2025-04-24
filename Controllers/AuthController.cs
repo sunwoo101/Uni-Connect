@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.RegisterUserAsync(request);
 
-        return Ok(new ApiResponse<UserResponse?>(result.Success, result.Message, result.responseData));
+        return Ok(new ApiResponse<AuthResponse?>(result.Success, result.Message, result.responseData));
     }
 
     [HttpPost("login")]
@@ -29,6 +29,6 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.LoginUserAsync(request);
 
-        return Ok(new ApiResponse<UserResponse?>(result.Success, result.Message, result.responseData));
+        return Ok(new ApiResponse<AuthResponse?>(result.Success, result.Message, result.responseData));
     }
 }

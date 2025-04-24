@@ -6,6 +6,6 @@ namespace UniConnect.Models.Requests;
 
 public class AttendEventRequest
 {
-    public required int UserId { get; set; }
+    public int UserId { get; set; } = 0;
     public required int EventId { get; set; }
 }

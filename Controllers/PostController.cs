@@ -1,10 +1,14 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UniConnect.Models.Entities;
 using UniConnect.Models.Requests;
 using UniConnect.Models.Responses;
 using UniConnect.Services;
 
 namespace UniConnect.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class PostController : ControllerBase
@@ -19,6 +23,13 @@ public class PostController : ControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreatePostRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.CreatePostAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
@@ -27,6 +38,13 @@ public class PostController : ControllerBase
     [HttpPost("fetch")]
     public async Task<IActionResult> Fetch([FromBody] FetchPostsRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.FetchPostsAsync(request);
 
         return Ok(new ApiResponse<List<PostResponse>>(result.Success, result.Message, result.responseData));
@@ -35,6 +53,13 @@ public class PostController : ControllerBase
     [HttpPost("fetchSingular")]
     public async Task<IActionResult> FetchSingular([FromBody] FetchPostRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.FetchPostAsync(request);
 
         return Ok(new ApiResponse<PostResponse?>(result.Success, result.Message, result.responseData));
@@ -43,6 +68,13 @@ public class PostController : ControllerBase
     [HttpPost("like")]
     public async Task<IActionResult> Like([FromBody] LikePostRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.AddLikeAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
@@ -51,6 +83,13 @@ public class PostController : ControllerBase
     [HttpPost("removeLike")]
     public async Task<IActionResult> RemoveLike([FromBody] LikePostRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.RemoveLikeAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
@@ -59,6 +98,13 @@ public class PostController : ControllerBase
     [HttpPost("save")]
     public async Task<IActionResult> Save([FromBody] SavePostRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.AddSaveAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
@@ -67,6 +113,13 @@ public class PostController : ControllerBase
     [HttpPost("removeSave")]
     public async Task<IActionResult> RemoveSave([FromBody] SavePostRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.RemoveSaveAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
@@ -75,6 +128,13 @@ public class PostController : ControllerBase
     [HttpPost("attendEvent")]
     public async Task<IActionResult> AddEventAttendee([FromBody] AttendEventRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.AddEventAttendeeAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
@@ -83,6 +143,13 @@ public class PostController : ControllerBase
     [HttpPost("removeAttendEvent")]
     public async Task<IActionResult> RemoveEventAttendee([FromBody] AttendEventRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.RemoveEventAttendeeAsync(request);
 
         return Ok(new ApiResponse<object>(result.Success, result.Message));
@@ -91,6 +158,13 @@ public class PostController : ControllerBase
     [HttpPost("addComment")]
     public async Task<IActionResult> AddComment([FromBody] AddCommentRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.AddCommentAsync(request);
 
         return Ok(new ApiResponse<CommentResponse?>(result.Success, result.Message, result.responseData));
@@ -99,6 +173,13 @@ public class PostController : ControllerBase
     [HttpPost("fetchComments")]
     public async Task<IActionResult> FetchComments([FromBody] FetchCommentsRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        request.UserId = int.Parse(userIdClaim);
+
         var result = await _postService.FetchCommentsAsync(request);
 
         return Ok(new ApiResponse<List<CommentResponse>>(result.Success, result.Message, result.responseData));

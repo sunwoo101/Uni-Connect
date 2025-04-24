@@ -13,10 +13,12 @@ namespace UniConnect.Services;
 public class ProfileService
 {
     private readonly AppDbContext _context;
+    private readonly IWebHostEnvironment _environment;
 
-    public ProfileService(AppDbContext context)
+    public ProfileService(AppDbContext context, IWebHostEnvironment environment)
     {
         _context = context;
+        _environment = environment;
     }
 
     public async Task<(bool Success, string Message, UserResponse? responseData)> UpdateProfileAsync(UpdateProfileRequest request)
@@ -36,6 +38,18 @@ public class ProfileService
 
         user.Username = request.Username;
         user.Degree = request.Degree;
+
+        if ((user.ProfileImageURL != null || user.ProfileImageURL == "") && request.ProfileImageURL != user.ProfileImageURL)
+        {
+            var fileName = Path.GetFileName(user.ProfileImageURL);
+            var filePath = Path.Combine(_environment.WebRootPath, "uploads", "images", fileName);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
         user.ProfileImageURL = request.ProfileImageURL;
 
         await _context.SaveChangesAsync(); // Update the DB

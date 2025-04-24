@@ -6,6 +6,6 @@ namespace UniConnect.Models.Requests;
 
 public class FetchPostRequest
 {
-    public required int UserId { get; set; }
+    public int UserId { get; set; } = 0;
     public required int PostId { get; set; }
 }
