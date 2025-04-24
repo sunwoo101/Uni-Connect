@@ -422,6 +422,37 @@ export default class Api {
             return result.data;
         } catch (error) {
             showAlert(error?.message || 'Something went wrong', 'error');
+            console.error(error?.message);
+    
+            return null;
+        }
+    }
+
+    async uploadVideo(file) {
+        const formData = new FormData();
+        formData.append('request', file);
+
+        try {
+            const response = await fetch(`/api/upload/video`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData,
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            // showAlert(result.message, 'success');
+    
+            return result.data;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+            console.error(error?.message);
     
             return null;
         }

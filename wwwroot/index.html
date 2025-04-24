@@ -229,7 +229,7 @@
 
     <!-- Main Social Media Content -->
     <div id="mainContent" class="container mx-auto mt-20 p-4 hidden">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-10 gap-6">
             <!-- Left Sidebar -->
             <div class="hidden md:block md:col-span-3">
                 <div class="bg-white rounded-lg shadow p-4">
@@ -265,7 +265,7 @@
             </div>
 
             <!-- Main Content -->
-            <div class="md:col-span-6">
+            <div class="md:col-span-4">
                 <!-- Create Post -->
                 <div id="createPostModal" class="bg-white rounded-lg shadow p-4 mb-6">
                     <div class="flex space-x-4">
@@ -280,7 +280,7 @@
                             <div id="postImagePreview" class="mt-4 hidden relative inline-block">
                                 <!-- Image + spinner container -->
                                 <div class="relative">
-                                    <img id="previewImage" class="max-h-96 rounded-lg" src="" alt="Preview">
+                                    <img id="previewImage" class="max-h-64 rounded-lg" src="" alt="Preview">
                                     
                                     <!-- Spinner overlay -->
                                     <div id="imageUploadLoading" class="hidden absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
@@ -294,15 +294,22 @@
                                 </button>
                             </div>
 
-                            <!-- 
-                            <div id="videoPreview" class="mt-4 hidden">
-                                <video id="previewVideo" class="max-h-96 rounded-lg" controls></video>
-                                <button onclick="hideVideoPreview()" class="text-red-600 hover:text-red-800 mt-2">
+                            <div id="postVideoPreview" class="mt-4 hidden">
+                                <div class="relative">
+                                    <video id="previewVideo" class="max-h-64 rounded-lg" controls></video>
+                                    
+                                    <!-- Spinner overlay -->
+                                    <div id="videoUploadLoading" class="hidden absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
+                                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                </div>
+
+                                <button id="removeVideoButton" onclick="hideVideoPreview()" class="text-red-600 hover:text-red-800 mt-2">
                                     <i class="fas fa-times"></i> Remove Video
                                 </button>
                             </div>
-                            -->
-                            <div id="eventPreview" class="mt-4 hidden">
+
+                            <div id="postEventPreview" class="mt-4 hidden">
                                 <div class="bg-blue-50 p-4 rounded-lg">
                                     <h4 class="font-semibold" id="eventTitle"></h4>
                                     <p class="text-sm text-gray-600" id="eventDate"></p>
@@ -320,13 +327,13 @@
                                         <input type="file" id="postImageInput" accept="image/*" class="hidden"
                                             onchange="handleImageUpload(event)">
                                     </label>
-                                    <!--
-                                    <label class="cursor-pointer text-gray-500 hover:text-blue-600">
+
+                                    <label id="uploadVideoButton" class="cursor-pointer text-gray-500 hover:text-blue-600">
                                         <i class="fas fa-video"></i> Video
                                         <input type="file" id="videoInput" accept="video/*" class="hidden"
                                             onchange="handleVideoUpload(event)">
                                     </label>
-                                    -->
+                                    
                                     <button id="createEventButton" class="text-gray-500 hover:text-blue-600" onclick="showEventForm()">
                                         <i class="fas fa-calendar"></i> Event
                                     </button>

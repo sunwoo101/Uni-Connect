@@ -23,9 +23,7 @@ public class PostService
         User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
 
         if (user == null)
-            return (false, "Something went wrong."); // Bookmark
-
-        // Bookmark: check the request was sent by the user
+            return (false, "Something went wrong.");
 
         Post newPost = new Post
         {
