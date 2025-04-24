@@ -10,4 +10,5 @@ public class FetchCommentsRequest
     public required int UserId { get; set; }
     public required int PostId { get; set; }
     public required int CommentIdAnchor { get; set; } // Get comments that are later than this comment
+    public int? ParentCommentId { get; set; }
 }

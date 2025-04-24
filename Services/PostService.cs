@@ -368,11 +368,12 @@ public class PostService
 
         // Apply filter from PostIdAnchor if this isn't the first fetch of the feed
         if (!request.FirstFetch)
-        {
             query = query.Where(c => c.Id < request.CommentIdAnchor);
-        }
 
-        query = query.Where(c => c.PostId == request.PostId && c.ParentCommentId == null); // Only grab parent comments
+        if (request.ParentCommentId == null)
+            query = query.Where(c => c.PostId == request.PostId && c.ParentCommentId == null); // Only grab parent comments
+        else
+            query = query.Where(c => c.PostId == request.PostId && c.ParentCommentId == request.ParentCommentId); // Only grab child comments of a parent
 
         List<Comment> comments = await query
             .OrderByDescending(c => c.Id)
