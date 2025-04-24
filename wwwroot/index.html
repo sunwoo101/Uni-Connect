@@ -52,7 +52,7 @@
 
     <!-- Login Page Content -->
     <div id="loginContent" class="container mx-auto mt-20 p-4">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+        <form onsubmit="login(); return false;" class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
             <h2 class="text-2xl font-bold text-center mb-8">Welcome to Uni Connect</h2>
             <div class="space-y-6">
                 <div>
@@ -61,7 +61,8 @@
                     </label>
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="loginEmail" type="email" placeholder="John.Doe@student.uts.edu.au">
+                        id="loginEmail" type="email" placeholder="John.Doe@student.uts.edu.au" name="email"
+                        autocomplete="email" required>
                     <p class="error-message" id="loginEmailError"></p>
                 </div>
                 <div>
@@ -70,12 +71,14 @@
                     </label>
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="loginPassword" type="password" placeholder="••••••••">
+                        id="loginPassword" type="password" placeholder="••••••••" name="password"
+                        autocomplete="current-password" required>
                     <p class="error-message" id="loginPasswordError"></p>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" id="rememberMe">
+                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" id="rememberMe"
+                            name="remember">
                         <label class="ml-2 block text-sm text-gray-700">
                             Remember me
                         </label>
@@ -86,9 +89,8 @@
                     </a>
                 </div>
                 <div>
-                    <button
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        onclick="login()">
+                    <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Sign In
                     </button>
                 </div>
@@ -100,12 +102,13 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Forgot Password Page Content -->
     <div id="forgotPasswordContent" class="container mx-auto mt-20 p-4 hidden">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+        <form onsubmit="sendResetPasswordEmail(); return false;"
+            class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
             <h2 class="text-2xl font-bold text-center mb-8">Reset Your Password</h2>
             <div class="space-y-6">
                 <div class="text-center text-gray-600 mb-6">
@@ -117,13 +120,13 @@
                     </label>
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="resetEmail" type="email" placeholder="john.doe@student.uts.edu.au">
+                        id="resetEmail" name="email" type="email" placeholder="john.doe@student.uts.edu.au"
+                        autocomplete="email" required>
                     <p class="error-message" id="resetEmailError"></p>
                 </div>
                 <div>
-                    <button
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        onclick="sendResetPasswordEmail()">
+                    <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Send Reset Instructions
                     </button>
                 </div>
@@ -135,94 +138,75 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Register Page Content -->
     <div id="registerContent" class="container mx-auto mt-20 p-4 hidden">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+        <form onsubmit="register(); return false;" class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
             <h2 class="text-2xl font-bold text-center mb-8">Create Your Account</h2>
             <div class="space-y-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">
-                            First Name
-                        </label>
-                        <input
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="firstName" type="text" placeholder="John">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">First Name</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                               id="firstName" name="given-name" type="text" placeholder="John" autocomplete="given-name" required>
                         <p class="error-message" id="firstNameError"></p>
                     </div>
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">
-                            Last Name
-                        </label>
-                        <input
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="lastName" type="text" placeholder="Doe">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">Last Name</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                               id="lastName" name="family-name" type="text" placeholder="Doe" autocomplete="family-name" required>
                         <p class="error-message" id="lastNameError"></p>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="registerEmail">
-                        Email Address
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="registerEmail" type="email" placeholder="john.doe@student.uts.edu.au">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="registerEmail">Email Address</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="registerEmail" name="email" type="email" placeholder="john.doe@student.uts.edu.au" autocomplete="email" required>
                     <p class="error-message" id="registerEmailError"></p>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="degree">
-                        Degree
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="degree" type="text" placeholder="e.g. Bachelor of Science">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="degree">Degree</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="degree" type="text" placeholder="e.g. Bachelor of Science">
                     <p class="error-message" id="degreeError"></p>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="registerPassword">
-                        Password
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="registerPassword" type="password" placeholder="••••••••">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="registerPassword">Password</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="registerPassword" name="new-password" type="password" placeholder="••••••••" autocomplete="new-password" required>
                     <p class="error-message" id="registerPasswordError"></p>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">
-                        Confirm Password
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="confirmPassword" type="password" placeholder="••••••••">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">Confirm Password</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="confirmPassword" type="password" placeholder="••••••••" autocomplete="new-password" required>
                     <p class="error-message" id="confirmPasswordError"></p>
                 </div>
                 <div class="flex items-center">
                     <input type="checkbox" id="tosCheckbox"
-                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
                     <label for="tosCheckbox" class="ml-2 block text-sm text-gray-900">
-                        I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> and <a
-                            href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                        I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> and 
+                        <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
                     </label>
                 </div>
                 <p id="tosError" class="error-message text-sm text-red-600 mt-1"></p>
                 <div>
-                    <button type="button" onclick="register()"
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <button type="submit"
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Create Account
                     </button>
                 </div>
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Already have an account?
-                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign
-                            in</a>
+                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign in</a>
                     </p>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Mobile Download Links -->
@@ -259,16 +243,19 @@
                         </div>
                     </div>
                     <ul class="space-y-2">
-                        <li><a href="#" onclick="refreshFirstPostsFetch(); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
+                        <li><a href="#"
+                                onclick="refreshFirstPostsFetch(); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="feed"><i class="fas fa-home"></i><span>Feed</span></a></li>
                         <!-- <li><a href="#" onclick="displayGroups(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="groups"><i class="fas fa-users"></i><span>Groups</span></a></li> -->
-                        <li><a href="#" onclick="refreshFirstPostsFetch(); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
+                        <li><a href="#"
+                                onclick="refreshFirstPostsFetch(); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="saved"><i class="fas fa-bookmark"></i><span>Saved Posts</span></a></li>
-                        <li><a href="#" onclick="refreshFirstPostsFetch(); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
+                        <li><a href="#"
+                                onclick="refreshFirstPostsFetch(); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
                                 class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="profile"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     </ul>
@@ -280,7 +267,8 @@
                 <!-- Create Post -->
                 <div id="createPostModal" class="bg-white rounded-lg shadow p-4 mb-6">
                     <div class="flex space-x-4">
-                        <img id="createPostProfileImage" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
+                        <img id="createPostProfileImage"
+                            src=""
                             alt="Profile" class="rounded-full w-12 h-12">
                         <div class="flex-1">
                             <textarea id="postContent" placeholder="Don't be shy, share your thoughts!"
@@ -312,7 +300,7 @@
                                     <i class="fas fa-times"></i> Remove Event
                                 </button>
                             </div>
-                            
+
                             <div class="flex justify-between items-center mt-4">
                                 <div class="flex space-x-4">
                                     <!--
@@ -396,7 +384,8 @@
                                     <i class="fas fa-user-friends mr-2"></i>Manage Friends
                                 </button>
                                 -->
-                                <button onclick="editProfile()" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
+                                <button onclick="editProfile()"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
                                     Edit Profile
                                 </button>
                             </div>
@@ -469,8 +458,9 @@
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2">Error Solution &#40;By
                         ChatGPT&#41;</label>
-                    <div id="errorSolution" class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm break-words">
-                        
+                    <div id="errorSolution"
+                        class="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm break-words">
+
                     </div>
                 </div>
             </div>
