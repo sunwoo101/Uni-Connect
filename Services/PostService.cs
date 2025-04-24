@@ -137,7 +137,7 @@ public class PostService
         }
 
         // Apply filter for only the user's posts
-        if (request.PostFilter == PostFilter.User.ToString())
+        if (request.PostFilter == PostFilter.Profile.ToString())
         {
             query = query.Where(p => p.UserId == request.UserId);
         }

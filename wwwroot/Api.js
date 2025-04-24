@@ -391,4 +391,61 @@ export default class Api {
             return null;
         }
     }
+
+    async uploadImage(file) {
+        const formData = new FormData();
+        formData.append('request', file);
+
+        try {
+            const response = await fetch(`/api/upload/image`, {
+                method: 'POST',
+                body: formData,
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            // showAlert(result.message, 'success');
+    
+            return result.data;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+    
+            return null;
+        }
+    }
+
+    async updateProfile(userId, username, degree, profileImageURL) {
+        try {
+            const response = await fetch(`/api/profile/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    username: username,
+                    degree: degree,
+                    profileImageURL: profileImageURL,
+                })
+            });
+    
+            if (!response.ok) throw new Error('Network error');
+    
+            const result = await response.json();
+    
+            if (!result.success) throw new Error(result.message);
+    
+            // showAlert(result.message, 'success');
+    
+            return result.data;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+    
+            return null;
+        }
+    }
 }

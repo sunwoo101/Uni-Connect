@@ -37,7 +37,7 @@ public class PostController : ControllerBase
     {
         var result = await _postService.FetchPostAsync(request);
 
-        return Ok(new ApiResponse<PostResponse>(result.Success, result.Message, result.responseData));
+        return Ok(new ApiResponse<PostResponse?>(result.Success, result.Message, result.responseData));
     }
 
     [HttpPost("like")]
@@ -93,7 +93,7 @@ public class PostController : ControllerBase
     {
         var result = await _postService.AddCommentAsync(request);
 
-        return Ok(new ApiResponse<CommentResponse>(result.Success, result.Message, result.responseData));
+        return Ok(new ApiResponse<CommentResponse?>(result.Success, result.Message, result.responseData));
     }
 
     [HttpPost("fetchComments")]

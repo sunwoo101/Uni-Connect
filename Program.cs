@@ -21,6 +21,8 @@ public class Program
         
         builder.Services.AddScoped<AuthService>();
         builder.Services.AddScoped<PostService>();
+        builder.Services.AddScoped<UploadService>();
+        builder.Services.AddScoped<ProfileService>();
 
         var app = builder.Build();
 

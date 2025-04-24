@@ -73,11 +73,13 @@ function updateActiveTab(tabName) {
 
 // Display feed function
 window.displayFeed = async function displayFeed() {
-    currentPage = 'feed';
+    postFilter = 'Feed';
 
     hideAll();
     await displayPosts();
     updateActiveTab('feed');
+
+    pauseScrollLoading = false;
 }
 
 // Update side bar profile function
@@ -87,7 +89,7 @@ window.updateSideBarProfile = function updateSideBarProfile() {
     const sideBarProfileUsername = document.getElementById('sideBarProfileUsername');
     const sideBarProfileDegree = document.getElementById('sideBarProfileDegree');
 
-    sideBarProfileImage.src = userData.profileImage ? userData.profileImage : placeHolderPfp;
+    sideBarProfileImage.src = (userData.profileImageURL && userData.profileImageURL != "") ? userData.profileImageURL : placeHolderPfp;
     sideBarProfileName.textContent = userData.firstName + " " + userData.lastName;
     sideBarProfileUsername.textContent = "@" + userData.username;
     sideBarProfileDegree.textContent = userData.degree;
@@ -111,11 +113,11 @@ function updateUI() {
         mainContent.classList.remove('hidden');
 
         // Render posts
-        refreshFirstPostsFetch();
+        refreshFirstPostsFetch('Feed');
         displayFeed();
 
         navButtons.innerHTML = `
-            <button onclick="showProfile(); hideCreatePostModal(); updateSideBarProfile()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50">Profile</button>
+            <button onclick="refreshFirstPostsFetch('Profile'); showProfile(); hideCreatePostModal(); updateSideBarProfile()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50">Profile</button>
             <button class="border border-white px-4 py-2 rounded-full hover:bg-blue-700" onclick="logout()">Logout</button>
         `;
     } else {
@@ -250,6 +252,10 @@ function isValidEmail(email) {
     return emailPattern.test(email);
 }
 
+function isValidName(str) {
+    return /^[A-Za-z]+$/.test(str);
+}
+
 // Register function
 window.register = async function register() {
     clearAllErrors();
@@ -271,6 +277,16 @@ window.register = async function register() {
 
     if (!lastName) {
         setInputError('lastName', 'lastNameError', 'Please enter your last name');
+        invalidInput = true;
+    }
+
+    if (!isValidName(firstName)) {
+        setInputError('firstName', 'firstNameError', 'First name includes invalid characters');
+        invalidInput = true;
+    }
+
+    if (!isValidName(lastName)) {
+        setInputError('lastName', 'lastNameError', 'Last name includes invalid characters');
         invalidInput = true;
     }
 
@@ -375,7 +391,7 @@ function formatTimestamp(date) {
 
 // Show create post modal 
 window.showCreatePostModal = function showCreatePostModal() {
-    document.getElementById('createPostProfileImage').src = userData.profileImage ? userData.profileImage : placeHolderPfp;
+    document.getElementById('createPostProfileImage').src = (userData.profileImageURL && userData.profileImageURL != "") ? userData.profileImageURL : placeHolderPfp;
     document.getElementById('createPostModal').classList.remove('hidden'); // Show the create post modal
 }
 
@@ -392,14 +408,16 @@ function newAdFrequencyValue() {
     adIndex = 0;
 }
 
-let currentPage = "";
+let postFilter = '';
 let postIdAnchor = 0;
 let firstPostsFetch = true;
 let isPostsLoading = false;
 let allPostsLoaded = false;
 
+let pauseScrollLoading = false;
+
 window.addEventListener('scroll', async () => {
-    if (allPostsLoaded || isPostsLoading) return;
+    if (allPostsLoaded || isPostsLoading || pauseScrollLoading) return;
 
     const scrollPosition = window.innerHeight + window.scrollY;
     const threshold = document.body.offsetHeight - 200;
@@ -407,25 +425,25 @@ window.addEventListener('scroll', async () => {
     if (scrollPosition >= threshold) {
         isPostsLoading = true;
 
-        await displayPosts(currentPage);
+        await displayPosts();
     }
 
     isPostsLoading = false;
 })
 
 // Display posts function
-async function displayPosts(filter) { // Add a parameter so this function decides which group posts should be displayed
+async function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
     const postsContainer = document.getElementById('postsContainer');
 
     // Sort posts by timestamp (newest first)
-    const feedPosts = await api.fetchPosts(firstPostsFetch, userData.id, postIdAnchor, filter);
+    const feedPosts = await api.fetchPosts(firstPostsFetch, userData.id, postIdAnchor, postFilter);
 
     if (!feedPosts || feedPosts.length === 0) {
         allPostsLoaded = true;
     }
 
     if ((!feedPosts || feedPosts.length === 0) && firstPostsFetch) {
-        if (currentPage === 'feed') {
+        if (postFilter === 'Feed') {
             postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
                 <i class="fas fa-home text-4xl text-gray-400 mb-4"></i>
@@ -433,7 +451,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
                 <p class="text-gray-500">Be the first person to post</p>
             </div>
             `;
-        } else if (currentPage === 'saved') {
+        } else if (postFilter === 'Saved') {
             postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
                 <i class="fas fa-bookmark text-4xl text-gray-400 mb-4"></i>
@@ -441,7 +459,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
                 <p class="text-gray-500">Posts you save will appear here</p>
             </div>
             `;
-        } else if (currentPage === 'profile') {
+        } else if (postFilter === 'Profile') {
             postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
                 <i class="fas fa-user text-4xl text-gray-400 mb-4"></i>
@@ -471,19 +489,21 @@ async function displayPosts(filter) { // Add a parameter so this function decide
     }
 
     while (!allPostsLoaded && document.body.scrollHeight <= window.innerHeight) {
-        await displayPosts(filter);
+        await displayPosts();
     }
 }
 
 // Function to display saved postss
 window.displaySaved = async function displaySaved() {
-    currentPage = 'saved';
+    postFilter = 'Saved';
     hideAll();
 
     updateActiveTab('saved');
 
     // Display saved posts
-    await displayPosts('Saved');
+    await displayPosts();
+
+    pauseScrollLoading = false;
 }
 
 const placeHolderPfp = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=';
@@ -498,7 +518,7 @@ function createPostElement(post) {
     postElement.onclick = () => showPostModal(post.id);
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
-            <img src="${user.profileImageURL ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
+            <img src="${(user.profileImageURL && user.profileImageURL != "") ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
             <div>
                 <h3 class="font-semibold">${user.firstName} ${user.lastName}</h3>
                 <p class="text-gray-500 text-sm">${formatTimestamp(post.creationDate)}</p>
@@ -585,10 +605,12 @@ async function embedAd(_adId) {
     adContainerId.innerHTML = `<img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">`;
 }
 
-window.refreshFirstPostsFetch = async function refreshFirstPostsFetch() {
+window.refreshFirstPostsFetch = async function refreshFirstPostsFetch(_postFilter) {
+    postFilter = _postFilter;
     postIdAnchor = 0;
     firstPostsFetch = true;
     allPostsLoaded = false;
+    pauseScrollLoading = true;
 
     const postsContainer = document.getElementById('postsContainer');
     postsContainer.innerHTML = ''; // Clear existing posts
@@ -692,7 +714,7 @@ async function showPostModalAsync(postId) {
 
     const postModalContainer = document.getElementById('postModalContainer');
     postModalContainer.innerHTML = ''; // Clear existing posts
-    postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40';
 
     // Add click event listener to the modal overlay
     postModalContainer.addEventListener('click', (event) => {
@@ -706,7 +728,7 @@ async function showPostModalAsync(postId) {
             <div class="p-4 border-b">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-4">
-                        <img src="${user.profileImage ? user.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
+                        <img src="${(user.profileImageURL && user.profileImageURL != "") ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
                         <div>
                             <h3 class="font-semibold">${user.firstName} ${user.lastName}</h3>
                             <p class="text-gray-500 text-sm">${formatTimestamp(post.creationDate)}</p>
@@ -724,7 +746,7 @@ async function showPostModalAsync(postId) {
                 <div class="border-t pt-4">
                     <div class="space-y-4">
                         <div id="commentInput${post.id}" class="flex space-x-4">
-                            <img src="${user.profileImage ? user.profileImage : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
+                            <img src="${(user.profileImageURL && user.profileImageURL != "") ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
                             <div class="flex-1">
                                 <textarea class="w-full border rounded-lg p-2 resize-none" placeholder="Write a comment..."></textarea>
                                 <button onclick="submitComment(${post.id})" class="mt-2 text-blue-600 hover:text-blue-800">
@@ -805,7 +827,7 @@ function createCommentElement(comment, postId) {
     const commentElement = document.createElement('div');
     commentElement.className = 'flex space-x-3';
     commentElement.innerHTML = `
-        <img src="${commentUser.profileImageURL ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
+        <img src="${(commentUser.profileImageURL && commentUser.profileImageURL != "") ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
         <div class="flex-1">
             <div class="bg-gray-100 rounded-lg p-3">
                 <div class="flex items-center space-x-2">
@@ -819,7 +841,7 @@ function createCommentElement(comment, postId) {
             </div>
             <div id="replyInput${comment.id}" class="hidden ml-8 mt-2">
                 <div class="flex space-x-2">
-                    <img src="${commentUser.profileImageURL ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
+                    <img src="${(commentUser.profileImageURL && commentUser.profileImageURL != "") ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
                     <div class="flex-1">
                         <textarea class="w-full border rounded-lg p-2 text-sm resize-none" placeholder="Write a reply..."></textarea>
                         <div class="flex justify-end space-x-2 mt-1">
@@ -848,7 +870,7 @@ function createCommentReplyElement(reply) {
     const replyElement = document.createElement('div');
     replyElement.className = 'flex space-x-3';
     replyElement.innerHTML = `
-        <img src="${replyUser.profileImageURL ? replyUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
+        <img src="${(replyUser.profileImageURL && replyUser.profileImageURL != "") ? replyUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
         <div class="flex-1">
             <div class="bg-gray-50 rounded-lg p-2">
                 <div class="flex items-center space-x-2">
@@ -965,7 +987,7 @@ window.submitComment = async function submitComment(postId) {
 // Close post modal function
 window.closePostModal = function closePostModal() {
     const postModalContainer = document.getElementById('postModalContainer');
-    postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden';
+    postModalContainer.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden';
     postModalContainer.innerHTML = ''; // Hide the post modal
 
     document.body.style.overflow = '';
@@ -976,8 +998,10 @@ let currentImage = null;
 let currentVideo = null;
 let currentEvent = null;
 
+let imageUploading = false;
+
 // Image upload handler function
-window.handleImageUpload = function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
+window.handleImageUpload = async function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -987,6 +1011,27 @@ window.handleImageUpload = function handleImageUpload(event) { // Bookmark: Chec
             document.getElementById('imagePreview').classList.remove('hidden');
         };
         reader.readAsDataURL(file);
+
+        const uploadImageButton = document.getElementById('uploadImageButton');
+        const imageUploadLoading = document.getElementById('imageUploadLoading');
+        imageUploading = true;
+
+        imageUploadLoading.classList.remove('imageUploadLoading');
+        uploadImageButton.classList.add('uploadImageButton');
+
+        const image = await api.uploadImage(file);
+
+        imageUploadLoading.classList.add('imageUploadLoading');
+        uploadImageButton.classList.remove('uploadImageButton');
+        imageUploading = false;
+
+        if (image == null || image == '') {
+            hideImagePreview();
+            showAlert('Image upload failed', 'error');
+            return;
+        }
+
+        currentImage = image;
     }
 }
 
@@ -1122,14 +1167,14 @@ window.createPost = async function createPost() {
         };
     }
 
+    await api.createPost(userData.id, content, currentImage, null, null, newEvent)
+
     document.getElementById('postContent').value = ''; // Clear input
-    // hideImagePreview();
+    hideImagePreview();
     // hideVideoPreview();
     hideEventPreview();
 
-    await api.createPost(userData.id, content, null, null, null, newEvent)
-
-    refreshFirstPostsFetch();
+    refreshFirstPostsFetch("Feed");
     displayFeed();
 
     freezePostButton = false;
@@ -1137,7 +1182,7 @@ window.createPost = async function createPost() {
 
 // Show profile function
 window.showProfile = async function showProfile() {
-    currentPage = 'profile';
+    postFilter = 'Profile';
 
     // Update active tab
     updateActiveTab('profile');
@@ -1154,7 +1199,7 @@ window.showProfile = async function showProfile() {
     const profilePostsCount = document.getElementById('profilePostsCount');
     // const profileFriendsCount = document.getElementById('profileFriendsCount');
 
-    profileHeaderProfileImage.src = userData.profileImage ? userData.profileImage : placeHolderPfp;
+    profileHeaderProfileImage.src = (userData.profileImageURL && userData.profileImageURL != "") ? userData.profileImageURL : placeHolderPfp;
     profileHeaderName.textContent = userData.firstName + " " + userData.lastName;
     profileHeaderUsername.textContent = "@" + userData.username;
     profileHeaderDegree.textContent = userData.degree;
@@ -1162,7 +1207,9 @@ window.showProfile = async function showProfile() {
     // profileFriendsCount.textContent = userData.friendCount;
 
     // Display user's posts
-    await displayPosts('User');
+    await displayPosts();
+
+    pauseScrollLoading = false;
 }
 
 // Hide all function
@@ -1176,7 +1223,7 @@ window.editProfile = function editProfile() {
     // Create and show edit profile modal
     const modal = document.createElement('div');
     modal.id = 'editProfileModal';
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40';
 
     // Add click event listener to close modal when clicking outside
     modal.addEventListener('click', (event) => {
@@ -1185,9 +1232,6 @@ window.editProfile = function editProfile() {
             document.body.style.overflow = '';
         }
     });
-
-    const currentUser = database.users.find(u => u.id === sessionUserId);
-    if (!currentUser) return;
 
     modal.innerHTML = `
         <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
@@ -1218,7 +1262,6 @@ window.editProfile = function editProfile() {
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                            id="editUsername" type="text" value="${userData.username}" placeholder="Enter username">
-                    <p class="text-sm text-gray-500 mt-1">Username will be displayed with @ symbol</p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="editDegree">
@@ -1228,12 +1271,22 @@ window.editProfile = function editProfile() {
                            id="editDegree" type="text" value="${userData.degree}">
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editProfileImage">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
                         Profile Image
                     </label>
-                    <input type="file" id="editProfileImage" accept="image/*" class="w-full">
-                    <div id="profileImagePreview" class="mt-2">
-                        <img src="${userData.profileImage ? userData.profileImage : placeHolderPfp}" alt="Profile Preview" class="w-20 h-20 rounded-full">
+                    <div class="flex flex-col items-center">
+                        <div id="profileImagePreview" class="mt-2">
+                            <img src="${(userData.profileImageURL && userData.profileImageURL != "") ? userData.profileImageURL : placeHolderPfp}" alt="Profile Preview" class="w-20 h-20 rounded-full">
+                        </div>
+                        <div id="editProfileImage" class="mt-4">
+                            <input type="file" id="imageInput" accept="image/*" class="hidden">
+                            <label for="imageInput" class="cursor-pointer inline-block bg-blue-600 text-white text-sm font-medium py-1.5 px-3 rounded hover:bg-blue-700 transition">
+                                Choose Image
+                            </label>
+                        </div>
+                        <div id="pfpUploadLoading" class="hidden mt-4">
+                            <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1253,26 +1306,32 @@ window.editProfile = function editProfile() {
     document.body.style.overflow = 'hidden';
 
     // Add image preview functionality
-    const imageInput = document.getElementById('editProfileImage');
+    const buttonParent = document.getElementById('editProfileImage');
+    const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('profileImagePreview');
+    const pfpUploadLoading = document.getElementById('pfpUploadLoading');
 
-    imageInput.addEventListener('change', function (e) {
+    imageInput.addEventListener('change', async function (e) {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                imagePreview.innerHTML = `<img src="${e.target.result}" alt="Profile Preview" class="w-20 h-20 rounded-full">`;
-            };
-            reader.readAsDataURL(file);
+            buttonParent.classList.add('hidden');
+            pfpUploadLoading.classList.remove('hidden');
+            const pfpURL = await api.uploadImage(file);
+            buttonParent.classList.remove('hidden');
+            pfpUploadLoading.classList.add('hidden');
+            if (pfpURL != null && pfpURL != '') {
+                imagePreview.innerHTML = `<img src="${pfpURL}" alt="Profile Preview" class="w-20 h-20 rounded-full">`;
+            }
         }
     });
 }
 
-// Save profile changes
-window.saveProfileChanges = function saveProfileChanges() {
-    const currentUser = database.users.find(u => u.id === sessionUserId);
-    if (!currentUser) return;
+function isValidUsername(str) {
+    return /^[A-Za-z0-9._]+$/.test(str);
+}
 
+// Save profile changes
+window.saveProfileChanges = async function saveProfileChanges() {
     const username = document.getElementById('editUsername').value.trim();
     const degree = document.getElementById('editDegree').value;
     const imagePreview = document.getElementById('profileImagePreview').querySelector('img');
@@ -1283,10 +1342,30 @@ window.saveProfileChanges = function saveProfileChanges() {
         return;
     }
 
+    if (!isValidUsername(username)) {
+        showAlert('Username is invalid', 'error');
+        return;
+    }
+
+    // Validate degree
+    if (!degree) {
+        showAlert('Degree cannot be empty', 'error');
+        return;
+    }
+
+    // Check for changes
+    if (username === userData.username && degree === userData.degree && imagePreview.src === userData.profileImageURL) {
+        showAlert('No changes have been made', 'info');
+        return;
+    }
+
     // Update user information
-    currentUser.username = username;
-    currentUser.degree = degree;
-    currentUser.profileImage = imagePreview.src;
+    const newUserData = await api.updateProfile(userData.id, username, degree, imagePreview.src);
+    if (newUserData == null) {
+        showAlert('Unexpected error occurred', 'info');
+        return;
+    }
+    userData = newUserData;
 
     // Update UI
     showProfile();
@@ -1306,7 +1385,7 @@ window.showManageFriends = function showManageFriends() {
     // Create and show manage friends modal
     const modal = document.getElementById('manageFriendsModal') || document.createElement('div');
     modal.id = 'manageFriendsModal';
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40';
 
     // Add click event listener to close modal when clicking outside
     modal.addEventListener('click', (event) => {
