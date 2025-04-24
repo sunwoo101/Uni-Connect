@@ -11,5 +11,5 @@ public class UpdateProfileRequest
     public int UserId { get; set; } = 0;
     public required string Username { get; set; }
     public required string Degree { get; set; }
-    public required string ProfileImageURL { get; set; }
+    public string? ProfileImageURL { get; set; }
 }
