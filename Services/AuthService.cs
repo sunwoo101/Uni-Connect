@@ -21,6 +21,10 @@ public class AuthService
 
     public async Task<(bool Success, string Message, UserResponse? responseData)> RegisterUserAsync(RegisterRequest request)
     {
+        request.FirstName = SanitizeName(request.FirstName);
+        request.LastName = SanitizeName(request.LastName);
+        request.Degree = SanitizeName(request.Degree);
+
         if (await _context.Users.AnyAsync(u => u.Email == request.Email)) // Check if the email is already registered
             return (false, "Email is already registered.", null);
 
@@ -74,6 +78,7 @@ public class AuthService
             FirstName = user.FirstName,
             LastName = user.LastName,
             Degree = user.Degree,
+            ProfileImageURL = user.ProfileImageURL,
             PostCount = _context.Posts.Count(p => p.UserId == user.Id),
             FriendCount = _context.Friendships.Count(f => f.UserId == user.Id),
         };
@@ -92,4 +97,10 @@ public class AuthService
 
         return username + i;
     }
+
+    private string SanitizeName(string name)
+{
+    // Remove any character that is not a letter (A-Z or a-z)
+    return new string(name.Where(char.IsLetter).ToArray());
+}
 }
