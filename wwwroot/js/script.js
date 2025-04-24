@@ -524,7 +524,8 @@ function createPostElement(post) {
             </div>
         </div>
         <p class="mb-4">${post.content}</p>
-        ${post.image ? `<img src="${post.image}" alt="Post Image" class="rounded-lg mb-4 w-full">` : ''}
+        ${post.image ? `<img src="${post.image}" alt="Post Image" class="max-h-[76vh] rounded-lg mb-4 w-full">` : ''}
+        ${post.video ? `<video src="${post.video}" alt="Post Video" class="bg-gray-200 max-h-[76vh] rounded-lg mb-4 w-full" controls></video>` : ''}
         ${_event ? `
             <div class="bg-blue-50 rounded-lg p-4 mb-4">
                 <div class="flex items-center space-x-3 mb-2">
@@ -997,6 +998,7 @@ let currentVideo = null;
 let currentEvent = null;
 
 let imageUploading = false;
+let videoUploading = false;
 
 // Image upload handler function
 window.handleImageUpload = async function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
@@ -1004,8 +1006,7 @@ window.handleImageUpload = async function handleImageUpload(event) { // Bookmark
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
-            currentImage = e.target.result;
-            document.getElementById('previewImage').src = currentImage;
+            document.getElementById('previewImage').src = e.target.result;
             document.getElementById('postImagePreview').classList.remove('hidden');
         };
         reader.readAsDataURL(file);
@@ -1039,30 +1040,56 @@ window.handleImageUpload = async function handleImageUpload(event) { // Bookmark
 // Hide image preview function
 window.hideImagePreview = function hideImagePreview() {
     currentImage = null;
+    document.getElementById('previewImage').src = "";
     document.getElementById('postImagePreview').classList.add('hidden');
     document.getElementById('postImageInput').value = '';
     document.getElementById('uploadImageButton').classList.remove('hidden');
 }
 
 // Video upload handler function
-window.handleVideoUpload = function handleVideoUpload(event) {
+window.handleVideoUpload = async function handleVideoUpload(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
-            currentVideo = e.target.result;
-            document.getElementById('previewVideo').src = currentVideo;
-            document.getElementById('videoPreview').classList.remove('hidden');
+            document.getElementById('previewVideo').src = e.target.result;
+            document.getElementById('postVideoPreview').classList.remove('hidden');
         };
         reader.readAsDataURL(file);
+
+        const uploadVideoButton = document.getElementById('uploadVideoButton');
+        const videoUploadLoading = document.getElementById('videoUploadLoading');
+        const removeVideoButton = document.getElementById('removeVideoButton');
+        videoUploading = true;
+
+        videoUploadLoading.classList.remove('hidden');
+        uploadVideoButton.classList.add('hidden');
+        removeVideoButton.classList.add('hidden');
+
+        const video = await api.uploadVideo(file);
+
+        videoUploadLoading.classList.add('hidden');
+        removeVideoButton.classList.remove('hidden');
+        videoUploading = false;
+
+        if (video == null || video == '') {
+            hideVideoPreview();
+            showAlert('Video upload failed', 'error');
+            uploadVideoButton.classList.remove('hidden');
+            return;
+        }
+
+        currentVideo = video;
     }
 }
 
 // Hide video preview function
-function hideVideoPreview() {
+window.hideVideoPreview = function hideVideoPreview() {
     currentVideo = null;
-    document.getElementById('videoPreview').classList.add('hidden');
+    document.getElementById('previewVideo').src = "";
+    document.getElementById('postVideoPreview').classList.add('hidden');
     document.getElementById('videoInput').value = '';
+    document.getElementById('uploadVideoButton').classList.remove('hidden');
 }
 
 // Show event form function
@@ -1103,13 +1130,13 @@ window.embedPostEvent = function embedPostEvent() {
     const eventTitle = document.getElementById('eventTitle');
     const eventDate = document.getElementById('eventDate');
     const eventLocation = document.getElementById('eventLocation');
-    const eventPreview = document.getElementById('eventPreview');
+    const postEventPreview = document.getElementById('postEventPreview');
 
-    if (eventTitle && eventDate && eventLocation && eventPreview) {
+    if (eventTitle && eventDate && eventLocation && postEventPreview) {
         eventTitle.textContent = title;
         eventDate.textContent = currentEvent.dateAndTime.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
         eventLocation.textContent = location;
-        eventPreview.classList.remove('hidden');
+        postEventPreview.classList.remove('hidden');
     }
 
     // Clear form
@@ -1127,7 +1154,7 @@ window.embedPostEvent = function embedPostEvent() {
 // Hide event preview function
 window.hideEventPreview = function hideEventPreview() {
     currentEvent = null;
-    document.getElementById('eventPreview').classList.add('hidden');
+    document.getElementById('postEventPreview').classList.add('hidden');
     document.getElementById('createEventButton').classList.remove('hidden');
 }
 
@@ -1139,6 +1166,11 @@ window.createPost = async function createPost() {
 
     if (imageUploading) {
         showAlert('Please wait for the image to upload', 'error');
+        return;
+    }
+
+    if (videoUploading) {
+        showAlert('Please wait for the video to upload', 'error');
         return;
     }
 
@@ -1159,16 +1191,16 @@ window.createPost = async function createPost() {
     }
 
     // Add video if exists
-    const videoPreview = document.getElementById('videoPreview');
-    if (!videoPreview.classList.contains('hidden')) {
+    const postVideoPreview = document.getElementById('postVideoPreview');
+    if (!postVideoPreview.classList.contains('hidden')) {
         newPost.video = currentVideo;
     }
     */
 
     // Add event if exists
-    const eventPreview = document.getElementById('eventPreview');
+    const postEventPreview = document.getElementById('postEventPreview');
     let newEvent;
-    if (!eventPreview.classList.contains('hidden')) {
+    if (!postEventPreview.classList.contains('hidden')) {
         // Add event to database
         newEvent = {
             title: currentEvent.title,
@@ -1176,12 +1208,12 @@ window.createPost = async function createPost() {
             location: currentEvent.location,
         };
     }
-
-    await api.createPost(content, currentImage, null, null, newEvent)
+    
+    await api.createPost(content, currentImage, currentVideo, null, newEvent)
 
     document.getElementById('postContent').value = ''; // Clear input
     hideImagePreview();
-    // hideVideoPreview();
+    hideVideoPreview();
     hideEventPreview();
 
     refreshFirstPostsFetch("Feed");

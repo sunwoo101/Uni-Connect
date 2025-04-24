@@ -26,7 +26,20 @@ public class UploadController : ControllerBase
         if (string.IsNullOrEmpty(userIdClaim))
             return Ok(new ApiResponse<object>(false, "Unauthorized"));
 
-        var result = await _uploadService.UploadImage(request);
+        var result = await _uploadService.UploadImageAsync(request);
+
+        return Ok(new ApiResponse<string?>(result.Success, result.Message, result.responseData));
+    }
+
+    [HttpPost("video")]
+    public async Task<IActionResult> UploadVideo(IFormFile request)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
+        var result = await _uploadService.UploadVideoAsync(request);
 
         return Ok(new ApiResponse<string?>(result.Success, result.Message, result.responseData));
     }
