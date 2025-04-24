@@ -1,0 +1,27 @@
+{
+  "name": "uni-connect",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunwoo101/Uni-Connect.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunwoo101/Uni-Connect/issues"
+  },
+  "homepage": "https://github.com/sunwoo101/Uni-Connect#readme",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.16"
+  }
+}
