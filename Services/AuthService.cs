@@ -7,19 +7,27 @@ using UniConnect.Models.Entities;
 using UniConnect.Models.Requests;
 using UniConnect.Models.Responses;
 using UniConnect.Utilities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace UniConnect.Services;
 
 public class AuthService
 {
     private readonly AppDbContext _context;
+    private readonly IConfiguration _configuration;
 
-    public AuthService(AppDbContext context)
+    public AuthService(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
+        _configuration = configuration;
     }
 
-    public async Task<(bool Success, string Message, UserResponse? responseData)> RegisterUserAsync(RegisterRequest request)
+    public async Task<(bool Success, string Message, AuthResponse? responseData)> RegisterUserAsync(RegisterRequest request)
     {
         request.FirstName = SanitizeName(request.FirstName);
         request.LastName = SanitizeName(request.LastName);
@@ -48,7 +56,7 @@ public class AuthService
         _context.Users.Add(newUser); // Add the new user to the EF tracking system
         await _context.SaveChangesAsync(); // Update the DB
 
-        UserResponse responseData = new UserResponse // Create a response for the frontend
+        UserResponse userResponse = new UserResponse // Create a response for the frontend
         {
             Id = newUser.Id,
             Role = newUser.Role.ToString(),
@@ -60,17 +68,23 @@ public class AuthService
             FriendCount = 0
         };
 
+        AuthResponse responseData = new AuthResponse
+        {
+            UserResponse = userResponse,
+            Token = GenerateJwtToken(newUser)
+        };
+
         return (true, "Successfully registered.", responseData);
     }
 
-    public async Task<(bool Success, string Message, UserResponse? responseData)> LoginUserAsync(LoginRequest request)
+    public async Task<(bool Success, string Message, AuthResponse? responseData)> LoginUserAsync(LoginRequest request)
     {
         User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email); // Look for the email that matches with the login email
 
         if (user == null || !PasswordHelper.VerifyPassword(request.Password, user.PasswordHash)) // Check if the email exists and password is correct
             return (false, "Invalid email or password.", null);
 
-        UserResponse responseData = new UserResponse // Create a response for the frontend
+        UserResponse userResponse = new UserResponse // Create a response for the frontend
         {
             Id = user.Id,
             Role = user.Role.ToString(),
@@ -81,6 +95,12 @@ public class AuthService
             ProfileImageURL = user.ProfileImageURL,
             PostCount = _context.Posts.Count(p => p.UserId == user.Id),
             FriendCount = _context.Friendships.Count(f => f.UserId == user.Id),
+        };
+
+        AuthResponse responseData = new AuthResponse
+        {
+            UserResponse = userResponse,
+            Token = GenerateJwtToken(user)
         };
 
         return (true, "Successfully logged in.", responseData);
@@ -99,8 +119,29 @@ public class AuthService
     }
 
     private string SanitizeName(string name)
-{
-    // Remove any character that is not a letter (A-Z or a-z)
-    return new string(name.Where(char.IsLetter).ToArray());
-}
+    {
+        // Remove any character that is not a letter (A-Z or a-z)
+        return new string(name.Where(char.IsLetter).ToArray());
+    }
+
+    // Generate the JWT Token
+    private string GenerateJwtToken(User user)
+    {
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            // Add more claims if needed, such as roles
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddDays(1), // Adjust the expiration time as needed
+            signingCredentials: creds);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 }

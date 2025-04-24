@@ -436,7 +436,7 @@ async function displayPosts() { // Add a parameter so this function decides whic
     const postsContainer = document.getElementById('postsContainer');
 
     // Sort posts by timestamp (newest first)
-    const feedPosts = await api.fetchPosts(firstPostsFetch, userData.id, postIdAnchor, postFilter);
+    const feedPosts = await api.fetchPosts(firstPostsFetch, postIdAnchor, postFilter);
 
     if (!feedPosts || feedPosts.length === 0) {
         allPostsLoaded = true;
@@ -628,14 +628,14 @@ window.toggleLike = async function toggleLike(postId) {
     const liked = likeIcon.classList.toggle('text-red-600');
 
     if (liked) {
-        await api.likePost(userData.id, postId);
+        await api.likePost(postId);
 
         const likeCount = document.getElementById(`like-count-id-${postId}`);
         likeCount.textContent = (parseInt(likeCount.textContent) + 1).toString();
 
         freezeLikeButton = false;
     } else {
-        await api.removeLikePost(userData.id, postId);
+        await api.removeLikePost(postId);
 
         const likeCount = document.getElementById(`like-count-id-${postId}`);
         likeCount.textContent = (parseInt(likeCount.textContent) - 1).toString();
@@ -655,14 +655,14 @@ window.toggleSave = async function toggleSave(postId) {
     const saved = saveIcon.classList.toggle('fas');
 
     if (saved) {
-        await api.savePost(userData.id, postId);
+        await api.savePost(postId);
 
         const saveCount = document.getElementById(`save-count-id-${postId}`);
         saveCount.textContent = (parseInt(saveCount.textContent) + 1).toString();
 
         freezeSaveButton = false;
     } else {
-        await api.removeSavePost(userData.id, postId);
+        await api.removeSavePost(postId);
 
         const saveCount = document.getElementById(`save-count-id-${postId}`);
         saveCount.textContent = (parseInt(saveCount.textContent) - 1).toString();
@@ -692,14 +692,14 @@ window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
     const attending = attendButton.classList.toggle('bg-blue-100');
 
     if (attending) {
-        await api.attendEvent(userData.id, eventId);
+        await api.attendEvent(eventId);
 
         const attendeeCount = document.getElementById(`attendee-count-id-${eventId}`);
         attendeeCount.textContent = (parseInt(attendeeCount.textContent) + 1).toString() + ' attending';
 
         freezeGoingButton = false;
     } else {
-        await api.removeAttendEvent(userData.id, eventId);
+        await api.removeAttendEvent(eventId);
 
         const attendeeCount = document.getElementById(`attendee-count-id-${eventId}`);
         attendeeCount.textContent = (parseInt(attendeeCount.textContent) - 1).toString() + ' attending';
@@ -709,7 +709,7 @@ window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
 }
 
 async function showPostModalAsync(postId) {
-    const post = await api.fetchPost(userData.id, postId);
+    const post = await api.fetchPost(postId);
     const user = post.user;
 
     const postModalContainer = document.getElementById('postModalContainer');
@@ -774,7 +774,7 @@ let currentPostModalId = 0;
 
 async function loadComments(postId) {
     const commentsContainer = document.getElementById('comments-container');
-    const comments = await api.fetchComments(firstCommentsFetch, userData.id, postId, commentIdAnchor); // Bookmark
+    const comments = await api.fetchComments(firstCommentsFetch, postId, commentIdAnchor); // Bookmark
 
     if (!comments || comments.length === 0) {
         allCommentsLoaded = true;
@@ -803,7 +803,7 @@ let firstReplyFetch = {};
 
 window.loadCommentReplies = async function loadCommentReplies(postId, parentCommentId) { // Bookmark
     const replyContainer = document.getElementById(`comment-reply-container-id-${parentCommentId}`);
-    const replies = await api.fetchComments(firstReplyFetch[`$parent-id-${parentCommentId}`] ?? true, userData.id, postId, replyIdAnchor[`$parent-id-${parentCommentId}`] ?? 0, parentCommentId);
+    const replies = await api.fetchComments(firstReplyFetch[`$parent-id-${parentCommentId}`] ?? true, postId, replyIdAnchor[`$parent-id-${parentCommentId}`] ?? 0, parentCommentId);
 
     if (!replies || replies.length === 0) {
         const loadRepliesButton = document.getElementById(`load-replies-id-${parentCommentId}`);
@@ -944,7 +944,7 @@ window.submitReply = async function submitReply(postId, commentId) {
         return;
     }
 
-    const newReply = await api.addComment(userData.id, postId, content, commentId);
+    const newReply = await api.addComment(postId, content, commentId);
 
     textarea.value = '';
 
@@ -970,7 +970,7 @@ window.submitComment = async function submitComment(postId) {
         return;
     }
 
-    const newComment = await api.addComment(userData.id, postId, content, null);
+    const newComment = await api.addComment(postId, content, null);
 
     textarea.value = '';
 
@@ -1008,26 +1008,29 @@ window.handleImageUpload = async function handleImageUpload(event) { // Bookmark
         reader.onload = function (e) {
             currentImage = e.target.result;
             document.getElementById('previewImage').src = currentImage;
-            document.getElementById('imagePreview').classList.remove('hidden');
+            document.getElementById('postImagePreview').classList.remove('hidden');
         };
         reader.readAsDataURL(file);
 
         const uploadImageButton = document.getElementById('uploadImageButton');
         const imageUploadLoading = document.getElementById('imageUploadLoading');
+        const removeImageButton = document.getElementById('removeImageButton');
         imageUploading = true;
 
-        imageUploadLoading.classList.remove('imageUploadLoading');
-        uploadImageButton.classList.add('uploadImageButton');
+        imageUploadLoading.classList.remove('hidden');
+        uploadImageButton.classList.add('hidden');
+        removeImageButton.classList.add('hidden');
 
         const image = await api.uploadImage(file);
 
-        imageUploadLoading.classList.add('imageUploadLoading');
-        uploadImageButton.classList.remove('uploadImageButton');
+        imageUploadLoading.classList.add('hidden');
+        removeImageButton.classList.remove('hidden');
         imageUploading = false;
 
         if (image == null || image == '') {
             hideImagePreview();
             showAlert('Image upload failed', 'error');
+            uploadImageButton.classList.remove('hidden');
             return;
         }
 
@@ -1036,10 +1039,11 @@ window.handleImageUpload = async function handleImageUpload(event) { // Bookmark
 }
 
 // Hide image preview function
-function hideImagePreview() {
+window.hideImagePreview = function hideImagePreview() {
     currentImage = null;
-    document.getElementById('imagePreview').classList.add('hidden');
-    document.getElementById('imageInput').value = '';
+    document.getElementById('postImagePreview').classList.add('hidden');
+    document.getElementById('postImageInput').value = '';
+    document.getElementById('uploadImageButton').classList.remove('hidden');
 }
 
 // Video upload handler function
@@ -1115,15 +1119,18 @@ window.embedPostEvent = function embedPostEvent() {
     document.getElementById('eventDateTime').value = '';
     document.getElementById('eventLocationInput').value = '';
 
+    document.getElementById('createEventButton').classList.add('hidden');
+
     // Hide modal
     hideEventForm();
     showAlert('Event added to your post!', 'success');
 }
 
 // Hide event preview function
-function hideEventPreview() {
+window.hideEventPreview = function hideEventPreview() {
     currentEvent = null;
     document.getElementById('eventPreview').classList.add('hidden');
+    document.getElementById('createEventButton').classList.remove('hidden');
 }
 
 let freezePostButton = false;
@@ -1131,6 +1138,11 @@ let freezePostButton = false;
 // Create post function
 window.createPost = async function createPost() {
     if (freezePostButton) return;
+
+    if (imageUploading) {
+        showAlert('Please wait for the image to upload', 'error');
+        return;
+    }
 
     freezePostButton = true;
 
@@ -1143,8 +1155,8 @@ window.createPost = async function createPost() {
 
     /*
     // Add image if exists
-    const imagePreview = document.getElementById('imagePreview');
-    if (!imagePreview.classList.contains('hidden')) {
+    const postImagePreview = document.getElementById('postImagePreview');
+    if (!postImagePreview.classList.contains('hidden')) {
         newPost.image = currentImage;
     }
 
@@ -1167,7 +1179,7 @@ window.createPost = async function createPost() {
         };
     }
 
-    await api.createPost(userData.id, content, currentImage, null, null, newEvent)
+    await api.createPost(content, currentImage, null, null, newEvent)
 
     document.getElementById('postContent').value = ''; // Clear input
     hideImagePreview();
@@ -1279,8 +1291,8 @@ window.editProfile = function editProfile() {
                             <img src="${(userData.profileImageURL && userData.profileImageURL != "") ? userData.profileImageURL : placeHolderPfp}" alt="Profile Preview" class="w-20 h-20 rounded-full">
                         </div>
                         <div id="editProfileImage" class="mt-4">
-                            <input type="file" id="imageInput" accept="image/*" class="hidden">
-                            <label for="imageInput" class="cursor-pointer inline-block bg-blue-600 text-white text-sm font-medium py-1.5 px-3 rounded hover:bg-blue-700 transition">
+                            <input type="file" id="profileImageInput" accept="image/*" class="hidden" onchange="uploadProfileImage(event)">
+                            <label for="profileImageInput" class="cursor-pointer inline-block bg-blue-600 text-white text-sm font-medium py-1.5 px-3 rounded hover:bg-blue-700 transition">
                                 Choose Image
                             </label>
                         </div>
@@ -1304,26 +1316,28 @@ window.editProfile = function editProfile() {
     `;
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
+}
 
-    // Add image preview functionality
+let currentProfileImage = null;
+
+window.uploadProfileImage = async function uploadProfileImage(event) {
     const buttonParent = document.getElementById('editProfileImage');
-    const imageInput = document.getElementById('imageInput');
-    const imagePreview = document.getElementById('profileImagePreview');
+    const profileImageInput = document.getElementById('profileImageInput');
+    const profileImagePreview = document.getElementById('profileImagePreview');
     const pfpUploadLoading = document.getElementById('pfpUploadLoading');
 
-    imageInput.addEventListener('change', async function (e) {
-        const file = e.target.files[0];
-        if (file) {
-            buttonParent.classList.add('hidden');
-            pfpUploadLoading.classList.remove('hidden');
-            const pfpURL = await api.uploadImage(file);
-            buttonParent.classList.remove('hidden');
-            pfpUploadLoading.classList.add('hidden');
-            if (pfpURL != null && pfpURL != '') {
-                imagePreview.innerHTML = `<img src="${pfpURL}" alt="Profile Preview" class="w-20 h-20 rounded-full">`;
-            }
+    const file = event.target.files[0];
+    if (file) {
+        buttonParent.classList.add('hidden');
+        pfpUploadLoading.classList.remove('hidden');
+        const pfpURL = await api.uploadImage(file);
+        buttonParent.classList.remove('hidden');
+        pfpUploadLoading.classList.add('hidden');
+        if (pfpURL != null && pfpURL != '') {
+            currentProfileImage = pfpURL;
+            profileImagePreview.innerHTML = `<img src="${pfpURL}" alt="Profile Preview" class="w-20 h-20 rounded-full">`;
         }
-    });
+    }
 }
 
 function isValidUsername(str) {
@@ -1334,7 +1348,6 @@ function isValidUsername(str) {
 window.saveProfileChanges = async function saveProfileChanges() {
     const username = document.getElementById('editUsername').value.trim();
     const degree = document.getElementById('editDegree').value;
-    const imagePreview = document.getElementById('profileImagePreview').querySelector('img');
 
     // Validate username
     if (!username) {
@@ -1354,13 +1367,13 @@ window.saveProfileChanges = async function saveProfileChanges() {
     }
 
     // Check for changes
-    if (username === userData.username && degree === userData.degree && imagePreview.src === userData.profileImageURL) {
+    if (username === userData.username && degree === userData.degree && currentProfileImage === userData.profileImageURL) {
         showAlert('No changes have been made', 'info');
         return;
     }
 
     // Update user information
-    const newUserData = await api.updateProfile(userData.id, username, degree, imagePreview.src);
+    const newUserData = await api.updateProfile(username, degree, currentProfileImage);
     if (newUserData == null) {
         showAlert('Unexpected error occurred', 'info');
         return;

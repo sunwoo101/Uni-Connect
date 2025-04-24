@@ -1,9 +1,12 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniConnect.Models.Responses;
 using UniConnect.Services;
 
 namespace UniConnect.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UploadController : ControllerBase
@@ -16,8 +19,13 @@ public class UploadController : ControllerBase
     }
 
     [HttpPost("image")]
-    public async Task<IActionResult> UploadImage([FromForm] IFormFile request)
+    public async Task<IActionResult> UploadImage(IFormFile request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Unauthorized"));
+
         var result = await _uploadService.UploadImage(request);
 
         return Ok(new ApiResponse<string?>(result.Success, result.Message, result.responseData));

@@ -1,3 +1,5 @@
+let token = "";
+
 export default class Api {
     async register(email, password, firstName, lastName, degree) {
         try {
@@ -22,7 +24,9 @@ export default class Api {
             if (!result.success) throw new Error(result.message);
     
             // showAlert(result.message, 'success');
-            localStorage.setItem('user', JSON.stringify(result.data))
+            localStorage.setItem('user', JSON.stringify(result.data.userResponse));
+            localStorage.setItem('token', result.data.token);
+            token = localStorage.getItem('token');
     
             return true;
         } catch (error) {
@@ -52,7 +56,9 @@ export default class Api {
             if (!result.success) throw new Error(result.message);
     
             // showAlert(result.message, 'success');
-            localStorage.setItem('user', JSON.stringify(result.data))
+            localStorage.setItem('user', JSON.stringify(result.data.userResponse));
+            localStorage.setItem('token', result.data.token);
+            token = localStorage.getItem('token');
     
             return true;
         } catch (error) {
@@ -62,15 +68,15 @@ export default class Api {
         }
     }
     
-    async createPost(userId, content, image, video, voice, event) {
+    async createPost(content, image, video, voice, event) {
         try {
             const response = await fetch('/api/post/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     content: content,
                     image: image,
                     video: video,
@@ -95,16 +101,16 @@ export default class Api {
         }
     }
 
-    async fetchPosts(firstFetch, userId, postIdAnchor, postFilter) {
+    async fetchPosts(firstFetch, postIdAnchor, postFilter) {
         try {
             const response = await fetch(`/api/post/fetch`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     firstFetch: firstFetch,
-                    userId: userId,
                     postIdAnchor: postIdAnchor,
                     postFilter: postFilter,
                 })
@@ -126,15 +132,15 @@ export default class Api {
         }
     }
 
-    async fetchPost(userId, postId) {
+    async fetchPost(postId) {
         try {
             const response = await fetch(`/api/post/fetchSingular`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     postId: postId,
                 })
             });
@@ -155,15 +161,15 @@ export default class Api {
         }
     }
 
-    async likePost(userId, postId) {
+    async likePost(postId) {
         try {
             const response = await fetch(`/api/post/like`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     postId: postId,
                 })
             });
@@ -184,15 +190,15 @@ export default class Api {
         }
     }
 
-    async removeLikePost(userId, postId) {
+    async removeLikePost(postId) {
         try {
             const response = await fetch(`/api/post/removeLike`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     postId: postId,
                 })
             });
@@ -213,15 +219,15 @@ export default class Api {
         }
     }
 
-    async savePost(userId, postId) {
+    async savePost(postId) {
         try {
             const response = await fetch(`/api/post/save`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     postId: postId,
                 })
             });
@@ -242,15 +248,15 @@ export default class Api {
         }
     }
 
-    async removeSavePost(userId, postId) {
+    async removeSavePost(postId) {
         try {
             const response = await fetch(`/api/post/removeSave`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     postId: postId,
                 })
             });
@@ -271,15 +277,15 @@ export default class Api {
         }
     }
 
-    async attendEvent(userId, eventId) {
+    async attendEvent(eventId) {
         try {
             const response = await fetch(`/api/post/attendEvent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     eventId: eventId,
                 })
             });
@@ -300,15 +306,15 @@ export default class Api {
         }
     }
 
-    async removeAttendEvent(userId, eventId) {
+    async removeAttendEvent(eventId) {
         try {
             const response = await fetch(`/api/post/removeAttendEvent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     eventId: eventId,
                 })
             });
@@ -329,15 +335,15 @@ export default class Api {
         }
     }
 
-    async addComment(userId, postId, content, parentCommentId = null) {
+    async addComment(postId, content, parentCommentId = null) {
         try {
             const response = await fetch(`/api/post/addComment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     postId: postId,
                     content: content,
                     parentCommentId, parentCommentId,
@@ -360,16 +366,16 @@ export default class Api {
         }
     }
 
-    async fetchComments(firstFetch, userId, postId, commentIdAnchor, parentCommentId = null) {
+    async fetchComments(firstFetch, postId, commentIdAnchor, parentCommentId = null) {
         try {
             const response = await fetch(`/api/post/fetchComments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     firstFetch: firstFetch,
-                    userId: userId,
                     postId: postId,
                     commentIdAnchor: commentIdAnchor,
                     parentCommentId: parentCommentId,
@@ -399,6 +405,9 @@ export default class Api {
         try {
             const response = await fetch(`/api/upload/image`, {
                 method: 'POST',
+                header: {
+                    'Authorization': `Bearer ${token}`
+                },
                 body: formData,
             });
     
@@ -418,15 +427,15 @@ export default class Api {
         }
     }
 
-    async updateProfile(userId, username, degree, profileImageURL) {
+    async updateProfile(username, degree, profileImageURL) {
         try {
             const response = await fetch(`/api/profile/update`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     username: username,
                     degree: degree,
                     profileImageURL: profileImageURL,

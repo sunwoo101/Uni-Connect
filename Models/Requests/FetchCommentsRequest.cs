@@ -7,7 +7,7 @@ namespace UniConnect.Models.Requests;
 public class FetchCommentsRequest
 {
     public required bool FirstFetch { get; set; }
-    public required int UserId { get; set; }
+    public int UserId { get; set; } = 0;
     public required int PostId { get; set; }
     public required int CommentIdAnchor { get; set; } // Get comments that are later than this comment
     public int? ParentCommentId { get; set; }

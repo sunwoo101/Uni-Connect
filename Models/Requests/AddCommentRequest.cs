@@ -6,7 +6,7 @@ namespace UniConnect.Models.Requests;
 
 public class AddCommentRequest
 {
-    public required int UserId { get; set; }
+    public int UserId { get; set; } = 0;
     public required int PostId { get; set; }
     public required string Content { get; set; }
     public int? ParentCommentId { get; set; }
