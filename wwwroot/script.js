@@ -465,7 +465,7 @@ function clearAllErrors() {
 // Format timestamp function
 function formatTimestamp(date) {
     if (!date.endsWith("Z")) {
-        date + "Z";
+        date = date + "Z";
     }
     const utcDate = new Date(date);
     const now = new Date();
@@ -797,12 +797,6 @@ window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
     }
 }
 
-let commentIdAnchor = 0;
-let firstCommentsFetch = true;
-let isCommentsLoading = false;
-let allCommentsLoaded = false;
-let currentPostModalId = 0;
-
 async function showPostModalAsync(postId) {
     const post = await api.fetchPost(userData.id, postId);
     const user = post.user;
@@ -861,6 +855,12 @@ async function showPostModalAsync(postId) {
     document.body.style.overflow = 'hidden';
 }
 
+let commentIdAnchor = 0;
+let firstCommentsFetch = true;
+let isCommentsLoading = false;
+let allCommentsLoaded = false;
+let currentPostModalId = 0;
+
 async function loadComments(postId) {
     const commentsContainer = document.getElementById('comments-container');
     const comments = await api.fetchComments(firstCommentsFetch, userData.id, postId, commentIdAnchor); // Bookmark
@@ -873,7 +873,7 @@ async function loadComments(postId) {
         commentsContainer.innerHTML = '<p class="text-gray-500 text-center">No comments yet</p>';
     } else {
         for (const comment of comments) {
-            commentsContainer.appendChild(createCommentElement(comment));
+            commentsContainer.appendChild(createCommentElement(comment, postId));
 
             commentIdAnchor = comment.id;
             firstCommentsFetch = false;
@@ -887,7 +887,31 @@ async function loadComments(postId) {
     }
 }
 
-function createCommentElement(comment) {
+let replyIdAnchor = {};
+let firstReplyFetch = {};
+
+window.loadCommentReplies = async function loadCommentReplies(postId, parentCommentId) { // Bookmark
+    const replyContainer = document.getElementById(`comment-reply-container-id-${parentCommentId}`);
+    const replies = await api.fetchComments(firstReplyFetch[`$parent-id-${parentCommentId}`] ?? true, userData.id, postId, replyIdAnchor[`$parent-id-${parentCommentId}`] ?? 0, parentCommentId);
+
+    if (!replies || replies.length === 0) {
+        const loadRepliesButton = document.getElementById(`load-replies-id-${parentCommentId}`);
+        loadRepliesButton.classList.add('hidden');
+
+        showAlert('No more replies to load.', 'success');
+
+        return;
+    }
+
+    for (const reply of replies) {
+        replyContainer.appendChild(createCommentReplyElement(reply));
+
+        replyIdAnchor[`$parent-id-${parentCommentId}`] = reply.id;
+        firstReplyFetch[`$parent-id-${parentCommentId}`] = false;
+    }
+}
+
+function createCommentElement(comment, postId) {
     const commentUser = comment.user;
     const commentElement = document.createElement('div');
     commentElement.className = 'flex space-x-3';
@@ -904,9 +928,6 @@ function createCommentElement(comment) {
                     Reply
                 </button>
             </div>
-            <div id=comment-reply-container-id-${comment.id}> <!-- Bookmark -->
-                <!-- Replies go here -->
-            </div>
             <div id="replyInput${comment.id}" class="hidden ml-8 mt-2">
                 <div class="flex space-x-2">
                     <img src="${commentUser.profileImageURL ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
@@ -914,19 +935,43 @@ function createCommentElement(comment) {
                         <textarea class="w-full border rounded-lg p-2 text-sm resize-none" placeholder="Write a reply..."></textarea>
                         <div class="flex justify-end space-x-2 mt-1">
                             <button onclick="hideReplyInput(${comment.id})" class="text-sm text-gray-600 hover:text-gray-800">Cancel</button>
-                            <button onclick="submitReply(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800">Reply</button>
+                            <button onclick="submitReply(${postId}, ${comment.id})" class="text-sm text-blue-600 hover:text-blue-800">Reply</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div id="comment-reply-container-id-${comment.id}" class="ml-8 mt-2 space-y-2"> <!-- Bookmark -->
+                <!-- Replies go here -->
+            </div>
             ${comment.containsReplies ? `
-                <button onclick="loadReplies(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
+                <button id="load-replies-id-${comment.id}" onclick="loadCommentReplies(${postId}, ${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
                     Load Replies
                 </button>` : ''}
         </div>
     `;
 
     return commentElement;
+}
+
+
+function createCommentReplyElement(reply) {
+    const replyUser = reply.user;
+    const replyElement = document.createElement('div');
+    replyElement.className = 'flex space-x-3';
+    replyElement.innerHTML = `
+        <img src="${replyUser.profileImageURL ? replyUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
+        <div class="flex-1">
+            <div class="bg-gray-50 rounded-lg p-2">
+                <div class="flex items-center space-x-2">
+                    <span class="font-semibold text-sm">${replyUser.firstName} ${replyUser.lastName}</span>
+                    <span class="text-gray-500 text-xs">${formatTimestamp(reply.creationDate)}</span>
+                </div>
+                <p class="text-sm mt-1">${reply.content}</p>
+            </div>
+        </div>
+    `;
+
+    return replyElement;
 }
 
 async function refreshFirstCommentsFetch() {
@@ -968,8 +1013,15 @@ window.showReplyInput = function showReplyInput(commentId) {
     }
 }
 
+window.hideReplyInput = function hideReplyInput(commentId) {
+    const replyInput = document.getElementById(`replyInput${commentId}`);
+    if (replyInput) {
+        replyInput.classList.add('hidden');
+    }
+}
+
 // Submit reply
-window.submitReply = function submitReply(commentId) {
+window.submitReply = async function submitReply(postId, commentId) {
     const replyInput = document.getElementById(`replyInput${commentId}`);
     if (!replyInput) return;
 
@@ -981,23 +1033,18 @@ window.submitReply = function submitReply(commentId) {
         return;
     }
 
-    // Create new reply
-    const newReply = {
-        id: database.replies.length + 1,
-        commentId: commentId,
-        userId: 1, // Current user's ID (hardcoded for demo)
-        content: content,
-        creationDate: new Date()
-    };
+    const newReply = await api.addComment(userData.id, postId, content, commentId);
 
-    database.replies.push(newReply);
-
-    // Find the post associated with this comment
-    const comment = database.comments.find(c => c.id === commentId);
+    textarea.value = '';
 
     // Update the existing modal
-    showPostModal(comment.postId);
-    showAlert('Reply posted successfully!', 'success');
+    if (newReply) {
+        const commentsContainer = document.getElementById(`comment-reply-container-id-${commentId}`);
+        commentsContainer.prepend(createCommentReplyElement(newReply));
+
+        const commentCount = document.getElementById(`comment-count-id-${postId}`);
+        commentCount.textContent = (parseInt(commentCount.textContent) + 1).toString();
+    }
 }
 
 window.submitComment = async function submitComment(postId) {
@@ -1019,7 +1066,7 @@ window.submitComment = async function submitComment(postId) {
     // Update the existing modal
     if (newComment) {
         const commentsContainer = document.getElementById('comments-container');
-        commentsContainer.prepend(createCommentElement(newComment));
+        commentsContainer.prepend(createCommentElement(newComment, postId));
 
         const commentCount = document.getElementById(`comment-count-id-${postId}`);
         commentCount.textContent = (parseInt(commentCount.textContent) + 1).toString();
@@ -1216,14 +1263,14 @@ window.showProfile = async function showProfile() {
     const profileHeaderUsername = document.getElementById('profileHeaderUsername');
     const profileHeaderDegree = document.getElementById('profileHeaderDegree');
     const profilePostsCount = document.getElementById('profilePostsCount');
-    const profileFriendsCount = document.getElementById('profileFriendsCount');
+    // const profileFriendsCount = document.getElementById('profileFriendsCount');
 
     profileHeaderProfileImage.src = userData.profileImage ? userData.profileImage : placeHolderPfp;
     profileHeaderName.textContent = userData.firstName + " " + userData.lastName;
     profileHeaderUsername.textContent = "@" + userData.username;
     profileHeaderDegree.textContent = userData.degree;
     profilePostsCount.textContent = userData.postCount;
-    profileFriendsCount.textContent = userData.friendCount;
+    // profileFriendsCount.textContent = userData.friendCount;
 
     // Display user's posts
     await displayPosts('User');
@@ -1364,6 +1411,7 @@ window.saveProfileChanges = function saveProfileChanges() {
     showAlert('Profile updated successfully!', 'success');
 }
 
+/*
 // Show manage friends modal
 window.showManageFriends = function showManageFriends() {
     // Create and show manage friends modal
@@ -1605,6 +1653,7 @@ window.rejectFriendRequest = function rejectFriendRequest(userId) {
 
     showManageFriends();
 }
+*/
 
 // Mobile browser detection and download page handling
 function isMobileBrowser() {

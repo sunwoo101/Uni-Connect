@@ -21,7 +21,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
             localStorage.setItem('user', JSON.stringify(result.data))
     
             return true;
@@ -51,7 +51,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
             localStorage.setItem('user', JSON.stringify(result.data))
     
             return true;
@@ -85,7 +85,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
     
             return true;
         } catch (error) {
@@ -116,7 +116,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
     
             return result.data;
         } catch (error) {
@@ -145,7 +145,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
             
             return result.data;
         } catch (error) {
@@ -329,7 +329,7 @@ export default class Api {
         }
     }
 
-    async addComment(userId, postId, content, parentCommentId) {
+    async addComment(userId, postId, content, parentCommentId = null) {
         try {
             const response = await fetch(`/api/post/addComment`, {
                 method: 'POST',
@@ -350,7 +350,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
 
             return result.data;
         } catch (error) {
@@ -360,7 +360,7 @@ export default class Api {
         }
     }
 
-    async fetchComments(firstFetch, userId, postId, commentIdAnchor) {
+    async fetchComments(firstFetch, userId, postId, commentIdAnchor, parentCommentId = null) {
         try {
             const response = await fetch(`/api/post/fetchComments`, {
                 method: 'POST',
@@ -372,6 +372,7 @@ export default class Api {
                     userId: userId,
                     postId: postId,
                     commentIdAnchor: commentIdAnchor,
+                    parentCommentId: parentCommentId,
                 })
             });
     
@@ -381,7 +382,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            showAlert(result.message, 'success');
+            // showAlert(result.message, 'success');
     
             return result.data;
         } catch (error) {
