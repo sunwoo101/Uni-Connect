@@ -1,116 +1,4 @@
 import Api from './Api.js'
-
-// Sample database
-const database = {
-    users: [
-        {
-            id: 1,
-            firstName: 'Sun Woo',
-            lastName: 'Kim',
-            email: 'sunwoo.kim@student.uts.edu.au',
-            degree: 'Diploma of Information Technology',
-            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'sunwoo.kim',
-            friends: [2, 3], // Array of friend's user id
-            incommingFriendRequests: [],
-            outgoingFriendRequests: []
-        },
-        {
-            id: 2,
-            firstName: 'Daniel',
-            lastName: 'Liu',
-            email: 'daniel.liu@student.uts.edu.au',
-            degree: 'Bachelor of Computer Science',
-            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'daniel.liu',
-            friends: [],
-            incommingFriendRequests: [],
-            outgoingFriendRequests: []
-        },
-        {
-            id: 3,
-            firstName: 'Evan',
-            lastName: 'Liang',
-            email: 'evan.liang@student.uts.edu.au',
-            degree: 'Bachelor of Business and International Studies',
-            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'evan.liang',
-            friends: [],
-            incommingFriendRequests: [],
-            outgoingFriendRequests: []
-        },
-        {
-            id: 4,
-            firstName: 'Danny',
-            lastName: 'Li',
-            email: 'danny.li@student.uts.edu.au',
-            degree: 'Bachelor of Computer Science',
-            profileImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4=',
-            username: 'danny.li',
-            friends: [],
-            incommingFriendRequests: [],
-            outgoingFriendRequests: []
-        },
-    ],
-    posts: [
-        {
-            id: 1,
-            userId: 1,
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque purus risus, pharetra ut ipsum nec, accumsan fermentum lacus. Cras volutpat sed nulla sed ullamcorper. Duis a nunc nulla.',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg',
-            video: null,
-            voice: null,
-            creationDate: new Date('2024-03-20T10:00:00'),
-            likes: [1, 2], // Array of user IDs who liked the post
-            comments: [1], // Array of comment IDs
-            saves: [1, 2, 3], // Array of user IDs who saved the post
-            eventId: 1
-        }
-    ],
-    events: [ // Events that are embedded into posts
-        {
-            id: 1,
-            title: 'Sample Event',
-            date: new Date('2024-03-20T10:15:00'),
-            location: 'UTS',
-            attendees: [] // Array of user IDs who are attending
-        }
-    ],
-    comments: [ // Comments on posts
-        {
-            id: 1,
-            postId: 1,
-            userId: 3,
-            content: 'Lorem ipsum dolor sit amet',
-            creationDate: new Date('2024-03-20T10:15:00')
-        },
-        {
-            id: 2,
-            postId: 1,
-            userId: 2,
-            content: 'by9 56by03 506w7905',
-            creationDate: new Date('2024-03-20T10:15:00')
-        },
-    ],
-    replies: [ // Replies to comments
-        {
-            id: 1,
-            commentId: 1,
-            userId: 2,
-            content: 'consectetur adipiscing elit',
-            creationDate: new Date('2024-03-20T10:17:00')
-        },
-        {
-            id: 2,
-            commentId: 1,
-            userId: 2,
-            content: 'otaotyb40 5y6b0a30 0bu60a',
-            creationDate: new Date('2024-03-20T10:17:00')
-        }
-    ]
-}
-
-
 // Session variables
 // Old
 let loggedIn = false;
@@ -185,7 +73,7 @@ function updateActiveTab(tabName) {
 
 // Display feed function
 window.displayFeed = async function displayFeed() {
-    currentPage = 'Feed';
+    currentPage = 'feed';
 
     hideAll();
     await displayPosts();
@@ -291,6 +179,7 @@ window.login = async function login() {
         userData = JSON.parse(localStorage.getItem('user'));
         updateUI();
         updateActiveTab('feed');
+        showCreatePostModal();
         updateSideBarProfile();
 
         if (rememberMeChecked) {
@@ -536,7 +425,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
     }
 
     if ((!feedPosts || feedPosts.length === 0) && firstPostsFetch) {
-        if (currentPage === 'Feed') {
+        if (currentPage === 'feed') {
             postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
                 <i class="fas fa-home text-4xl text-gray-400 mb-4"></i>
@@ -544,7 +433,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
                 <p class="text-gray-500">Be the first person to post</p>
             </div>
             `;
-        } else if (currentPage === 'Saved') {
+        } else if (currentPage === 'saved') {
             postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
                 <i class="fas fa-bookmark text-4xl text-gray-400 mb-4"></i>
@@ -552,7 +441,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
                 <p class="text-gray-500">Posts you save will appear here</p>
             </div>
             `;
-        } else if (currentPage === 'Profile') {
+        } else if (currentPage === 'profile') {
             postsContainer.innerHTML = `
             <div class="bg-white rounded-lg shadow p-6 text-center">
                 <i class="fas fa-user text-4xl text-gray-400 mb-4"></i>
@@ -567,7 +456,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
         for (const post of feedPosts) {
             if (adIndex === adFrequency) {
                 postsContainer.appendChild(createAdElement());
-                await embedAd(adId);
+                // await embedAd(adId);
                 adId++;
                 newAdFrequencyValue();
                 adIndex = 0;
@@ -588,7 +477,7 @@ async function displayPosts(filter) { // Add a parameter so this function decide
 
 // Function to display saved postss
 window.displaySaved = async function displaySaved() {
-    currentPage = 'Saved';
+    currentPage = 'saved';
     hideAll();
 
     updateActiveTab('saved');
@@ -1248,7 +1137,7 @@ window.createPost = async function createPost() {
 
 // Show profile function
 window.showProfile = async function showProfile() {
-    currentPage = 'Profile';
+    currentPage = 'profile';
 
     // Update active tab
     updateActiveTab('profile');
