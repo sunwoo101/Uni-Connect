@@ -405,7 +405,7 @@ export default class Api {
         try {
             const response = await fetch(`/api/upload/image`, {
                 method: 'POST',
-                header: {
+                headers: {
                     'Authorization': `Bearer ${token}`
                 },
                 body: formData,
