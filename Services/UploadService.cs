@@ -15,9 +15,9 @@ public class UploadService
 
     public UploadService(IConfiguration configuration)
     {
-        _connectionString = configuration.GetValue<string>("AzureStorage:ConnectionString");
-        _imageContainerName = configuration.GetValue<string>("AzureStorage:ImageContainerName");
-        _videoContainerName = configuration.GetValue<string>("AzureStorage:VideoContainerName");
+        _connectionString = configuration.GetValue<string>("AzureStorage_ConnectionString");
+        _imageContainerName = configuration.GetValue<string>("AzureStorage_ImageContainerName");
+        _videoContainerName = configuration.GetValue<string>("AzureStorage_VideoContainerName");
     }
 
     public async Task<(bool Success, string Message, string? responseData)> UploadImageAsync(IFormFile image)

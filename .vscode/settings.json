@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin/Release/net9.0/publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/6c85ae3d-24b4-419f-9ff3-313fb9233d39/resourceGroups/Uni-Connect/providers/Microsoft.Web/sites/uni-connect"
+}
