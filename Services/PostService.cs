@@ -186,7 +186,7 @@ public class PostService
                 IsAttendee = p.Event.Attendees.Any(a => a.UserId == request.UserId)
             }
         }).ToList();
-
+        
         if (!responseData.Any())
             return (true, "No more posts to load.", responseData);
 
@@ -376,8 +376,6 @@ public class PostService
         List<Comment> comments = await query
             .OrderByDescending(c => c.Id)
             .Include(c => c.User)
-            .Include(c => c.Replies)
-                .ThenInclude(r => r.User)
             .Take(limit)
             .ToListAsync();
 
@@ -398,7 +396,7 @@ public class PostService
             },
             Content = c.Content,
             CreationDate = c.CreationDate.ToString("o"),
-            ContainsReplies = c.Replies.Count() > 0
+            ContainsReplies = _context.Comments.Any(c2 => c2.ParentCommentId == c.Id)
         }).ToList();
 
         if (!responseData.Any())

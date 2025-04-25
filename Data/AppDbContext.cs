@@ -25,22 +25,65 @@ public class AppDbContext : DbContext
             .HasForeignKey<Event>(e => e.PostId)  // Event has a PostId that points to the Post
             .IsRequired(false);  // Make the relationship optional (Post can exist without an Event)
 
-        modelBuilder.Entity<Friendship>()
-        .HasOne(f => f.User) // A friendship includes the user who "owns" the friendship
-        .WithMany(u => u.Friendships) // The user has many friendships as the "owner"
-        .HasForeignKey(f => f.UserId) // Friendship has a UserId pointing to the User
-        .OnDelete(DeleteBehavior.Cascade);
+        // Configure Friendship relationships
+        modelBuilder.Entity<Friendship>(entity =>
+        {
+            entity.HasOne(f => f.User)
+                .WithMany(u => u.Friendships)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Friendship>()
-        .HasOne(f => f.Friend) // A friendship includes the friend that was added by the user
-        .WithMany() // No navigation property from the Friend back to Friendships (unidirectional)
-        .HasForeignKey(f => f.FriendId) // Friendship has a FriendId pointing to the Friend
-        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(f => f.Friend)
+                .WithMany()
+                .HasForeignKey(f => f.FriendId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<Comment>()
-        .HasOne(c => c.ParentComment) // A child comment has one parent comment
-        .WithMany(c => c.Replies) // A parent comment has many child comments
-        .HasForeignKey(c => c.ParentCommentId) // Comment has a ParentCommentId pointing to the parent comment
-        .OnDelete(DeleteBehavior.Cascade);
+        // Configure Like relationships
+        modelBuilder.Entity<Like>(entity =>
+        {
+            entity.HasOne(l => l.User)
+                .WithMany(u => u.Likes)
+                .HasForeignKey(l => l.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(l => l.Post)
+                .WithMany(p => p.Likes)
+                .HasForeignKey(l => l.PostId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Configure Save relationships
+        modelBuilder.Entity<Save>(entity =>
+        {
+            entity.HasOne(s => s.User)
+                .WithMany(u => u.Saves)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(s => s.Post)
+                .WithMany(p => p.Saves)
+                .HasForeignKey(s => s.PostId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Configure Comment relationships
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(c => c.ParentComment)
+                .WithMany(c => c.Replies)
+                .HasForeignKey(c => c.ParentCommentId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }

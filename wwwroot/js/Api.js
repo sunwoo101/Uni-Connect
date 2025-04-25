@@ -209,7 +209,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            // showAlert(result.message, 'success');
+            showAlert(result.message, 'success');
 
             return;
         } catch (error) {
@@ -267,7 +267,7 @@ export default class Api {
     
             if (!result.success) throw new Error(result.message);
     
-            // showAlert(result.message, 'success');
+            showAlert(result.message, 'success');
 
             return;
         } catch (error) {
