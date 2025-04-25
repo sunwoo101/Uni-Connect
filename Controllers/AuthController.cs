@@ -1,4 +1,7 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UniConnect.Models.Entities;
 using UniConnect.Models.Requests;
 using UniConnect.Models.Responses;
 using UniConnect.Services;
@@ -27,7 +30,30 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var result = await _authService.LoginUserAsync(request);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+        {
+            var result = await _authService.LoginUserAsync(request);
+
+            return Ok(new ApiResponse<AuthResponse?>(result.Success, result.Message, result.responseData));
+        }
+
+        var result2 = await _authService.TokenLoginUserAsync(int.Parse(userIdClaim));
+
+        return Ok(new ApiResponse<AuthResponse?>(result2.Success, result2.Message, result2.responseData));
+    }
+
+    [Authorize]
+    [HttpPost("token")]
+    public async Task<IActionResult> Token()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Ok(new ApiResponse<object>(false, "Failed auto log in"));
+
+        var result = await _authService.TokenLoginUserAsync(int.Parse(userIdClaim));
 
         return Ok(new ApiResponse<AuthResponse?>(result.Success, result.Message, result.responseData));
     }

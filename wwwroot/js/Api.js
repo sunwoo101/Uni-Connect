@@ -67,6 +67,35 @@ export default class Api {
             return false;
         }
     }
+
+    async tokenLogin(_token) {
+        try {
+            const response = await fetch('/api/auth/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${_token}`
+                },
+            });
+    
+            if (!response.ok) return;
+    
+            const result = await response.json();
+    
+            if (!result.success) return;
+    
+            // showAlert(result.message, 'success');
+            localStorage.setItem('user', JSON.stringify(result.data.userResponse));
+            localStorage.setItem('token', result.data.token);
+            token = localStorage.getItem('token');
+    
+            return true;
+        } catch (error) {
+            showAlert(error?.message || 'Something went wrong', 'error');
+    
+            return false;
+        }
+    }
     
     async createPost(content, image, video, voice, event) {
         try {
