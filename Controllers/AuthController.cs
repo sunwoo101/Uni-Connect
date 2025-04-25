@@ -30,18 +30,9 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await _authService.LoginUserAsync(request);
 
-        if (string.IsNullOrEmpty(userIdClaim))
-        {
-            var result = await _authService.LoginUserAsync(request);
-
-            return Ok(new ApiResponse<AuthResponse?>(result.Success, result.Message, result.responseData));
-        }
-
-        var result2 = await _authService.TokenLoginUserAsync(int.Parse(userIdClaim));
-
-        return Ok(new ApiResponse<AuthResponse?>(result2.Success, result2.Message, result2.responseData));
+        return Ok(new ApiResponse<AuthResponse?>(result.Success, result.Message, result.responseData));
     }
 
     [Authorize]
