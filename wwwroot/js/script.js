@@ -100,14 +100,14 @@ function updateUI() {
     const registerContent = document.getElementById('registerContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
     const navButtons = document.getElementById('navButtons');
-    const downloadLinks = document.getElementById('downloadLinks');
+    // const downloadLinks = document.getElementById('downloadLinks');
 
     if (loggedIn) {
         // Show main social media content
         loginContent.classList.add('hidden');
         registerContent.classList.add('hidden');
         forgotPasswordContent.classList.add('hidden');
-        downloadLinks.classList.add('hidden');
+        // downloadLinks.classList.add('hidden');
         mainContent.classList.remove('hidden');
 
         // Render posts
@@ -137,12 +137,12 @@ window.showLoginForm = async function showLoginForm() {
     const registerContent = document.getElementById('registerContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
     const loginContent = document.getElementById('loginContent');
-    const downloadLinks = document.getElementById('downloadLinks');
+    // const downloadLinks = document.getElementById('downloadLinks');
 
     registerContent.classList.add('hidden');
     forgotPasswordContent.classList.add('hidden');
     loginContent.classList.remove('hidden');
-    downloadLinks.classList.remove('hidden');
+    // downloadLinks.classList.remove('hidden');
 
     const rememberedEmail = localStorage.getItem("rememberedEmail");
 
@@ -264,7 +264,7 @@ function isValidEmail(email) {
 }
 
 function isValidName(str) {
-    return /^[A-Za-z]+$/.test(str);
+    return /^[A-Za-z\s]+$/.test(str);
 }
 
 // Register function
@@ -350,6 +350,7 @@ window.register = async function register() {
         updateUI();
         updateActiveTab('feed');
         updateSideBarProfile();
+        showCreatePostModal();
     }
 }
 
@@ -525,8 +526,7 @@ function createPostElement(post) {
     if (_event) _event.dateAndTime = new Date(_event.dateAndTime + 'Z');
     const user = post.user;
     const postElement = document.createElement('div');
-    postElement.className = 'hover-effect bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow';
-    postElement.onclick = () => showPostModal(post.id);
+    postElement.className = 'bg-white rounded-lg shadow p-4';
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
             <img src="${(user.profileImageURL && user.profileImageURL != "") ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
@@ -563,7 +563,7 @@ function createPostElement(post) {
                     <div class="flex items-center space-x-2">
                         <span id="attendee-count-id-${_event.id}" class="text-sm text-gray-600">${_event.attendeeCount} attending</span>
                     </div>
-                    <button id="attend-id-${_event.id}" onclick="event.stopPropagation(); toggleEventAttendance(${_event.id})" 
+                    <button id="attend-id-${_event.id}" onclick="toggleEventAttendance(${_event.id})" 
                             class="text-sm px-3 py-1 rounded-full ${_event.isAttendee ? 'bg-blue-100 text-blue-600' : 'bg-white text-blue-600 border border-blue-600'} hover:bg-blue-100 transition-colors flex items-center space-x-1">
                         ${_event.isAttendee ? '<i class="fas fa-check"></i>' : 'Going'}
                     </button>
@@ -572,16 +572,16 @@ function createPostElement(post) {
         ` : ''}
         <div class="flex justify-between items-center text-gray-500">
             <div class="flex space-x-4">
-                <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleLike(${post.id})">
+                <button class="hover:text-blue-600" onclick="toggleLike(${post.id})">
                     <i id="like-id-${post.id}" class="far fa-heart ${post.likedByYou ? 'fas text-red-600' : ''}"></i> 
                     <span id="like-count-id-${post.id}">${post.likeCount}</span> Like
                 </button>
-                <button class="hover:text-blue-600" onclick="event.stopPropagation(); showPostModal(${post.id})">
+                <button class="hover:text-blue-600" onclick="showPostModal(${post.id})">
                     <i class="far fa-comment"></i> 
                     <span id="comment-count-id-${post.id}">${post.commentCount}</span> Comment
                 </button>
             </div>
-            <button class="hover:text-blue-600" onclick="event.stopPropagation(); toggleSave(${post.id})">
+            <button class="hover:text-blue-600" onclick="toggleSave(${post.id})">
                 <i id="save-id-${post.id}" class="far fa-bookmark ${post.savedByYou ? 'fas' : ''}"></i>
                 <span id="save-count-id-${post.id}">${post.saveCount}</span> Save
             </button>
@@ -602,7 +602,7 @@ function createAdElement() {
                 <h3 class="font-semibold">Sponsor</h3>
             </div>
         </div>
-        <div id="ad-container-id-${adId}" class="bg-gray-200 hover-effect hover:shadow-md transition-shadow cursor-pointer text-center flex items-center justify-center">
+        <div id="ad-container-id-${adId}" class="bg-gray-200 cursor-pointer text-center flex items-center justify-center">
             <!-- Add a function that replaces the inner HTML with the ad API -->
             <h3 class="text-xl font-semibold text-gray-700 mb-2 py-10">This is a placeholder</h3>
         </div>
@@ -754,7 +754,6 @@ async function showPostModalAsync(postId) {
             </div>
             <div class="p-4">
                 <p class="mb-4">${post.content}</p>
-                ${post.image ? `<img src="${post.image}" alt="Post Image" class="rounded-lg mb-4 w-full">` : ''}
                 <div class="border-t pt-4">
                     <div class="space-y-4">
                         <div id="commentInput${post.id}" class="flex space-x-4">
@@ -1692,7 +1691,7 @@ function showDownloadPage() {
         document.getElementById('forgotPasswordContent').classList.add('hidden');
         document.getElementById('mainContent').classList.add('hidden');
         document.getElementById('navButtons').classList.add('hidden');
-        document.getElementById('downloadLinks').classList.add('hidden');
+        // document.getElementById('downloadLinks').classList.add('hidden');
     }
 }
 

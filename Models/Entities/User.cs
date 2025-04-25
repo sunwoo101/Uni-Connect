@@ -18,6 +18,8 @@ public class User
     public List<Post> Posts { get; set; } = new(); // Stores posts created by the user
     public List<Comment> Comments { get; set; } = new(); // Stores comments sent by the user
     public List<Friendship> Friendships { get; set; } = new(); // Stores friends
+    public List<Like> Likes { get; set; } = new(); // Stores likes
+    public List<Save> Saves { get; set; } = new(); // Stores saves
     public bool IsDeactivated { get; set; } = false; // Deactivate by default. Delete after inactivity.
     public DateTime? DeactivatedDate { get; set; } // Keep track of when the account was deactivated to delete after a period of inactivity. Null if the account is active.
 }

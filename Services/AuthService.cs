@@ -146,8 +146,8 @@ public class AuthService
 
     private string SanitizeName(string name)
     {
-        // Remove any character that is not a letter (A-Z or a-z)
-        return new string(name.Where(char.IsLetter).ToArray());
+        // Keep only letters and spaces
+        return new string(name.Where(c => char.IsLetter(c) || char.IsWhiteSpace(c)).ToArray());
     }
 
     // Generate the JWT Token

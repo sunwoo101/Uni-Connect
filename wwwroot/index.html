@@ -30,7 +30,7 @@
         </div>
     </nav>
 
-    <!-- Download Page for Mobile -->
+    <!-- Download Page for Mobile 
     <div id="mobilePage" class="container mx-auto mt-20 p-4 hidden">
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
             <div class="mb-8">
@@ -51,6 +51,7 @@
             </div>
         </div>
     </div>
+    -->
 
     <!-- Login Page Content -->
     <div id="loginContent" class="container mx-auto mt-20 p-4">
@@ -211,7 +212,7 @@
         </form>
     </div>
 
-    <!-- Mobile Download Links -->
+    <!-- Mobile Download Links
     <div id="downloadLinks" class="container mx-auto mt-20 p-4">
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
             <div class="space-y-4">
@@ -226,9 +227,10 @@
             </div>
         </div>
     </div>
+     -->
 
     <!-- Main Social Media Content -->
-    <div id="mainContent" class="container mx-auto mt-20 p-4 hidden">
+    <div id="mainContent" class="container mx-auto mt-20 p-4 mb-4 hidden pb-16 md:pb-4">
         <div class="grid grid-cols-1 md:grid-cols-10 gap-6">
             <!-- Left Sidebar -->
             <div class="hidden md:block md:col-span-3">
@@ -432,6 +434,27 @@
                 <div id="postsContainer" class="space-y-6">
                     <!-- Posts will be dynamically inserted here -->
                 </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Bar -->
+        <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+            <div class="flex justify-around items-center py-3">
+                <a href="#" onclick="refreshFirstPostsFetch('Feed'); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
+                    class="flex flex-col items-center text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="text-xs mt-1">Feed</span>
+                </a>
+                <a href="#" onclick="refreshFirstPostsFetch('Saved'); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
+                    class="flex flex-col items-center text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-bookmark text-xl"></i>
+                    <span class="text-xs mt-1">Saved</span>
+                </a>
+                <a href="#" onclick="refreshFirstPostsFetch('Profile'); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
+                    class="flex flex-col items-center text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-user text-xl"></i>
+                    <span class="text-xs mt-1">Profile</span>
+                </a>
             </div>
         </div>
     </div>
