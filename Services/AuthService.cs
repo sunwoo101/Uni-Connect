@@ -106,6 +106,32 @@ public class AuthService
         return (true, "Successfully logged in.", responseData);
     }
 
+    public async Task<(bool Success, string Message, AuthResponse? responseData)> TokenLoginUserAsync(int userId)
+    {
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId); // Look for the userId that matches with the login userId
+
+        UserResponse userResponse = new UserResponse // Create a response for the frontend
+        {
+            Id = user.Id,
+            Role = user.Role.ToString(),
+            Username = user.Username,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Degree = user.Degree,
+            ProfileImageURL = user.ProfileImageURL,
+            PostCount = _context.Posts.Count(p => p.UserId == user.Id),
+            FriendCount = _context.Friendships.Count(f => f.UserId == user.Id),
+        };
+
+        AuthResponse responseData = new AuthResponse
+        {
+            UserResponse = userResponse,
+            Token = GenerateJwtToken(user)
+        };
+
+        return (true, "Successfully logged in.", responseData);
+    }
+
     private async static Task<string> GenerateUniqueUsername(string username, AppDbContext context)
     {
         int i = 1;
@@ -130,7 +156,6 @@ public class AuthService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            // Add more claims if needed, such as roles
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));

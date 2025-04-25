@@ -132,7 +132,7 @@ function updateUI() {
 }
 
 // Show login form function
-window.showLoginForm = function showLoginForm() {
+window.showLoginForm = async function showLoginForm() {
     clearAllErrors();
     const registerContent = document.getElementById('registerContent');
     const forgotPasswordContent = document.getElementById('forgotPasswordContent');
@@ -147,8 +147,20 @@ window.showLoginForm = function showLoginForm() {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
 
     if (rememberedEmail) {
+        tokenLogin();
         document.getElementById('loginEmail').value = rememberedEmail;
         document.getElementById('rememberMe').checked = true;
+    }
+}
+
+async function tokenLogin() {
+    if (await api.tokenLogin(localStorage.getItem('token'))) {
+        loggedIn = true;
+        userData = JSON.parse(localStorage.getItem('user'));
+        updateUI();
+        updateActiveTab('feed');
+        showCreatePostModal();
+        updateSideBarProfile();
     }
 }
 
@@ -173,7 +185,6 @@ window.login = async function login() {
 
     if (invalidInput) return;
 
-    // Use API here in the future
     if (await api.login(email, password)) {
         loggedIn = true;
         userData = JSON.parse(localStorage.getItem('user'));
@@ -193,6 +204,8 @@ window.login = async function login() {
 // Logout function
 window.logout = function logout() {
     loggedIn = false;
+
+    localStorage.setItem('token', "");
 
     showAlert('Successfully logged out', 'info');
 
