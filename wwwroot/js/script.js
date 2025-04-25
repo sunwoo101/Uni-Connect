@@ -145,9 +145,7 @@ window.showLoginForm = async function showLoginForm() {
     // downloadLinks.classList.remove('hidden');
 
     const rememberedEmail = localStorage.getItem("rememberedEmail");
-
     if (rememberedEmail) {
-        tokenLogin();
         document.getElementById('loginEmail').value = rememberedEmail;
         document.getElementById('rememberMe').checked = true;
     }
@@ -1697,8 +1695,13 @@ function showDownloadPage() {
 
 // Check for mobile browser on page load
 document.addEventListener('DOMContentLoaded', function () {
-    showLoginForm();
-    showDownloadPage();
+    const token = localStorage.getItem('token');
+    if (token) {
+        tokenLogin();
+    } else {
+        showLoginForm();
+    }
+    // showDownloadPage();
 });
 
 // Test calls
