@@ -1289,6 +1289,8 @@ window.editProfile = function editProfile() {
         }
     });
 
+    currentProfileImage = userData.profileImageURL;
+
     modal.innerHTML = `
         <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
             <div class="flex justify-between items-center mb-6">
