@@ -71,7 +71,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasOne(c => c.User)
-                .WithMany()
+                .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 

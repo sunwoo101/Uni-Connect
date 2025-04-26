@@ -158,11 +158,11 @@ public class AuthService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt_SecretKey"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
-            _configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
+            _configuration["Jwt_Issuer"],
+            _configuration["Jwt_Audience"],
             claims,
             expires: DateTime.Now.AddDays(1), // Adjust the expiration time as needed
             signingCredentials: creds);

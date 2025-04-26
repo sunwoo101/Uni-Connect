@@ -159,7 +159,11 @@ async function tokenLogin() {
         updateActiveTab('feed');
         showCreatePostModal();
         updateSideBarProfile();
+
+        return true;
     }
+
+    return false;
 }
 
 // Login function
@@ -1285,6 +1289,8 @@ window.editProfile = function editProfile() {
         }
     });
 
+    currentProfileImage = userData.profileImageURL;
+
     modal.innerHTML = `
         <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
             <div class="flex justify-between items-center mb-6">
@@ -1338,7 +1344,7 @@ window.editProfile = function editProfile() {
                         </div>
                         <div id="pfpUploadLoading" class="hidden mt-4">
                             <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                        </div>
+                        </div> <!-- Bookmark (Daniel): Loading animation example -->
                     </div>
                 </div>
             </div>
@@ -1694,10 +1700,14 @@ function showDownloadPage() {
 }
 
 // Check for mobile browser on page load
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
     if (token) {
-        tokenLogin();
+        const loggedinWithToken = await tokenLogin();
+        
+        if (!loggedinWithToken) {
+            showLoginForm();
+        }
     } else {
         showLoginForm();
     }
