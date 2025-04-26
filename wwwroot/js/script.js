@@ -1338,7 +1338,7 @@ window.editProfile = function editProfile() {
                         </div>
                         <div id="pfpUploadLoading" class="hidden mt-4">
                             <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                        </div>
+                        </div> // Bookmark (Daniel): Loading animation example
                     </div>
                 </div>
             </div>
