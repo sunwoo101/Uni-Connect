@@ -86,7 +86,7 @@
                             Remember me
                         </label>
                     </div>
-                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800" href="#"
+                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800"
                         onclick="showForgotPasswordForm()">
                         Forgot Password?
                     </a>
@@ -100,7 +100,7 @@
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Don't have an account?
-                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800"
+                        <a class="font-bold text-blue-600 hover:text-blue-800"
                             onclick="showRegisterForm()">Sign up</a>
                     </p>
                 </div>
@@ -136,7 +136,7 @@
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Remember your password?
-                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign
+                        <a class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign
                             in</a>
                     </p>
                 </div>
@@ -191,8 +191,8 @@
                     <input type="checkbox" id="tosCheckbox"
                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
                     <label for="tosCheckbox" class="ml-2 block text-sm text-gray-900">
-                        I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> and 
-                        <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                        I agree to the <a class="text-blue-600 hover:text-blue-500">Terms of Service</a> and 
+                        <a class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
                     </label>
                 </div>
                 <p id="tosError" class="error-message text-sm text-red-600 mt-1"></p>
@@ -205,7 +205,7 @@
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Already have an account?
-                        <a href="#" class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign in</a>
+                        <a class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign in</a>
                     </p>
                 </div>
             </div>
@@ -247,20 +247,17 @@
                         </div>
                     </div>
                     <ul class="space-y-2">
-                        <li><a href="#"
-                                onclick="refreshFirstPostsFetch('Feed'); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
-                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                        <li><a onclick="refreshFirstPostsFetch('Feed'); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
+                                class="tab cursor-pointer flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="feed"><i class="fas fa-home"></i><span>Feed</span></a></li>
-                        <!-- <li><a href="#" onclick="displayGroups(); hideCreatePostModal(); updateSideBarProfile()"
-                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                        <!-- <li><a onclick="displayGroups(); hideCreatePostModal(); updateSideBarProfile()"
+                                class="tab cursor-pointer flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="groups"><i class="fas fa-users"></i><span>Groups</span></a></li> -->
-                        <li><a href="#"
-                                onclick="refreshFirstPostsFetch('Saved'); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
-                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                        <li><a onclick="refreshFirstPostsFetch('Saved'); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
+                                class="tab cursor-pointer flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="saved"><i class="fas fa-bookmark"></i><span>Saved Posts</span></a></li>
-                        <li><a href="#"
-                                onclick="refreshFirstPostsFetch('Profile'); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
-                                class="tab flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+                        <li><a onclick="refreshFirstPostsFetch('Profile'); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
+                                class="tab cursor-pointer flex items-center space-x-2 text-gray-700 hover:text-blue-600"
                                 data-tab="profile"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     </ul>
                 </div>
@@ -440,18 +437,18 @@
         <!-- Mobile Navigation Bar -->
         <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
             <div class="flex justify-around items-center py-3">
-                <a href="#" onclick="refreshFirstPostsFetch('Feed'); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
-                    data-tab="feed" class="tab flex flex-col items-center text-gray-700 hover:text-blue-600">
+                <a onclick="refreshFirstPostsFetch('Feed'); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
+                    data-tab="feed" class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
                     <i class="fas fa-home text-xl"></i>
                     <span class="text-xs mt-1">Feed</span>
                 </a>
-                <a href="#" onclick="refreshFirstPostsFetch('Saved'); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
-                    data-tab="saved" class="tab flex flex-col items-center text-gray-700 hover:text-blue-600">
+                <a onclick="refreshFirstPostsFetch('Saved'); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
+                    data-tab="saved" class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
                     <i class="fas fa-bookmark text-xl"></i>
                     <span class="text-xs mt-1">Saved</span>
                 </a>
-                <a href="#" onclick="refreshFirstPostsFetch('Profile'); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
-                    data-tab="profile" class="tab flex flex-col items-center text-gray-700 hover:text-blue-600">
+                <a onclick="refreshFirstPostsFetch('Profile'); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
+                    data-tab="profile" class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
                     <i class="fas fa-user text-xl"></i>
                     <span class="text-xs mt-1">Profile</span>
                 </a>
