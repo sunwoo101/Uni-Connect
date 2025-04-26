@@ -13,7 +13,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // builder.WebHost.UseUrls("http://localhost:5000");
+        builder.WebHost.UseUrls("http://localhost:5000"); // Comment out for deployment
 
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
