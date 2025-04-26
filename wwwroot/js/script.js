@@ -209,7 +209,7 @@ window.logout = function logout() {
 
     localStorage.setItem('token', "");
 
-    showAlert('Successfully logged out', 'info');
+    // showAlert('Successfully logged out', 'info');
 
     updateUI();
 
@@ -1162,7 +1162,7 @@ window.embedPostEvent = function embedPostEvent() {
 
     // Hide modal
     hideEventForm();
-    showAlert('Event added to your post!', 'success');
+    // showAlert('Event added to your post!', 'success');
 }
 
 // Hide event preview function
@@ -1421,7 +1421,7 @@ window.saveProfileChanges = async function saveProfileChanges() {
     // Update user information
     const newUserData = await api.updateProfile(username, degree, currentProfileImage);
     if (newUserData == null) {
-        showAlert('Unexpected error occurred', 'info');
+        // showAlert('Unexpected error occurred', 'info');
         return;
     }
     userData = newUserData;
