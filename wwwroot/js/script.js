@@ -159,7 +159,11 @@ async function tokenLogin() {
         updateActiveTab('feed');
         showCreatePostModal();
         updateSideBarProfile();
+
+        return true;
     }
+
+    return false;
 }
 
 // Login function
@@ -1694,10 +1698,14 @@ function showDownloadPage() {
 }
 
 // Check for mobile browser on page load
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
     if (token) {
-        tokenLogin();
+        const loggedinWithToken = await tokenLogin();
+        alert(loggedinWithToken);
+        if (!loggedinWithToken) {
+            showLoginForm();
+        }
     } else {
         showLoginForm();
     }
