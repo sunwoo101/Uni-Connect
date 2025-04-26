@@ -1702,7 +1702,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
     if (token) {
         const loggedinWithToken = await tokenLogin();
-        alert(loggedinWithToken);
+        
         if (!loggedinWithToken) {
             showLoginForm();
         }
