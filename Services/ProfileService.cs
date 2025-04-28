@@ -1,5 +1,5 @@
 /*
-    This class contains auth functions such as login, register and password reset
+    This class contains profile functions such as updating the profile
 */
 
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +39,25 @@ public class ProfileService
         user.Username = request.Username;
         user.Degree = request.Degree;
 
-        if ((user.ProfileImageURL != null || user.ProfileImageURL == "") && request.ProfileImageURL != user.ProfileImageURL)
+        // Change profile image
+        if (request.ProfileImageURL != null && request.ProfileImageURL != "" && request.ProfileImageURL != user.ProfileImageURL)
+        {
+            if (user.ProfileImageURL != null && user.ProfileImageURL != "")
+            {
+                // Delete the old profile image
+                var fileName = Path.GetFileName(user.ProfileImageURL);
+                var filePath = Path.Combine(_environment.WebRootPath, "uploads", "images", fileName);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+
+            user.ProfileImageURL = request.ProfileImageURL;
+        }
+        // Delete profile image
+        else if (request.ProfileImageURL == "delete" && user.ProfileImageURL != null && user.ProfileImageURL != "")
         {
             var fileName = Path.GetFileName(user.ProfileImageURL);
             var filePath = Path.Combine(_environment.WebRootPath, "uploads", "images", fileName);
@@ -48,9 +66,9 @@ public class ProfileService
             {
                 File.Delete(filePath);
             }
-        }
 
-        user.ProfileImageURL = request.ProfileImageURL;
+            user.ProfileImageURL = "";
+        }
 
         await _context.SaveChangesAsync(); // Update the DB
 
