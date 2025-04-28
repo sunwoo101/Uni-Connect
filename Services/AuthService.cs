@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace UniConnect.Services;
 
@@ -36,7 +37,7 @@ public class AuthService
         if (await _context.Users.AnyAsync(u => u.Email == request.Email)) // Check if the email is already registered
             return (false, "Email is already registered.", null);
 
-        string username = request.Email.Split("@")[0]; // Extract username from the user's email
+        string username = SanitizeUsername(request.Email.Split("@")[0]); // Extract username from the user's email
 
         if (await _context.Users.AnyAsync(u => u.Username == username)) // Check if someone else already has the username
             username = await GenerateUniqueUsername(username, _context); // Add a number to the username
@@ -148,6 +149,12 @@ public class AuthService
     {
         // Keep only letters and spaces
         return new string(name.Where(c => char.IsLetter(c) || char.IsWhiteSpace(c)).ToArray());
+    }
+
+    private string SanitizeUsername(string name)
+    {
+        // Keep only letters and spaces
+        return Regex.Replace(name, @"[^A-Za-z0-9._]", "");
     }
 
     // Generate the JWT Token
