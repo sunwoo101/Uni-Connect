@@ -777,7 +777,7 @@ async function showPostModalAsync(postId) {
     });
 
     postModalContainer.innerHTML = `
-        <div id="postModalContent" class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div id="postModalContent" class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto break-words">
             <div class="p-4 border-b">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-4">
@@ -882,7 +882,7 @@ function createCommentElement(comment, postId) {
     commentElement.className = 'flex space-x-3';
     commentElement.innerHTML = `
         <img src="${(commentUser.profileImageURL && commentUser.profileImageURL != "") ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
             <div class="bg-gray-100 rounded-lg p-3">
                 <div class="flex items-center space-x-2">
                     <span class="font-semibold">${commentUser.firstName} ${commentUser.lastName}</span>
@@ -925,7 +925,7 @@ function createCommentReplyElement(reply) {
     replyElement.className = 'flex space-x-3';
     replyElement.innerHTML = `
         <img src="${(replyUser.profileImageURL && replyUser.profileImageURL != "") ? replyUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
             <div class="bg-gray-50 rounded-lg p-2">
                 <div class="flex items-center space-x-2">
                     <span class="font-semibold text-sm">${replyUser.firstName} ${replyUser.lastName}</span>
@@ -1424,6 +1424,11 @@ window.uploadProfileImage = async function uploadProfileImage(event) {
     const pfpUploadLoading = document.getElementById('pfpUploadLoading');
 
     const file = event.target.files[0];
+    if (file && file.size > 5 * 1024 * 1024) { // 5MB
+        showAlert('Image size exceeds the maximum limit of 5MB.', 'error');
+        return;
+    }
+    
     if (file) {
         buttonParent.classList.add('hidden');
         pfpUploadLoading.classList.remove('hidden');
