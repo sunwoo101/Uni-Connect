@@ -32,10 +32,18 @@ public class AuthService
     {
         request.FirstName = SanitizeName(request.FirstName);
         request.LastName = SanitizeName(request.LastName);
-        request.Degree = SanitizeName(request.Degree);
+        request.Degree = SanitizeDegree(request.Degree);
 
         if (await _context.Users.AnyAsync(u => u.Email == request.Email)) // Check if the email is already registered
             return (false, "Email is already registered.", null);
+
+        if (!IsValidEmail(request.Email))
+            return (false, "Email is invalid.", null);
+
+        string domain = request.Email.Split("@")[1];
+
+        if (!domain.Contains(".edu.") && !domain.EndsWith(".edu"))
+            return (false, "Email must be a .edu email.", null);
 
         string username = SanitizeUsername(request.Email.Split("@")[0]); // Extract username from the user's email
 
@@ -145,6 +153,12 @@ public class AuthService
         return username + i;
     }
 
+    private bool IsValidEmail(string email)
+    {
+        string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        return Regex.IsMatch(email, pattern);
+    }
+
     private string SanitizeName(string name)
     {
         // Keep only letters and spaces
@@ -155,6 +169,12 @@ public class AuthService
     {
         // Keep only letters and spaces
         return Regex.Replace(name, @"[^A-Za-z0-9._]", "");
+    }
+
+    private string SanitizeDegree(string degree)
+    {
+        // Keep only letters and spaces
+        return Regex.Replace(degree, @"[^A-Za-z0-9() ]", "");
     }
 
     // Generate the JWT Token

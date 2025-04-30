@@ -1,14 +1,15 @@
-import Api from './Api.js'
+import Api from './Api.js';
+import Utilities from './Utilities.js';
+
 // Session variables
-// Old
 let loggedIn = false;
+let userData = null;
 
 // New
 const api = new Api();
-let userData = null;
+const utilities = new Utilities();
 
-
-// Alert functions
+// Alert
 const alertTimeoutDuration = 3000;
 let alertTimeout;
 
@@ -172,6 +173,8 @@ window.login = async function login() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
     const rememberMeChecked = document.getElementById('rememberMe').checked;
+    const loginButton = document.getElementById('loginButton');
+    const loginLoading = document.getElementById('loginLoading');
     let invalidInput = false;
 
     // Input validation
@@ -187,6 +190,10 @@ window.login = async function login() {
 
     if (invalidInput) return;
 
+    // Show loading animation
+    loginButton.classList.add('hidden');
+    loginLoading.classList.remove('hidden');
+
     if (await api.login(email, password)) {
         loggedIn = true;
         userData = JSON.parse(localStorage.getItem('user'));
@@ -201,6 +208,10 @@ window.login = async function login() {
             localStorage.removeItem("rememberedEmail");
         }
     }
+
+    // Hide loading animation
+    loginButton.classList.remove('hidden');
+    loginLoading.classList.add('hidden');
 }
 
 // Logout function
@@ -269,6 +280,14 @@ function isValidName(str) {
     return /^[A-Za-z\s]+$/.test(str);
 }
 
+function isValidUsername(str) {
+    return /^[A-Za-z0-9._]+$/.test(str);
+}
+
+function isValidDegree(str) {
+    return /^[A-Za-z0-9() ]+$/.test(str);
+}
+
 // Register function
 window.register = async function register() {
     clearAllErrors();
@@ -279,6 +298,8 @@ window.register = async function register() {
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const tosChecked = document.getElementById('tosCheckbox').checked;
+    const registerButton = document.getElementById('registerButton');
+    const registerLoading = document.getElementById('registerLoading');
 
     let invalidInput = false;
 
@@ -311,13 +332,18 @@ window.register = async function register() {
     } else if (!isValidEmail(email)) {
         setInputError('registerEmail', 'registerEmailError', 'Please enter a valid email address');
         invalidInput = true;
-    } else if (emailExtension && !emailExtension.includes('.edu.')) {
+    } else if (emailExtension && !emailExtension.includes('.edu.') && !emailExtension.endsWith('.edu')) {
         setInputError('registerEmail', 'registerEmailError', 'Please use your uni email address');
         invalidInput = true;
     }
 
     if (!degree) {
         setInputError('degree', 'degreeError', 'Please enter your degree');
+        invalidInput = true;
+    }
+
+    if (!isValidDegree(degree)) {
+        setInputError('degree', 'degreeError', 'Degree must only contain letters and numbers');
         invalidInput = true;
     }
 
@@ -344,7 +370,8 @@ window.register = async function register() {
 
     if (invalidInput) return;
 
-    // Here you would typically make an API call to create the account
+    registerLoading.classList.remove('hidden');
+    registerButton.classList.add('hidden');
 
     if (await api.register(email, password, firstName, lastName, degree)) {
         loggedIn = true;
@@ -354,6 +381,9 @@ window.register = async function register() {
         updateSideBarProfile();
         showCreatePostModal();
     }
+
+    registerLoading.classList.add('hidden');
+    registerButton.classList.remove('hidden');
 }
 
 // Error handling functions
@@ -448,9 +478,14 @@ window.addEventListener('scroll', async () => {
 // Display posts function
 async function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
     const postsContainer = document.getElementById('postsContainer');
+    const postsLoading = document.getElementById('postsLoading');
+
+    postsLoading.classList.remove('hidden');
 
     // Sort posts by timestamp (newest first)
     const feedPosts = await api.fetchPosts(firstPostsFetch, postIdAnchor, postFilter);
+
+    postsLoading.classList.add('hidden');
 
     if (!feedPosts || feedPosts.length === 0) {
         allPostsLoaded = true;
@@ -528,7 +563,7 @@ function createPostElement(post) {
     if (_event) _event.dateAndTime = new Date(_event.dateAndTime + 'Z');
     const user = post.user;
     const postElement = document.createElement('div');
-    postElement.className = 'bg-white rounded-lg shadow p-4';
+    postElement.className = 'bg-white rounded-lg shadow p-4 break-words';
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
             <img src="${(user.profileImageURL && user.profileImageURL != "") ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
@@ -538,7 +573,7 @@ function createPostElement(post) {
                 <p class="text-gray-600 text-sm">${user.degree}</p>
             </div>
         </div>
-        <p class="mb-4">${post.content}</p>
+        <p class="mb-4">${utilities.sanitiseString(post.content)}</p>
         ${post.image ? `<img src="${post.image}" alt="Post Image" class="max-h-[76vh] rounded-lg mb-4 w-full">` : ''}
         ${post.video ? `<video src="${post.video}" alt="Post Video" class="bg-gray-200 max-h-[76vh] rounded-lg mb-4 w-full" controls></video>` : ''}
         ${_event ? `
@@ -547,8 +582,8 @@ function createPostElement(post) {
                     <div class="bg-blue-100 p-2 rounded-lg">
                         <i class="fas fa-calendar text-blue-600"></i>
                     </div>
-                    <div>
-                        <h4 class="font-semibold">${_event.title}</h4>
+                    <div class="min-w-0">
+                        <h4 class="font-semibold">${utilities.sanitiseString(_event.title)}</h4>
                         <p class="text-sm text-gray-600">${_event.dateAndTime.toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'short',
@@ -558,7 +593,7 @@ function createPostElement(post) {
         minute: '2-digit',
         hour12: true
     })}</p>
-                        <p class="text-sm text-gray-600">📍 ${_event.location}</p>
+                        <p class="text-sm text-gray-600">📍 ${utilities.sanitiseString(_event.location)}</p>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -590,7 +625,7 @@ function createPostElement(post) {
         </div>
     `;
     return postElement;
-} // Bookmark: add ID to like and save to change colour on toggle
+}
 
 let adId = 0;
 
@@ -616,6 +651,7 @@ function createAdElement() {
 async function embedAd(_adId) {
     const adContainerId = document.getElementById(`ad-container-id-${_adId}`);
 
+    // Sample ad
     adContainerId.innerHTML = `<img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">`;
 }
 
@@ -723,6 +759,9 @@ window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
 }
 
 async function showPostModalAsync(postId) {
+    const postModalLoading = document.getElementById('postModalLoading');
+    postModalLoading.classList.remove('hidden');
+
     const post = await api.fetchPost(postId);
     const user = post.user;
 
@@ -738,7 +777,7 @@ async function showPostModalAsync(postId) {
     });
 
     postModalContainer.innerHTML = `
-        <div id="postModalContent" class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div id="postModalContent" class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto break-words">
             <div class="p-4 border-b">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-4">
@@ -755,7 +794,7 @@ async function showPostModalAsync(postId) {
                 </div>
             </div>
             <div class="p-4">
-                <p class="mb-4">${post.content}</p>
+                <p class="mb-4">${utilities.sanitiseString(post.content)}</p>
                 <div class="border-t pt-4">
                     <div class="space-y-4">
                         <div id="commentInput${post.id}" class="flex space-x-4">
@@ -776,6 +815,8 @@ async function showPostModalAsync(postId) {
         </div>
     `;
 
+    postModalLoading.classList.add('hidden');
+
     document.body.style.overflow = 'hidden';
 }
 
@@ -787,7 +828,7 @@ let currentPostModalId = 0;
 
 async function loadComments(postId) {
     const commentsContainer = document.getElementById('comments-container');
-    const comments = await api.fetchComments(firstCommentsFetch, postId, commentIdAnchor); // Bookmark
+    const comments = await api.fetchComments(firstCommentsFetch, postId, commentIdAnchor);
 
     if (!comments || comments.length === 0) {
         allCommentsLoaded = true;
@@ -814,7 +855,7 @@ async function loadComments(postId) {
 let replyIdAnchor = {};
 let firstReplyFetch = {};
 
-window.loadCommentReplies = async function loadCommentReplies(postId, parentCommentId) { // Bookmark
+window.loadCommentReplies = async function loadCommentReplies(postId, parentCommentId) {
     const replyContainer = document.getElementById(`comment-reply-container-id-${parentCommentId}`);
     const replies = await api.fetchComments(firstReplyFetch[`$parent-id-${parentCommentId}`] ?? true, postId, replyIdAnchor[`$parent-id-${parentCommentId}`] ?? 0, parentCommentId);
 
@@ -841,13 +882,13 @@ function createCommentElement(comment, postId) {
     commentElement.className = 'flex space-x-3';
     commentElement.innerHTML = `
         <img src="${(commentUser.profileImageURL && commentUser.profileImageURL != "") ? commentUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-8 h-8">
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
             <div class="bg-gray-100 rounded-lg p-3">
                 <div class="flex items-center space-x-2">
                     <span class="font-semibold">${commentUser.firstName} ${commentUser.lastName}</span>
                     <span class="text-gray-500 text-sm">${formatTimestamp(comment.creationDate)}</span>
                 </div>
-                <p class="mt-1">${comment.content}</p>
+                <p class="mt-1">${utilities.sanitiseString(comment.content)}</p>
                 <button onclick="showReplyInput(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
                     Reply
                 </button>
@@ -864,7 +905,7 @@ function createCommentElement(comment, postId) {
                     </div>
                 </div>
             </div>
-            <div id="comment-reply-container-id-${comment.id}" class="ml-8 mt-2 space-y-2"> <!-- Bookmark -->
+            <div id="comment-reply-container-id-${comment.id}" class="ml-8 mt-2 space-y-2">
                 <!-- Replies go here -->
             </div>
             ${comment.containsReplies ? `
@@ -884,13 +925,13 @@ function createCommentReplyElement(reply) {
     replyElement.className = 'flex space-x-3';
     replyElement.innerHTML = `
         <img src="${(replyUser.profileImageURL && replyUser.profileImageURL != "") ? replyUser.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-6 h-6">
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
             <div class="bg-gray-50 rounded-lg p-2">
                 <div class="flex items-center space-x-2">
                     <span class="font-semibold text-sm">${replyUser.firstName} ${replyUser.lastName}</span>
                     <span class="text-gray-500 text-xs">${formatTimestamp(reply.creationDate)}</span>
                 </div>
-                <p class="text-sm mt-1">${reply.content}</p>
+                <p class="text-sm mt-1">${utilities.sanitiseString(reply.content)}</p>
             </div>
         </div>
     `;
@@ -916,7 +957,7 @@ window.showPostModal = async function showPostModal(postId) {
     postModalContent.addEventListener('scroll', async () => {
         if (allCommentsLoaded || isCommentsLoading) return;
 
-        const scrollPosition = postModalContent.scrollTop + postModalContent.clientHeight; // Bookmark: This should check scroll position in the post modal instead of main page
+        const scrollPosition = postModalContent.scrollTop + postModalContent.clientHeight;
         const threshold = postModalContent.scrollHeight - 200;
 
         if (scrollPosition >= threshold) {
@@ -1017,6 +1058,11 @@ let videoUploading = false;
 // Image upload handler function
 window.handleImageUpload = async function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
     const file = event.target.files[0];
+    if (file && file.size > 5 * 1024 * 1024) { // 5MB
+        showAlert('Image size exceeds the maximum limit of 5MB.', 'error');
+        return;
+    }
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -1063,6 +1109,11 @@ window.hideImagePreview = function hideImagePreview() {
 // Video upload handler function
 window.handleVideoUpload = async function handleVideoUpload(event) {
     const file = event.target.files[0];
+    if (file && file.size > 50 * 1024 * 1024) { // 50MB
+        showAlert('Video size exceeds the maximum limit of 50MB.', 'error');
+        return;
+    }
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -1344,7 +1395,7 @@ window.editProfile = function editProfile() {
                         </div>
                         <div id="pfpUploadLoading" class="hidden mt-4">
                             <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                        </div> <!-- Bookmark (Daniel): Loading animation example -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1373,6 +1424,11 @@ window.uploadProfileImage = async function uploadProfileImage(event) {
     const pfpUploadLoading = document.getElementById('pfpUploadLoading');
 
     const file = event.target.files[0];
+    if (file && file.size > 5 * 1024 * 1024) { // 5MB
+        showAlert('Image size exceeds the maximum limit of 5MB.', 'error');
+        return;
+    }
+    
     if (file) {
         buttonParent.classList.add('hidden');
         pfpUploadLoading.classList.remove('hidden');
@@ -1384,10 +1440,6 @@ window.uploadProfileImage = async function uploadProfileImage(event) {
             profileImagePreview.innerHTML = `<img src="${pfpURL}" alt="Profile Preview" class="w-20 h-20 rounded-full">`;
         }
     }
-}
-
-function isValidUsername(str) {
-    return /^[A-Za-z0-9._]+$/.test(str);
 }
 
 // Save profile changes
@@ -1409,6 +1461,11 @@ window.saveProfileChanges = async function saveProfileChanges() {
     // Validate degree
     if (!degree) {
         showAlert('Degree cannot be empty', 'error');
+        return;
+    }
+
+    if (!isValidDegree(degree)) {
+        showAlert('Degree is invalid', 'error');
         return;
     }
 
@@ -1702,6 +1759,7 @@ function showDownloadPage() {
 // Check for mobile browser on page load
 document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
+
     if (token) {
         const loggedinWithToken = await tokenLogin();
         
@@ -1711,6 +1769,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     } else {
         showLoginForm();
     }
+
+    document.getElementById('tokenLoginLoading').classList.add('hidden');
     // showDownloadPage();
 });
 

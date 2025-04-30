@@ -7,6 +7,7 @@ using UniConnect.Models.Entities;
 using UniConnect.Models.Requests;
 using UniConnect.Models.Responses;
 using UniConnect.Utilities;
+using System.Text.RegularExpressions;
 
 namespace UniConnect.Services;
 
@@ -28,6 +29,8 @@ public class ProfileService
         if (user == null) // Invalid user check
             return (false, "Invalid user.", null);
 
+        request.Username = SanitizeUsername(request.Username);
+
         if (request.Username != user.Username)
         {
             bool usernameExists = await _context.Users.AnyAsync(u => u.Username == request.Username); // Check if the username is available
@@ -37,7 +40,7 @@ public class ProfileService
         }
 
         user.Username = request.Username;
-        user.Degree = request.Degree;
+        user.Degree = SanitizeDegree(request.Degree);
 
         // Change profile image
         if (request.ProfileImageURL != null && request.ProfileImageURL != "" && request.ProfileImageURL != user.ProfileImageURL)
@@ -86,5 +89,17 @@ public class ProfileService
         };
 
         return (true, "Successfully updated profile.", responseData);
+    }
+
+    private string SanitizeUsername(string name)
+    {
+        // Keep only letters and spaces
+        return Regex.Replace(name, @"[^A-Za-z0-9._]", "");
+    }
+
+    private string SanitizeDegree(string degree)
+    {
+        // Keep only letters and spaces
+        return Regex.Replace(degree, @"[^A-Za-z0-9() ]", "");
     }
 }

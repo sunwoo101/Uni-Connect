@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Uni Connect - Connect with other uni students</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!--<link rel="stylesheet" href="./css/tailwind.css">-->
+    <!--<script src="https://cdn.tailwindcss.com"></script>-->
+    <link rel="stylesheet" href="./css/tailwind.css">
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -86,21 +86,25 @@
                             Remember me
                         </label>
                     </div>
-                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800"
+                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
                         onclick="showForgotPasswordForm()">
                         Forgot Password?
                     </a>
                 </div>
                 <div>
-                    <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    <div id="loginLoading" class="hidden flex items-center justify-center">
+                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin">
+                        </div>
+                    </div>
+                    <button id="loginButton" type="submit"
+                        class="flex justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Sign In
-                    </button> <!-- Bookmark (Daniel): Show loading animation while login is processing -->
+                    </button>
                 </div>
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Don't have an account?
-                        <a class="font-bold text-blue-600 hover:text-blue-800"
+                        <a class="font-bold text-blue-600 hover:text-blue-800 cursor-pointer"
                             onclick="showRegisterForm()">Sign up</a>
                     </p>
                 </div>
@@ -123,7 +127,7 @@
                     </label>
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="resetEmail" name="email" type="email" placeholder="john.doe@student.uts.edu.au"
+                        id="resetEmail" name="email" type="email" placeholder="John.Doe@student.uts.edu.au"
                         autocomplete="email" required>
                     <p class="error-message" id="resetEmailError"></p>
                 </div>
@@ -136,7 +140,8 @@
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Remember your password?
-                        <a class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign
+                        <a class="font-bold text-blue-600 hover:text-blue-800 cursor-pointer"
+                            onclick="showLoginForm()">Sign
                             in</a>
                     </p>
                 </div>
@@ -152,60 +157,77 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">First Name</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               id="firstName" name="given-name" type="text" placeholder="John" autocomplete="given-name" required>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="firstName" name="given-name" type="text" placeholder="John" autocomplete="given-name"
+                            required>
                         <p class="error-message" id="firstNameError"></p>
                     </div>
                     <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">Last Name</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               id="lastName" name="family-name" type="text" placeholder="Doe" autocomplete="family-name" required>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="lastName" name="family-name" type="text" placeholder="Doe" autocomplete="family-name"
+                            required>
                         <p class="error-message" id="lastNameError"></p>
                     </div>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="registerEmail">Email Address</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           id="registerEmail" name="email" type="email" placeholder="john.doe@student.uts.edu.au" autocomplete="email" required>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="registerEmail" name="email" type="email" placeholder="John.Doe@student.uts.edu.au"
+                        autocomplete="email" required>
                     <p class="error-message" id="registerEmailError"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="degree">Degree</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           id="degree" type="text" placeholder="e.g. Bachelor of Science">
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="degree" type="text" placeholder="e.g. Bachelor of Science">
                     <p class="error-message" id="degreeError"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="registerPassword">Password</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           id="registerPassword" name="new-password" type="password" placeholder="••••••••" autocomplete="new-password" required>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="registerPassword" name="new-password" type="password" placeholder="••••••••"
+                        autocomplete="new-password" required>
                     <p class="error-message" id="registerPasswordError"></p>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">Confirm Password</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           id="confirmPassword" type="password" placeholder="••••••••" autocomplete="new-password" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">Confirm
+                        Password</label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="confirmPassword" type="password" placeholder="••••••••" autocomplete="new-password"
+                        required>
                     <p class="error-message" id="confirmPasswordError"></p>
                 </div>
                 <div class="flex items-center">
                     <input type="checkbox" id="tosCheckbox"
-                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
                     <label for="tosCheckbox" class="ml-2 block text-sm text-gray-900">
-                        I agree to the <a class="text-blue-600 hover:text-blue-500">Terms of Service</a> and 
+                        I agree to the <a class="text-blue-600 hover:text-blue-500">Terms of Service</a> and
                         <a class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
                     </label>
                 </div>
                 <p id="tosError" class="error-message text-sm text-red-600 mt-1"></p>
                 <div>
-                    <button type="submit"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <div id="registerLoading" class="hidden flex items-center justify-center">
+                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin">
+                        </div>
+                    </div>
+                    <button id="registerButton" type="submit"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Create Account
                     </button>
                 </div>
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Already have an account?
-                        <a class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign in</a>
+                        <a class="font-bold text-blue-600 hover:text-blue-800 cursor-pointer"
+                            onclick="showLoginForm()">Sign in</a>
                     </p>
                 </div>
             </div>
@@ -240,10 +262,9 @@
                             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
                             alt="Profile" class="rounded-full w-12 h-12">
                         <div>
-                            <h3 id="sideBarProfileName" class="font-semibold">Sun Woo Kim</h3>
-                            <p id="sideBarProfileUsername" class="text-gray-500 text-sm">@sunwookim</p>
-                            <p id="sideBarProfileDegree" class="text-gray-600 text-sm">Diploma of
-                                Information Technology</p>
+                            <h3 id="sideBarProfileName" class="font-semibold"></h3>
+                            <p id="sideBarProfileUsername" class="text-gray-500 text-sm"></p>
+                            <p id="sideBarProfileDegree" class="text-gray-600 text-sm"></p>
                         </div>
                     </div>
                     <ul class="space-y-2">
@@ -266,12 +287,10 @@
             <!-- Main Content -->
             <div class="md:col-span-4">
                 <!-- Create Post -->
-                <div id="createPostModal" class="bg-white rounded-lg shadow p-4 mb-6">
+                <div id="createPostModal" class="bg-white rounded-lg shadow p-4 mb-6 break-words">
                     <div class="flex space-x-4">
-                        <img id="createPostProfileImage"
-                            src=""
-                            alt="Profile" class="rounded-full w-12 h-12">
-                        <div class="flex-1">
+                        <img id="createPostProfileImage" src="" alt="Profile" class="rounded-full w-12 h-12">
+                        <div class="flex-1 min-w-0">
                             <textarea id="postContent" placeholder="Don't be shy, share your thoughts!"
                                 class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
 
@@ -280,15 +299,19 @@
                                 <!-- Image + spinner container -->
                                 <div class="relative">
                                     <img id="previewImage" class="max-h-64 rounded-lg" src="" alt="Preview">
-                                    
+
                                     <!-- Spinner overlay -->
-                                    <div id="imageUploadLoading" class="hidden absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
-                                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                                    <div id="imageUploadLoading"
+                                        class="hidden absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
+                                        <div
+                                            class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin">
+                                        </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Remove button -->
-                                <button id="removeImageButton" onclick="hideImagePreview()" class="text-red-600 hover:text-red-800 mt-2">
+                                <button id="removeImageButton" onclick="hideImagePreview()"
+                                    class="text-red-600 hover:text-red-800 mt-2">
                                     <i class="fas fa-times"></i> Remove Image
                                 </button>
                             </div>
@@ -296,14 +319,18 @@
                             <div id="postVideoPreview" class="mt-4 hidden">
                                 <div class="relative">
                                     <video id="previewVideo" class="max-h-64 rounded-lg" controls></video>
-                                    
+
                                     <!-- Spinner overlay -->
-                                    <div id="videoUploadLoading" class="hidden absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
-                                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                                    <div id="videoUploadLoading"
+                                        class="hidden absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
+                                        <div
+                                            class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin">
+                                        </div>
                                     </div>
                                 </div>
 
-                                <button id="removeVideoButton" onclick="hideVideoPreview()" class="text-red-600 hover:text-red-800 mt-2">
+                                <button id="removeVideoButton" onclick="hideVideoPreview()"
+                                    class="text-red-600 hover:text-red-800 mt-2">
                                     <i class="fas fa-times"></i> Remove Video
                                 </button>
                             </div>
@@ -319,21 +346,24 @@
                                 </button>
                             </div>
 
-                            <div class="flex justify-between items-center mt-4">
+                            <div class="flex flex-wrap justify-between items-center mt-4 gap-2">
                                 <div class="flex space-x-4">
-                                    <label id="uploadImageButton" class="cursor-pointer text-gray-500 hover:text-blue-600">
+                                    <label id="uploadImageButton"
+                                        class="cursor-pointer text-gray-500 hover:text-blue-600">
                                         <i class="fas fa-image"></i> Image
                                         <input type="file" id="postImageInput" accept="image/*" class="hidden"
                                             onchange="handleImageUpload(event)">
                                     </label>
 
-                                    <label id="uploadVideoButton" class="cursor-pointer text-gray-500 hover:text-blue-600">
+                                    <label id="uploadVideoButton"
+                                        class="cursor-pointer text-gray-500 hover:text-blue-600">
                                         <i class="fas fa-video"></i> Video
                                         <input type="file" id="videoInput" accept="video/*" class="hidden"
                                             onchange="handleVideoUpload(event)">
                                     </label>
-                                    
-                                    <button id="createEventButton" class="text-gray-500 hover:text-blue-600" onclick="showEventForm()">
+
+                                    <button id="createEventButton" class="text-gray-500 hover:text-blue-600"
+                                        onclick="showEventForm()">
                                         <i class="fas fa-calendar"></i> Event
                                     </button>
                                 </div>
@@ -384,28 +414,29 @@
                 <div id="profileContent" class="space-y-6 hidden mb-6">
                     <!-- Profile Header -->
                     <div class="bg-white rounded-lg shadow p-4">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-start space-x-4">
                             <div class="flex items-center space-x-4">
                                 <img id="profileHeaderProfileImage"
                                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMkUyRTIiLz48cGF0aCBkPSJNMjUgMjVjMy40NSAwIDYuMjUtMi44IDYuMjUtNi4yNVMyOC40NSAxMi41IDI1IDEyLjVzLTYuMjUgMi44LTYuMjUgNi4yNSAyLjggNi4yNSA2LjI1IDYuMjV6bTAgMTAuNWMtNC40IDAtMTMgMi4yLTEzIDYuNjNWNDVoMjZ2LTIuMzVjMC00LjQtOC42LTYuNjMtMTMtNi42M3oiIGZpbGw9IiM5OTk5OTkiLz48L3N2Zz4="
                                     alt="Profile" class="rounded-full w-20 h-20">
-                                <div>
-                                    <h2 id="profileHeaderName" class="text-2xl font-bold">Sun Woo Kim</h2>
-                                    <p id="profileHeaderUsername" class="text-gray-500">@sunwookim</p>
-                                    <p id="profileHeaderDegree" class="text-gray-600">Diploma of Information Technology
-                                    </p>
-                                </div>
                             </div>
-                            <div class="flex space-x-4">
+                            <div class="flex flex-1 flex-wrap justify-between gap-2">
+                                <div>
+                                    <h2 id="profileHeaderName" class="text-2xl font-bold"></h2>
+                                    <p id="profileHeaderUsername" class="text-gray-500"></p>
+                                    <p id="profileHeaderDegree" class="text-gray-600"></p>
+                                </div>
                                 <!--
                                 <button onclick="showManageFriends()" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200">
                                     <i class="fas fa-user-friends mr-2"></i>Manage Friends
                                 </button>
                                 -->
-                                <button onclick="editProfile()"
-                                    class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
-                                    Edit Profile
-                                </button>
+                                <div class="flex items-center">
+                                    <button onclick="editProfile()"
+                                        class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
+                                        Edit Profile
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -428,9 +459,17 @@
                 </div>
 
                 <!-- Posts Container -->
-                <div id="postsContainer" class="space-y-6">
-                    <!-- Posts will be dynamically inserted here -->
-                </div> <!-- Bookmark (Daniel): Show loading animation while posts are loading -->
+                <div class="space-y-6">
+                    <div id="postsContainer" class="space-y-6">
+                        <!-- Posts will be dynamically inserted here -->
+                    </div>
+
+                    <div id="postsLoading"
+                        class="hidden bg-white rounded-lg shadow p-4 flex items-center justify-center">
+                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -438,17 +477,20 @@
         <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
             <div class="flex justify-around items-center py-3">
                 <a onclick="refreshFirstPostsFetch('Feed'); displayFeed(); showCreatePostModal(); updateSideBarProfile()"
-                    data-tab="feed" class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
+                    data-tab="feed"
+                    class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
                     <i class="fas fa-home text-xl"></i>
                     <span class="text-xs mt-1">Feed</span>
                 </a>
                 <a onclick="refreshFirstPostsFetch('Saved'); displaySaved(); hideCreatePostModal(); updateSideBarProfile()"
-                    data-tab="saved" class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
+                    data-tab="saved"
+                    class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
                     <i class="fas fa-bookmark text-xl"></i>
                     <span class="text-xs mt-1">Saved</span>
                 </a>
                 <a onclick="refreshFirstPostsFetch('Profile'); showProfile(); hideCreatePostModal(); updateSideBarProfile()"
-                    data-tab="profile" class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
+                    data-tab="profile"
+                    class="tab cursor-pointer flex flex-col items-center text-gray-700 hover:text-blue-600">
                     <i class="fas fa-user text-xl"></i>
                     <span class="text-xs mt-1">Profile</span>
                 </a>
@@ -458,7 +500,17 @@
 
     <div id="postModalContainer">
 
-    </div> <!-- Bookmark (Daniel): Show loading animation while post is loading -->
+    </div>
+
+    <div id="postModalLoading"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <div id="tokenLoginLoading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin">
+        </div>
+    </div>
 
     <!-- Alert Box -->
     <div id="alertBox" class="fixed top-20 right-4 z-50 hidden">
