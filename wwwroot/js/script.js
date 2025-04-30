@@ -311,7 +311,7 @@ window.register = async function register() {
     } else if (!isValidEmail(email)) {
         setInputError('registerEmail', 'registerEmailError', 'Please enter a valid email address');
         invalidInput = true;
-    } else if (emailExtension && !emailExtension.includes('.edu.')) {
+    } else if (emailExtension && !emailExtension.includes('.edu.') && !emailExtension.endsWith('.edu')) {
         setInputError('registerEmail', 'registerEmailError', 'Please use your uni email address');
         invalidInput = true;
     }

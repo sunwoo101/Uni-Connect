@@ -37,6 +37,11 @@ public class AuthService
         if (await _context.Users.AnyAsync(u => u.Email == request.Email)) // Check if the email is already registered
             return (false, "Email is already registered.", null);
 
+        string domain = request.Email.Split("@")[1];
+
+        if (!domain.Contains(".edu.") && !domain.EndsWith(".edu"))
+            return (false, "Email must be a .edu email.", null);
+
         string username = SanitizeUsername(request.Email.Split("@")[0]); // Extract username from the user's email
 
         if (await _context.Users.AnyAsync(u => u.Username == username)) // Check if someone else already has the username
