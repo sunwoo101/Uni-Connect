@@ -82,7 +82,10 @@ export default class Api {
     
             const result = await response.json();
     
-            if (!result.success) return false;
+            if (!result.success) {
+                localStorage.setItem('token', "");
+                return false;
+            }
     
             // showAlert(result.message, 'success');
             localStorage.setItem('user', JSON.stringify(result.data.userResponse));
@@ -91,6 +94,7 @@ export default class Api {
     
             return true;
         } catch (error) {
+            localStorage.setItem('token', "");
             showAlert(error?.message || 'Something went wrong', 'error');
     
             return false;

@@ -1760,13 +1760,15 @@ function showDownloadPage() {
 document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
 
-    if (token) {
+    if (token && token != "") {
         const loggedinWithToken = await tokenLogin();
         
         if (!loggedinWithToken) {
+            localStorage.setItem('token', "");
             showLoginForm();
         }
     } else {
+        localStorage.setItem('token', "");
         showLoginForm();
     }
 
