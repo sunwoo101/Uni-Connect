@@ -1,14 +1,15 @@
-import Api from './Api.js'
+import Api from './Api.js';
+import Utilities from './Utilities.js';
+
 // Session variables
-// Old
 let loggedIn = false;
+let userData = null;
 
 // New
 const api = new Api();
-let userData = null;
+const utilities = new Utilities();
 
-
-// Alert functions
+// Alert
 const alertTimeoutDuration = 3000;
 let alertTimeout;
 
@@ -269,6 +270,14 @@ function isValidName(str) {
     return /^[A-Za-z\s]+$/.test(str);
 }
 
+function isValidUsername(str) {
+    return /^[A-Za-z0-9._]+$/.test(str);
+}
+
+function isValidDegree(str) {
+    return /^[A-Za-z0-9() ]+$/.test(str);
+}
+
 // Register function
 window.register = async function register() {
     clearAllErrors();
@@ -318,6 +327,11 @@ window.register = async function register() {
 
     if (!degree) {
         setInputError('degree', 'degreeError', 'Please enter your degree');
+        invalidInput = true;
+    }
+
+    if (!isValidDegree(degree)) {
+        setInputError('degree', 'degreeError', 'Degree must only contain letters and numbers');
         invalidInput = true;
     }
 
@@ -528,7 +542,7 @@ function createPostElement(post) {
     if (_event) _event.dateAndTime = new Date(_event.dateAndTime + 'Z');
     const user = post.user;
     const postElement = document.createElement('div');
-    postElement.className = 'bg-white rounded-lg shadow p-4';
+    postElement.className = 'bg-white rounded-lg shadow p-4 break-words';
     postElement.innerHTML = `
         <div class="flex items-center space-x-4 mb-4">
             <img src="${(user.profileImageURL && user.profileImageURL != "") ? user.profileImageURL : placeHolderPfp}" alt="Profile" class="rounded-full w-12 h-12">
@@ -538,7 +552,7 @@ function createPostElement(post) {
                 <p class="text-gray-600 text-sm">${user.degree}</p>
             </div>
         </div>
-        <p class="mb-4">${post.content}</p>
+        <p class="mb-4">${utilities.sanitiseString(post.content)}</p>
         ${post.image ? `<img src="${post.image}" alt="Post Image" class="max-h-[76vh] rounded-lg mb-4 w-full">` : ''}
         ${post.video ? `<video src="${post.video}" alt="Post Video" class="bg-gray-200 max-h-[76vh] rounded-lg mb-4 w-full" controls></video>` : ''}
         ${_event ? `
@@ -547,8 +561,8 @@ function createPostElement(post) {
                     <div class="bg-blue-100 p-2 rounded-lg">
                         <i class="fas fa-calendar text-blue-600"></i>
                     </div>
-                    <div>
-                        <h4 class="font-semibold">${_event.title}</h4>
+                    <div class="min-w-0">
+                        <h4 class="font-semibold">${utilities.sanitiseString(_event.title)}</h4>
                         <p class="text-sm text-gray-600">${_event.dateAndTime.toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'short',
@@ -558,7 +572,7 @@ function createPostElement(post) {
         minute: '2-digit',
         hour12: true
     })}</p>
-                        <p class="text-sm text-gray-600">📍 ${_event.location}</p>
+                        <p class="text-sm text-gray-600">📍 ${utilities.sanitiseString(_event.location)}</p>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -616,6 +630,7 @@ function createAdElement() {
 async function embedAd(_adId) {
     const adContainerId = document.getElementById(`ad-container-id-${_adId}`);
 
+    // Sample ad
     adContainerId.innerHTML = `<img src="https://www.wordstream.com/wp-content/uploads/2021/07/banner-ads-examples-aws.jpg" alt="Post Image" class="rounded-lg w-full">`;
 }
 
@@ -755,7 +770,7 @@ async function showPostModalAsync(postId) {
                 </div>
             </div>
             <div class="p-4">
-                <p class="mb-4">${post.content}</p>
+                <p class="mb-4">${utilities.sanitiseString(post.content)}</p>
                 <div class="border-t pt-4">
                     <div class="space-y-4">
                         <div id="commentInput${post.id}" class="flex space-x-4">
@@ -847,7 +862,7 @@ function createCommentElement(comment, postId) {
                     <span class="font-semibold">${commentUser.firstName} ${commentUser.lastName}</span>
                     <span class="text-gray-500 text-sm">${formatTimestamp(comment.creationDate)}</span>
                 </div>
-                <p class="mt-1">${comment.content}</p>
+                <p class="mt-1">${utilities.sanitiseString(comment.content)}</p>
                 <button onclick="showReplyInput(${comment.id})" class="text-sm text-blue-600 hover:text-blue-800 mt-2">
                     Reply
                 </button>
@@ -890,7 +905,7 @@ function createCommentReplyElement(reply) {
                     <span class="font-semibold text-sm">${replyUser.firstName} ${replyUser.lastName}</span>
                     <span class="text-gray-500 text-xs">${formatTimestamp(reply.creationDate)}</span>
                 </div>
-                <p class="text-sm mt-1">${reply.content}</p>
+                <p class="text-sm mt-1">${utilities.sanitiseString(reply.content)}</p>
             </div>
         </div>
     `;
@@ -1386,10 +1401,6 @@ window.uploadProfileImage = async function uploadProfileImage(event) {
     }
 }
 
-function isValidUsername(str) {
-    return /^[A-Za-z0-9._]+$/.test(str);
-}
-
 // Save profile changes
 window.saveProfileChanges = async function saveProfileChanges() {
     const username = document.getElementById('editUsername').value.trim();
@@ -1409,6 +1420,11 @@ window.saveProfileChanges = async function saveProfileChanges() {
     // Validate degree
     if (!degree) {
         showAlert('Degree cannot be empty', 'error');
+        return;
+    }
+
+    if (!isValidDegree(degree)) {
+        showAlert('Degree is invalid', 'error');
         return;
     }
 
