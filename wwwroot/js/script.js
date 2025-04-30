@@ -1759,6 +1759,7 @@ function showDownloadPage() {
 // Check for mobile browser on page load
 document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
+
     if (token) {
         const loggedinWithToken = await tokenLogin();
         
@@ -1768,6 +1769,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     } else {
         showLoginForm();
     }
+
+    document.getElementById('tokenLoginLoading').classList.add('hidden');
     // showDownloadPage();
 });
 

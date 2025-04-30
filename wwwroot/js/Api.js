@@ -78,7 +78,7 @@ export default class Api {
                 },
             });
     
-            if (!response.ok) return false;
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
