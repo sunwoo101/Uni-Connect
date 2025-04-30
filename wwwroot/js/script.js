@@ -297,7 +297,6 @@ window.register = async function register() {
     const degree = document.getElementById('degree').value;
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    const tosChecked = document.getElementById('tosCheckbox').checked;
     const registerButton = document.getElementById('registerButton');
     const registerLoading = document.getElementById('registerLoading');
 
@@ -361,12 +360,6 @@ window.register = async function register() {
     }
 
     // Add a check to create a strong password
-
-    // Check Terms of Service checkbox
-    if (!tosChecked) {
-        setInputError('tosCheckbox', 'tosError', 'You must agree to the Terms of Service and Privacy Policy');
-        invalidInput = true;
-    }
 
     if (invalidInput) return;
 
