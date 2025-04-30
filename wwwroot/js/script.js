@@ -173,6 +173,8 @@ window.login = async function login() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
     const rememberMeChecked = document.getElementById('rememberMe').checked;
+    const loginButton = document.getElementById('loginButton');
+    const loginLoading = document.getElementById('loginLoading');
     let invalidInput = false;
 
     // Input validation
@@ -188,6 +190,10 @@ window.login = async function login() {
 
     if (invalidInput) return;
 
+    // Show loading animation
+    loginButton.classList.add('hidden');
+    loginLoading.classList.remove('hidden');
+
     if (await api.login(email, password)) {
         loggedIn = true;
         userData = JSON.parse(localStorage.getItem('user'));
@@ -202,6 +208,10 @@ window.login = async function login() {
             localStorage.removeItem("rememberedEmail");
         }
     }
+
+    // Hide loading animation
+    loginButton.classList.remove('hidden');
+    loginLoading.classList.add('hidden');
 }
 
 // Logout function
@@ -288,6 +298,8 @@ window.register = async function register() {
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const tosChecked = document.getElementById('tosCheckbox').checked;
+    const registerButton = document.getElementById('registerButton');
+    const registerLoading = document.getElementById('registerLoading');
 
     let invalidInput = false;
 
@@ -358,7 +370,8 @@ window.register = async function register() {
 
     if (invalidInput) return;
 
-    // Here you would typically make an API call to create the account
+    registerLoading.classList.remove('hidden');
+    registerButton.classList.add('hidden');
 
     if (await api.register(email, password, firstName, lastName, degree)) {
         loggedIn = true;
@@ -368,6 +381,9 @@ window.register = async function register() {
         updateSideBarProfile();
         showCreatePostModal();
     }
+
+    registerLoading.classList.add('hidden');
+    registerButton.classList.remove('hidden');
 }
 
 // Error handling functions
@@ -462,9 +478,14 @@ window.addEventListener('scroll', async () => {
 // Display posts function
 async function displayPosts() { // Add a parameter so this function decides which group posts should be displayed
     const postsContainer = document.getElementById('postsContainer');
+    const postsLoading = document.getElementById('postsLoading');
+
+    postsLoading.classList.remove('hidden');
 
     // Sort posts by timestamp (newest first)
     const feedPosts = await api.fetchPosts(firstPostsFetch, postIdAnchor, postFilter);
+
+    postsLoading.classList.add('hidden');
 
     if (!feedPosts || feedPosts.length === 0) {
         allPostsLoaded = true;
@@ -604,7 +625,7 @@ function createPostElement(post) {
         </div>
     `;
     return postElement;
-} // Bookmark: add ID to like and save to change colour on toggle
+}
 
 let adId = 0;
 
@@ -738,6 +759,9 @@ window.toggleEventAttendance = async function toggleEventAttendance(eventId) {
 }
 
 async function showPostModalAsync(postId) {
+    const postModalLoading = document.getElementById('postModalLoading');
+    postModalLoading.classList.remove('hidden');
+
     const post = await api.fetchPost(postId);
     const user = post.user;
 
@@ -791,6 +815,8 @@ async function showPostModalAsync(postId) {
         </div>
     `;
 
+    postModalLoading.classList.add('hidden');
+
     document.body.style.overflow = 'hidden';
 }
 
@@ -802,7 +828,7 @@ let currentPostModalId = 0;
 
 async function loadComments(postId) {
     const commentsContainer = document.getElementById('comments-container');
-    const comments = await api.fetchComments(firstCommentsFetch, postId, commentIdAnchor); // Bookmark
+    const comments = await api.fetchComments(firstCommentsFetch, postId, commentIdAnchor);
 
     if (!comments || comments.length === 0) {
         allCommentsLoaded = true;
@@ -829,7 +855,7 @@ async function loadComments(postId) {
 let replyIdAnchor = {};
 let firstReplyFetch = {};
 
-window.loadCommentReplies = async function loadCommentReplies(postId, parentCommentId) { // Bookmark
+window.loadCommentReplies = async function loadCommentReplies(postId, parentCommentId) {
     const replyContainer = document.getElementById(`comment-reply-container-id-${parentCommentId}`);
     const replies = await api.fetchComments(firstReplyFetch[`$parent-id-${parentCommentId}`] ?? true, postId, replyIdAnchor[`$parent-id-${parentCommentId}`] ?? 0, parentCommentId);
 
@@ -879,7 +905,7 @@ function createCommentElement(comment, postId) {
                     </div>
                 </div>
             </div>
-            <div id="comment-reply-container-id-${comment.id}" class="ml-8 mt-2 space-y-2"> <!-- Bookmark -->
+            <div id="comment-reply-container-id-${comment.id}" class="ml-8 mt-2 space-y-2">
                 <!-- Replies go here -->
             </div>
             ${comment.containsReplies ? `
@@ -931,7 +957,7 @@ window.showPostModal = async function showPostModal(postId) {
     postModalContent.addEventListener('scroll', async () => {
         if (allCommentsLoaded || isCommentsLoading) return;
 
-        const scrollPosition = postModalContent.scrollTop + postModalContent.clientHeight; // Bookmark: This should check scroll position in the post modal instead of main page
+        const scrollPosition = postModalContent.scrollTop + postModalContent.clientHeight;
         const threshold = postModalContent.scrollHeight - 200;
 
         if (scrollPosition >= threshold) {
@@ -1032,6 +1058,11 @@ let videoUploading = false;
 // Image upload handler function
 window.handleImageUpload = async function handleImageUpload(event) { // Bookmark: Check file size then upload to the backend directly
     const file = event.target.files[0];
+    if (file && file.size > 5 * 1024 * 1024) { // 5MB
+        showAlert('Image size exceeds the maximum limit of 5MB.', 'error');
+        return;
+    }
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -1078,6 +1109,11 @@ window.hideImagePreview = function hideImagePreview() {
 // Video upload handler function
 window.handleVideoUpload = async function handleVideoUpload(event) {
     const file = event.target.files[0];
+    if (file && file.size > 50 * 1024 * 1024) { // 50MB
+        showAlert('Video size exceeds the maximum limit of 50MB.', 'error');
+        return;
+    }
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -1359,7 +1395,7 @@ window.editProfile = function editProfile() {
                         </div>
                         <div id="pfpUploadLoading" class="hidden mt-4">
                             <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                        </div> <!-- Bookmark (Daniel): Loading animation example -->
+                        </div>
                     </div>
                 </div>
             </div>

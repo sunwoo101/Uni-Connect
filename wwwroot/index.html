@@ -86,21 +86,24 @@
                             Remember me
                         </label>
                     </div>
-                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800"
+                    <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
                         onclick="showForgotPasswordForm()">
                         Forgot Password?
                     </a>
                 </div>
                 <div>
-                    <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    <div id="loginLoading" class="hidden flex items-center justify-center">
+                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                    <button id="loginButton" type="submit"
+                        class="flex justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Sign In
-                    </button> <!-- Bookmark (Daniel): Show loading animation while login is processing -->
+                    </button>
                 </div>
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Don't have an account?
-                        <a class="font-bold text-blue-600 hover:text-blue-800"
+                        <a class="font-bold text-blue-600 hover:text-blue-800 cursor-pointer"
                             onclick="showRegisterForm()">Sign up</a>
                     </p>
                 </div>
@@ -136,7 +139,7 @@
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Remember your password?
-                        <a class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign
+                        <a class="font-bold text-blue-600 hover:text-blue-800 cursor-pointer" onclick="showLoginForm()">Sign
                             in</a>
                     </p>
                 </div>
@@ -197,7 +200,10 @@
                 </div>
                 <p id="tosError" class="error-message text-sm text-red-600 mt-1"></p>
                 <div>
-                    <button type="submit"
+                    <div id="registerLoading" class="hidden flex items-center justify-center">
+                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                    <button id="registerButton" type="submit"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Create Account
                     </button>
@@ -205,7 +211,7 @@
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
                         Already have an account?
-                        <a class="font-bold text-blue-600 hover:text-blue-800" onclick="showLoginForm()">Sign in</a>
+                        <a class="font-bold text-blue-600 hover:text-blue-800 cursor-pointer" onclick="showLoginForm()">Sign in</a>
                     </p>
                 </div>
             </div>
@@ -430,9 +436,15 @@
                 </div>
 
                 <!-- Posts Container -->
-                <div id="postsContainer" class="space-y-6">
-                    <!-- Posts will be dynamically inserted here -->
-                </div> <!-- Bookmark (Daniel): Show loading animation while posts are loading -->
+                <div class="space-y-6">
+                    <div id="postsContainer" class="space-y-6">
+                        <!-- Posts will be dynamically inserted here -->
+                    </div>
+
+                    <div id="postsLoading" class="hidden bg-white rounded-lg shadow p-4 flex items-center justify-center">
+                        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -459,8 +471,12 @@
     </div>
 
     <div id="postModalContainer">
+        
+    </div>
 
-    </div> <!-- Bookmark (Daniel): Show loading animation while post is loading -->
+    <div id="postModalLoading" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+        <div class="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
 
     <!-- Alert Box -->
     <div id="alertBox" class="fixed top-20 right-4 z-50 hidden">
