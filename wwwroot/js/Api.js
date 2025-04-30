@@ -17,7 +17,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -49,7 +49,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -78,11 +78,11 @@ export default class Api {
                 },
             });
     
-            if (!response.ok) return;
+            if (!response.ok) return false;
     
             const result = await response.json();
     
-            if (!result.success) return;
+            if (!result.success) return false;
     
             // showAlert(result.message, 'success');
             localStorage.setItem('user', JSON.stringify(result.data.userResponse));
@@ -114,7 +114,7 @@ export default class Api {
                 }) // Bookmark
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -145,7 +145,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -174,7 +174,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -203,7 +203,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -232,7 +232,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -261,7 +261,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -290,7 +290,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -319,7 +319,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -348,7 +348,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -379,7 +379,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -411,7 +411,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -440,7 +440,7 @@ export default class Api {
                 body: formData,
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -470,7 +470,7 @@ export default class Api {
                 body: formData,
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
@@ -502,7 +502,7 @@ export default class Api {
                 })
             });
     
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) throw new Error('Server restarting. Please try again after 5 minutes.');
     
             const result = await response.json();
     
